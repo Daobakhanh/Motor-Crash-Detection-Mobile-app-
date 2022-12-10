@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      showPerformanceOverlay: true,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -73,7 +74,13 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(
+          //Transform.rotate wrap this widget to ratate
+          widget.title,
+          style: const TextStyle(
+              // color: Colors.red,
+              ),
+        ),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
