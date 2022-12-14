@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../common/app_term.dart';
+import 'personal_drawer_page.dart';
 
 class PersonalPage extends StatefulWidget {
   const PersonalPage({super.key});
@@ -16,7 +17,10 @@ class _PersonalPageState extends State<PersonalPage> {
       appBar: AppBar(
         title: const Text(AppRouteName.personal),
       ),
-      body: const Center(child: Text(AppDataTerm.featureComingSoon)),
+      endDrawer: const PersonalDrawerPage(),
+      body: Column(
+        children: [],
+      ),
     );
   }
 }
