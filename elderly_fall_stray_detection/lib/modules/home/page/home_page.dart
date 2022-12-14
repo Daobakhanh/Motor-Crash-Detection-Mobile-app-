@@ -1,3 +1,4 @@
+import 'package:elderly_fall_stray_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/app_term.dart';
@@ -16,7 +17,11 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text(AppRouteName.homepage),
       ),
-      body: const Center(child: Text(AppDataTerm.featureComingSoon)),
+      body: const Center(
+          child: Text(
+        AppDataTerm.featureComingSoon,
+        style: AppTextStyle.h1,
+      )),
     );
   }
 }

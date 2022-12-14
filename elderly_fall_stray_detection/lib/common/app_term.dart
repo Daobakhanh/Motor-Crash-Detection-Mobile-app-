@@ -4,7 +4,7 @@ class AppDataTerm {
 }
 
 class AppRouteName {
-  static const homepage = "Home page";
+  static const homepage = "Home";
   static const notification = "Notifications";
   static const personal = "Personal";
   static const feature = "Features";

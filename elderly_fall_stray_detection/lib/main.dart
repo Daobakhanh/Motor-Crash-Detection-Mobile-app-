@@ -125,7 +125,6 @@
 
 import 'package:elderly_fall_stray_detection/modules/navigation/pages/app_navigation.dart';
 import 'package:elderly_fall_stray_detection/themes/app_font.dart';
-import 'package:elderly_fall_stray_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 void main() {
