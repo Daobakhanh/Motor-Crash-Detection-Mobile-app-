@@ -1,6 +1,8 @@
 import 'package:elderly_fall_stray_detection/themes/app_color.dart';
 import 'package:flutter/material.dart';
 
+import '../../widget/widget/stateless_widget/sized_box_widget.dart';
+
 class PersonalDrawerPage extends StatefulWidget {
   const PersonalDrawerPage({super.key});
 
@@ -29,13 +31,11 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
             ),
             Row(
               children: [
-                const SizedBox(
-                  width: 7,
-                ),
+                const SizedBoxW(7),
                 Icon(
                   isDarkMode == true ? Icons.dark_mode : Icons.sunny,
                   color: isDarkMode == true
-                      ? AppColor.activeStateGray
+                      ? AppColor.activeStateGrey
                       : Colors.blue,
                 ),
                 Switch(
