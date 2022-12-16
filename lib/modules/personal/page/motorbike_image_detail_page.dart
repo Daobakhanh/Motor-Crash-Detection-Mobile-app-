@@ -38,11 +38,14 @@ class _MotorbikeImageDetailState extends State<MotorbikeImageDetail> {
             alignment: Alignment.bottomCenter,
             child: SizedBox(
               width: widthScreen - 30,
-              child: OutlinedButton(
+              child: ElevatedButton(
                 onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.lightGray,
+                ),
                 child: const Text(
                   AppDataTerm.changeImage,
-                  style: TextStyle(color: AppColor.grey),
+                  style: TextStyle(color: AppColor.dark),
                 ),
               ),
             ),

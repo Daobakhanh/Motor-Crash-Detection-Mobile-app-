@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SizedBoxH extends StatelessWidget {
-  const SizedBoxH(this.height, {super.key});
+class SizedBoxWithH extends StatelessWidget {
+  const SizedBoxWithH(this.height, {super.key});
 
   final double? height;
 

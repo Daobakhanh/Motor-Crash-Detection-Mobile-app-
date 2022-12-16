@@ -17,6 +17,7 @@ class _MotobikeRemoteFeaturePageState extends State<MotobikeRemoteFeaturePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(AppRouteName.feature),
       ),
       body: const Center(child: Text(AppDataTerm.featureComingSoon)),
