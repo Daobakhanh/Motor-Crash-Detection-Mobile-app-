@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-
-class AppDataTerm {
-  static const appName = "Motorbike Crash Detection";
+class AppTerm {
+  static const appNameFull = "Motorbike Crash Detection";
+  static const appName = 'MoCraDe';
+  static const appDescription =
+      'Motorcycle accident detection system, motorcycle dump warning, intelligent anti-theft';
   static const featureComingSoon = "Feature Coming Soon";
   static const changeImage = "Change motorbike Image";
   static const edit = "Edit information";

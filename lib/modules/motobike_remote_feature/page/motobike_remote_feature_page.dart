@@ -20,7 +20,7 @@ class _MotobikeRemoteFeaturePageState extends State<MotobikeRemoteFeaturePage> {
         centerTitle: true,
         title: const Text(AppRouteName.feature),
       ),
-      body: const Center(child: Text(AppDataTerm.featureComingSoon)),
+      body: const Center(child: Text(AppTerm.featureComingSoon)),
     );
   }
 }

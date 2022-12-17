@@ -7,6 +7,7 @@ import '../../../common/app_term.dart';
 import '../widget/personal_infor_widget.dart';
 import 'motorbike_image_detail_page.dart';
 import 'personal_drawer_page.dart';
+import 'personal_edit_page.dart';
 
 class PersonalPage extends StatefulWidget {
   const PersonalPage({super.key});
@@ -16,7 +17,7 @@ class PersonalPage extends StatefulWidget {
 }
 
 class _PersonalPageState extends State<PersonalPage> {
-  final String imageUrl = 'assets/images/logo.png';
+  final String imageUrl = 'assets/images/motorbike.jpeg';
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,6 @@ class _PersonalPageState extends State<PersonalPage> {
     final widthScreen = size.width;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         title: const Text(AppRouteName.personal),
       ),
       endDrawer: const PersonalDrawerPage(),
@@ -46,7 +46,7 @@ class _PersonalPageState extends State<PersonalPage> {
                   );
                 }),
                 child: Image.asset(
-                  'assets/images/logo.png',
+                  imageUrl,
                   fit: BoxFit.contain,
                   // width: 200,
                   height: 100,
@@ -57,6 +57,15 @@ class _PersonalPageState extends State<PersonalPage> {
                 thickness: 2,
                 color: AppColor.lightGray,
                 height: 5,
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'Vehicle',
+                  style:
+                      AppTextStyle.body17.copyWith(fontWeight: FontWeight.bold),
+                ),
               ),
               const ItemPersonalInforWidget(
                 icon: Icons.branding_watermark,
@@ -83,6 +92,15 @@ class _PersonalPageState extends State<PersonalPage> {
                 color: AppColor.lightGray,
                 height: 5,
               ),
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'Owner',
+                  style:
+                      AppTextStyle.body17.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
               const ItemPersonalInforWidget(
                 icon: Icons.person,
                 title: PersonalInforTerm.name,
@@ -108,6 +126,7 @@ class _PersonalPageState extends State<PersonalPage> {
                 title: PersonalInforTerm.citizenId,
                 content: '0302....0000',
               ),
+              const SizedBox50H()
             ],
           ),
           Align(
@@ -115,12 +134,18 @@ class _PersonalPageState extends State<PersonalPage> {
             child: SizedBox(
               width: widthScreen - 30,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PersonalEditInforPage()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.lightGray,
                 ),
                 child: const Text(
-                  AppDataTerm.edit,
+                  AppTerm.edit,
                   style: TextStyle(color: AppColor.dark),
                 ),
               ),

@@ -17,7 +17,7 @@ class _NotificationPageState extends State<NotificationPage> {
         centerTitle: true,
         title: const Text(AppRouteName.notification),
       ),
-      body: const Center(child: Text(AppDataTerm.featureComingSoon)),
+      body: const Center(child: Text(AppTerm.featureComingSoon)),
     );
   }
 }

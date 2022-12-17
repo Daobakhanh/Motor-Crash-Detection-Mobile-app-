@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: const Center(
           child: Text(
-        AppDataTerm.featureComingSoon,
+        AppTerm.featureComingSoon,
         style: AppTextStyle.h1,
       )),
     );
