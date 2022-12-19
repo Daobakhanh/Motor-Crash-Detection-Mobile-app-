@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
-import '../../../common/app_term.dart';
+import '../../../common/term/app_term.dart';
 
 class MotobikeRemoteFeaturePage extends StatefulWidget {
   const MotobikeRemoteFeaturePage({super.key});

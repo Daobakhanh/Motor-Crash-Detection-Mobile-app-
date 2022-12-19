@@ -27,7 +27,9 @@ class LongStadiumButton extends StatelessWidget {
           nameOfButton!,
           style: AppTextStyle.body15.copyWith(
             fontWeight: FontWeight.bold,
-            color: color == null ? AppTextColor.pink : AppTextColor.light,
+            color: color == AppColor.light || color == null
+                ? AppTextColor.dark
+                : AppTextColor.light,
           ),
         ),
       ),

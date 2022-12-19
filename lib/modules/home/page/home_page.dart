@@ -1,7 +1,7 @@
 import 'package:elderly_fall_stray_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-import '../../../common/app_term.dart';
+import '../../../common/term/app_term.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

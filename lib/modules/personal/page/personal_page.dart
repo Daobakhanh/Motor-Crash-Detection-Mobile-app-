@@ -1,9 +1,10 @@
+import 'package:elderly_fall_stray_detection/common/mock/app_infor_mock.dart';
 import 'package:elderly_fall_stray_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 import 'package:elderly_fall_stray_detection/themes/app_color.dart';
 import 'package:elderly_fall_stray_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-import '../../../common/app_term.dart';
+import '../../../common/term/app_term.dart';
 import '../widget/personal_infor_widget.dart';
 import 'motorbike_image_detail_page.dart';
 import 'personal_drawer_page.dart';
@@ -69,23 +70,23 @@ class _PersonalPageState extends State<PersonalPage> {
               ),
               const ItemPersonalInforWidget(
                 icon: Icons.branding_watermark,
-                title: MotorBikeInforTerm.brand,
-                content: 'Honda',
+                title: VehicleInforTerm.brand,
+                content: VehicleInforDataMock.vehicleBrand,
               ),
               const ItemPersonalInforWidget(
                 icon: Icons.color_lens,
-                title: MotorBikeInforTerm.color,
-                content: 'Black',
+                title: VehicleInforTerm.color,
+                content: VehicleInforDataMock.vehicleColor,
               ),
               const ItemPersonalInforWidget(
                 icon: Icons.credit_card,
-                title: MotorBikeInforTerm.numberPlates,
-                content: '34C1-88999',
+                title: VehicleInforTerm.numberPlates,
+                content: VehicleInforDataMock.vehicleNumberPlates,
               ),
               const ItemPersonalInforDescriptionWidget(
                   icon: Icons.description,
-                  title: MotorBikeInforTerm.description,
-                  content: MotorBikeInforTerm.mockDes),
+                  title: VehicleInforTerm.description,
+                  content: VehicleInforDataMock.vehicleDescription),
               const SizedBox10H(),
               const Divider(
                 thickness: 2,
@@ -104,27 +105,27 @@ class _PersonalPageState extends State<PersonalPage> {
               const ItemPersonalInforWidget(
                 icon: Icons.person,
                 title: PersonalInforTerm.name,
-                content: 'Dao Ba Khanh',
+                content: PersonalInforDataMock.name,
               ),
               const ItemPersonalInforWidget(
                 icon: Icons.calendar_month,
                 title: PersonalInforTerm.dob,
-                content: '3/9/2000',
+                content: PersonalInforDataMock.dob,
               ),
               const ItemPersonalInforWidget(
                 icon: Icons.location_on,
                 title: PersonalInforTerm.addr,
-                content: '15 Ta Quang Buu, Bach Khoa',
+                content: PersonalInforDataMock.addr,
               ),
               const ItemPersonalInforWidget(
                 icon: Icons.phone,
                 title: PersonalInforTerm.phoneNumber,
-                content: '0357698570',
+                content: PersonalInforDataMock.phoneNumber,
               ),
               const ItemPersonalInforWidget(
                 icon: Icons.fingerprint,
                 title: PersonalInforTerm.citizenId,
-                content: '0302....0000',
+                content: PersonalInforDataMock.citizenId,
               ),
               const SizedBox50H()
             ],

@@ -6,6 +6,9 @@ class AppTerm {
   static const featureComingSoon = "Feature Coming Soon";
   static const changeImage = "Change motorbike Image";
   static const edit = "Edit information";
+  static const vehicle = "Vehicle";
+  static const owner = "Owner";
+  static const personal = "Personal";
 }
 
 class AppRouteName {
@@ -15,13 +18,11 @@ class AppRouteName {
   static const feature = "Features";
 }
 
-class MotorBikeInforTerm {
+class VehicleInforTerm {
   static const brand = "Brand";
   static const color = "Color";
   static const numberPlates = "Number Plates";
   static const description = "Description";
-  static const mockDes =
-      'Xe màu đen, có lắp thêm gương tròn, xe vỡ yếm. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book';
 }
 
 class PersonalInforTerm {

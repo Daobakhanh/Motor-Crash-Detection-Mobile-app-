@@ -12,7 +12,7 @@ Future<void> showMyDialogAuth(BuildContext context) async {
         content: SingleChildScrollView(
           child: ListBody(
             children: const <Widget>[
-              Text('Please login with Google account!'),
+              Text('Please login with "Login feature"!'),
               // Text('Would you like to approve of this message?'),
             ],
           ),

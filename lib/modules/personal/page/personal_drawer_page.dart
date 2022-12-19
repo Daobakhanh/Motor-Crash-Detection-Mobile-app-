@@ -21,71 +21,69 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Drawer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 100,
+    return Drawer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 100,
+          ),
+          Row(
+            children: [
+              const SizedBoxW(7),
+              Icon(
+                isDarkMode == true ? Icons.dark_mode : Icons.sunny,
+                color: isDarkMode == true
+                    ? AppColor.activeStateGrey
+                    : AppColor.activeStateYellow,
+              ),
+              Switch(
+                value: isDarkMode,
+                onChanged: ((value) {
+                  setState(() {
+                    isDarkMode = value;
+                  });
+                }),
+              )
+            ],
+          ),
+          TextButton.icon(
+            icon: const Icon(
+              Icons.settings,
             ),
-            Row(
-              children: [
-                const SizedBoxW(7),
-                Icon(
-                  isDarkMode == true ? Icons.dark_mode : Icons.sunny,
-                  color: isDarkMode == true
-                      ? AppColor.activeStateGrey
-                      : Colors.blue,
-                ),
-                Switch(
-                  value: isDarkMode,
-                  onChanged: ((value) {
-                    setState(() {
-                      isDarkMode = value;
-                    });
-                  }),
-                )
-              ],
+            onPressed: () {},
+            label: const Text(
+              'Setting',
             ),
-            TextButton.icon(
-              icon: const Icon(
-                Icons.settings,
-              ),
-              onPressed: () {},
-              label: const Text(
-                'Setting',
-              ),
+          ),
+          TextButton.icon(
+            icon: const Icon(
+              Icons.help_center,
             ),
-            TextButton.icon(
-              icon: const Icon(
-                Icons.help_center,
-              ),
-              onPressed: () {},
-              label: const Text(
-                'Help',
-              ),
+            onPressed: () {},
+            label: const Text(
+              'Help',
             ),
-            TextButton.icon(
-              icon: const Icon(
-                Icons.store,
-              ),
-              onPressed: () {},
-              label: const Text(
-                'Store',
-              ),
+          ),
+          TextButton.icon(
+            icon: const Icon(
+              Icons.store,
             ),
-            TextButton.icon(
-              onPressed: (() {}),
-              icon: const Icon(
-                Icons.logout,
-              ),
-              label: const Text(
-                'Logout',
-              ),
-            )
-          ],
-        ),
+            onPressed: () {},
+            label: const Text(
+              'Store',
+            ),
+          ),
+          TextButton.icon(
+            onPressed: (() {}),
+            icon: const Icon(
+              Icons.logout,
+            ),
+            label: const Text(
+              'Logout',
+            ),
+          )
+        ],
       ),
     );
   }

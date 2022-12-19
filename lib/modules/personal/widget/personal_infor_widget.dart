@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
-import '../../../common/app_term.dart';
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_style.dart';
 import '../../widget/widget/stateless_widget/sized_box_widget.dart';
@@ -52,7 +49,6 @@ class _ItemPersonalInforWidgetState extends State<ItemPersonalInforWidget> {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-
               // Text.rich(
               //   TextSpan(
               //     style: const TextStyle(

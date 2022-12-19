@@ -1,5 +1,4 @@
-import 'package:elderly_fall_stray_detection/common/app_term.dart';
-import 'package:elderly_fall_stray_detection/modules/navigation/pages/app_navigation.dart';
+import 'package:elderly_fall_stray_detection/common/term/app_term.dart';
 import 'package:flutter/material.dart';
 import 'package:unicons/unicons.dart';
 
@@ -8,6 +7,7 @@ import '../../../themes/app_text_style.dart';
 import '../../widget/widget/stateless_widget/button_stl_widget.dart';
 import '../utils/auth_show_diolog_utils.dart';
 import '../widget/auth_widget.dart';
+import 'auth_login_page.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -21,8 +21,6 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // elevation: 0,
-        // backgroundColor: AppColors.dark,
         title: Text(
           'MoCraDe',
           style: AppTextStyle.appName
@@ -68,14 +66,9 @@ class _AuthPageState extends State<AuthPage> {
                 onTap: () {
                   // ignore: avoid_print
                   print('press log in');
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const LoginPage()),
-                  // );
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const AppNavigationConfig()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
               ),
@@ -124,15 +117,20 @@ class _AuthPageState extends State<AuthPage> {
                   },
                 ),
                 IconLoginOptional(
-                    icon: UniconsLine.google,
-                    onTap: () async {
-                      // bool loginStatus =
-                      //     await LoginWithDofhuntAPI.loginWithDofhuntAPI();
+                  icon: UniconsLine.google,
+                  // onTap: () async {
+                  //   bool loginStatus =
+                  //       await LoginWithDofhuntAPI.loginWithDofhuntAPI();
 
-                      // if (loginStatus) {
-                      //   _changeAppState();
-                      // }
-                    }),
+                  //   if (loginStatus) {
+                  //     _changeAppState();
+                  //   }
+                  // },
+                  onTap: () {
+                    debugPrint('Press google');
+                    showMyDialogAuth(context);
+                  },
+                ),
               ],
             ),
             const SizedBox(

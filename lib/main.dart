@@ -1,6 +1,4 @@
-import 'package:elderly_fall_stray_detection/modules/navigation/pages/app_navigation.dart';
 import 'package:elderly_fall_stray_detection/themes/app_font.dart';
-import 'package:elderly_fall_stray_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 import 'modules/auth/page/auth_page.dart';
@@ -20,7 +18,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           fontFamily: AppFont.avenir,
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.pink,
           appBarTheme: const AppBarTheme(
             color: AppColor.greyBold,
             centerTitle: true,
