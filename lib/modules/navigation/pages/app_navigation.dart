@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:elderly_fall_stray_detection/modules/personal/page/personal_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,18 +28,24 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
         inactiveColor:
             themeData == Brightness.dark ? AppColor.grey : AppColor.dark,
         backgroundColor:
-            themeData == Brightness.dark ? AppColor.dark : AppColor.lightGray,
-        items: const [
-          BottomNavigationBarItem(
+            themeData == Brightness.dark ? AppColor.dark : AppColor.lightGray1,
+        items: [
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home),
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.motorcycle),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
+            icon: Badge(
+              badgeContent: const Text(
+                '20',
+                style: TextStyle(color: AppTextColor.light),
+              ),
+              child: const Icon(Icons.notifications),
+            ),
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.person),
           ),
         ],

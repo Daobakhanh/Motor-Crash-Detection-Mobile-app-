@@ -56,7 +56,7 @@ class _PersonalPageState extends State<PersonalPage> {
               const SizedBox10H(),
               const Divider(
                 thickness: 2,
-                color: AppColor.lightGray,
+                color: AppColor.lightGray1,
                 height: 5,
               ),
               Container(
@@ -90,7 +90,7 @@ class _PersonalPageState extends State<PersonalPage> {
               const SizedBox10H(),
               const Divider(
                 thickness: 2,
-                color: AppColor.lightGray,
+                color: AppColor.lightGray1,
                 height: 5,
               ),
               Container(
@@ -143,7 +143,7 @@ class _PersonalPageState extends State<PersonalPage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.lightGray,
+                  backgroundColor: AppColor.lightGray1,
                 ),
                 child: const Text(
                   AppTerm.edit,

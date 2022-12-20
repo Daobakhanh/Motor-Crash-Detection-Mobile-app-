@@ -39,7 +39,7 @@ class _MotorbikeImageDetailState extends State<MotorbikeImageDetail> {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.lightGray,
+                    backgroundColor: AppColor.lightGray1,
                   ),
                   child: const Text(
                     AppTerm.changeImage,

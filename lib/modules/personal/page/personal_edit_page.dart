@@ -240,7 +240,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
               const SizedBox10H(),
               const Divider(
                 thickness: 2,
-                color: AppColor.lightGray,
+                color: AppColor.lightGray1,
                 height: 5,
               ),
 
