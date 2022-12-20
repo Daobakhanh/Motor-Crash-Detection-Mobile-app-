@@ -65,7 +65,7 @@ class _AuthPageState extends State<AuthPage> {
                 nameOfButton: 'Log In',
                 onTap: () {
                   // ignore: avoid_print
-                  print('press log in');
+                  // print('press log in');
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const LoginPage()),

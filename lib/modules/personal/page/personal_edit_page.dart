@@ -115,7 +115,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
             children: [
               //Infor: vehicle
               Container(
-                margin: const EdgeInsets.only(top: 10),
+                margin: const EdgeInsets.only(top: 30),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   AppTerm.vehicle,
@@ -246,7 +246,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
 
               //Infor: Owner
               Container(
-                margin: const EdgeInsets.only(top: 10),
+                margin: const EdgeInsets.only(top: 20),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   'Owner',

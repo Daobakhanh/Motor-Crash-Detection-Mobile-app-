@@ -159,7 +159,6 @@ class _LoginPageState extends State<LoginPage> {
                 onTap: !(isFullFillPhoneNumber == true && isFullFillOTP == true)
                     ? () {}
                     : () {
-                        debugPrint('press login');
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -167,6 +166,14 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         );
                       },
+                // onTap: () {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => const AppNavigationConfig(),
+                //     ),
+                //   );
+                // },
               ),
               // Container(
               //   // color: AppColors.activeStateGreen,

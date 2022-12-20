@@ -1,6 +1,13 @@
+import 'dart:math';
+
+import 'package:elderly_fall_stray_detection/modules/app_state/service/app_theme_state_local_storage.dart';
+import 'package:elderly_fall_stray_detection/modules/auth/page/auth_page.dart';
 import 'package:elderly_fall_stray_detection/themes/app_color.dart';
 import 'package:flutter/material.dart';
 
+import '../../../common/enum/app_theme_state_enum.dart';
+import '../../app_state/bloc/app_state_bloc.dart';
+import '../../providers/bloc_provider.dart';
 import '../../widget/widget/stateless_widget/sized_box_widget.dart';
 
 class PersonalDrawerPage extends StatefulWidget {
@@ -11,12 +18,12 @@ class PersonalDrawerPage extends StatefulWidget {
 }
 
 class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
-  bool isDarkMode = true;
-
+  bool isDarkMode = false;
+  AppThemeBloc? get appThemeBloc => BlocProvider.of<AppThemeBloc>(context);
   @override
   void initState() {
     super.initState();
-    isDarkMode = true;
+    _readThemeModeFromLocalStorage();
   }
 
   @override
@@ -25,9 +32,9 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 100,
-          ),
+          const SizedBoxWithH(100),
+
+          //Dark mode feature
           Row(
             children: [
               const SizedBoxW(7),
@@ -39,14 +46,20 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               ),
               Switch(
                 value: isDarkMode,
-                onChanged: ((value) {
-                  setState(() {
-                    isDarkMode = value;
-                  });
+                onChanged: ((value) async {
+                  setState(
+                    () {
+                      isDarkMode = value;
+                    },
+                  );
+                  await appThemeBloc!.changeAppThemeStateAndEmitStream(value);
+                  // await AppStateBloc().changeAppThemeStateAndEmitStream(value);
                 }),
               )
             ],
           ),
+
+          //Setting feature
           TextButton.icon(
             icon: const Icon(
               Icons.settings,
@@ -56,6 +69,8 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               'Setting',
             ),
           ),
+
+          //Help center feature
           TextButton.icon(
             icon: const Icon(
               Icons.help_center,
@@ -65,6 +80,8 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               'Help',
             ),
           ),
+
+          //Store feature
           TextButton.icon(
             icon: const Icon(
               Icons.store,
@@ -74,8 +91,10 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               'Store',
             ),
           ),
+
+          //Logout feature
           TextButton.icon(
-            onPressed: (() {}),
+            onPressed: () => showConfirmLogoutDialog(),
             icon: const Icon(
               Icons.logout,
             ),
@@ -83,6 +102,41 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               'Logout',
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  void _readThemeModeFromLocalStorage() async {
+    final readThemeState = await readAppThemeStateFromLocalStorage();
+    if (readThemeState == AppThemeStateEnum.dark) {
+      setState(() {
+        isDarkMode = true;
+      });
+    } else {
+      isDarkMode = false;
+    }
+  }
+
+  void showConfirmLogoutDialog() {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Logout'),
+        content: const Text('Logout confirm'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const AuthPage()),
+                  (Route<dynamic> route) => false);
+            },
+            child: const Text('OK'),
+          ),
         ],
       ),
     );
