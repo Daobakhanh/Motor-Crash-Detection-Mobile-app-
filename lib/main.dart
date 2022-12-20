@@ -1,23 +1,50 @@
-import 'package:elderly_fall_stray_detection/modules/navigation/pages/app_navigation.dart';
+import 'package:elderly_fall_stray_detection/common/enum/app_theme_state_enum.dart';
+import 'package:elderly_fall_stray_detection/modules/providers/bloc_provider.dart';
 import 'package:elderly_fall_stray_detection/themes/app_font.dart';
 import 'package:flutter/material.dart';
+
+import 'modules/app_state/bloc/app_state_bloc.dart';
+import 'modules/auth/page/auth_page.dart';
+import 'themes/app_color.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  final _appStateStreamController = AppThemeBloc();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: AppFont.avenir,
-          primarySwatch: Colors.blue,
-        ),
-        home: const AppNavigationConfig());
+    return BlocProvider(
+      bloc: _appStateStreamController,
+      child: StreamBuilder<AppThemeStateEnum>(
+          // initialData: AppThemeStateEnum.light,
+          stream: _appStateStreamController.stream,
+          builder: ((context, snapshot) {
+            return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  brightness: snapshot.data == AppThemeStateEnum.light
+                      ? Brightness.light
+                      : Brightness.dark,
+                  fontFamily: AppFont.avenir,
+                  primarySwatch: Colors.pink,
+                  appBarTheme: const AppBarTheme(
+                    color: AppColor.greyBold,
+                    centerTitle: true,
+                  ),
+                ),
+                home: const AuthPage());
+          })),
+    );
   }
 }

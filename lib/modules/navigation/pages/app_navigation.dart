@@ -8,7 +8,9 @@ import '../../motobike_remote_feature/page/motobike_remote_feature_page.dart';
 import '../../notification/page/notification_page.dart';
 
 class AppNavigationConfig extends StatefulWidget {
-  const AppNavigationConfig({Key? key}) : super(key: key);
+  final bool? navigateKeyPersonal;
+  const AppNavigationConfig({this.navigateKeyPersonal, Key? key})
+      : super(key: key);
 
   @override
   State<AppNavigationConfig> createState() => _AppNavigationConfigState();
@@ -80,14 +82,23 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
                 );
               },
             );
+
           default:
-            return CupertinoTabView(
-              builder: (context) {
-                return const CupertinoPageScaffold(
-                  child: HomePage(),
-                );
-              },
-            );
+            return widget.navigateKeyPersonal == true
+                ? CupertinoTabView(
+                    builder: (context) {
+                      return const CupertinoPageScaffold(
+                        child: PersonalPage(),
+                      );
+                    },
+                  )
+                : CupertinoTabView(
+                    builder: (context) {
+                      return const CupertinoPageScaffold(
+                        child: HomePage(),
+                      );
+                    },
+                  );
         }
       },
     );

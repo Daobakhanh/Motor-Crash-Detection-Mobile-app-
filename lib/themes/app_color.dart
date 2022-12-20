@@ -8,7 +8,7 @@ class AppColor {
   static const Color activeStatePurple = Color(0xff5856D6);
   static const Color activeStateTealBlue = Color(0xff5AC8FA);
   static const Color activeStateYellow = Color(0xffFFCC00);
-  static const Color activeStateGray = Color(0xff8E8E93);
+  static const Color activeStateGrey = Color(0xff8E8E93);
   static const Color adding = Color(0xff4CD964);
   static const Color destructive = Color(0xffFF3B30);
   static const Color black = Color(0xff000000);

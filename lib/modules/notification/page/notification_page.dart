@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../common/app_term.dart';
+import '../../../common/term/app_term.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -14,9 +14,10 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(AppRouteName.notification),
       ),
-      body: const Center(child: Text(AppDataTerm.featureComingSoon)),
+      body: const Center(child: Text(AppTerm.featureComingSoon)),
     );
   }
 }
