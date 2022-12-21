@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:elderly_fall_stray_detection/modules/app_state/service/app_theme_state_local_storage.dart';
-import 'package:elderly_fall_stray_detection/modules/auth/page/auth_page.dart';
-import 'package:elderly_fall_stray_detection/themes/app_color.dart';
+import 'package:motorbike_crash_detection/modules/app_state/service/app_theme_state_local_storage.dart';
+import 'package:motorbike_crash_detection/modules/auth/page/auth_page.dart';
+import 'package:motorbike_crash_detection/themes/app_color.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/enum/app_theme_state_enum.dart';

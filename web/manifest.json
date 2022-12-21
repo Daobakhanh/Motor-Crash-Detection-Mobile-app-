@@ -1,6 +1,6 @@
 {
-    "name": "elderly_fall_stray_detection",
-    "short_name": "elderly_fall_stray_detection",
+    "name": "motorbike_crash_detection",
+    "short_name": "motorbike_crash_detection",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "elderly_fall_stray_detection" "\0"
+            VALUE "FileDescription", "motorbike_crash_detection" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "elderly_fall_stray_detection" "\0"
+            VALUE "InternalName", "motorbike_crash_detection" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "elderly_fall_stray_detection.exe" "\0"
-            VALUE "ProductName", "elderly_fall_stray_detection" "\0"
+            VALUE "OriginalFilename", "motorbike_crash_detection.exe" "\0"
+            VALUE "ProductName", "motorbike_crash_detection" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -1,5 +1,5 @@
 import 'package:badges/badges.dart';
-import 'package:elderly_fall_stray_detection/modules/personal/page/personal_page.dart';
+import 'package:motorbike_crash_detection/modules/personal/page/personal_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

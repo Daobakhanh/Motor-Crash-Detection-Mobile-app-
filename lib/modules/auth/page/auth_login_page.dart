@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_style.dart';
+import '../../../utils/validate_phone_number.dart';
 import '../../navigation/pages/app_navigation.dart';
 import '../../widget/widget/stateless_widget/button_stl_widget.dart';
 
@@ -13,9 +16,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   late TextEditingController _controllerTextPhoneNumber;
   late TextEditingController _controllerTextOTP;
-
+  String verificationIdVar = '';
+  String phoneNumber = '';
+  bool isPhoneValid = true;
+  String smsOtpCode = '';
   bool isFullFillPhoneNumber = false;
   bool isFullFillOTP = false;
 
@@ -29,8 +37,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _controllerTextPhoneNumber = TextEditingController(text: "");
-    _controllerTextOTP = TextEditingController(text: "");
+    _controllerTextPhoneNumber = TextEditingController(text: phoneNumber);
+    _controllerTextOTP = TextEditingController(text: smsOtpCode);
   }
 
   @override
@@ -68,44 +76,62 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Container(
                 margin: const EdgeInsets.only(top: 10),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: SizedBox(
-                    child: TextField(
-                      // maxLines: (address / 38 ).roundToDouble() + 1,
-                      keyboardType: TextInputType.phone,
-                      maxLines: 1,
-                      maxLength: 10,
-                      autofocus: false,
-                      controller: _controllerTextPhoneNumber,
-                      onChanged: (String contentValue) {
-                        if (contentValue.length > 9) {
-                          setState(
-                            () {
-                              isFullFillPhoneNumber = true;
-                            },
-                          );
-                        } else {
-                          setState(
-                            () {
-                              isFullFillPhoneNumber = false;
-                            },
-                          );
-                        }
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Your phone number',
-                        suffixIcon: IconButton(
-                          onPressed: _controllerTextPhoneNumber.clear,
-                          icon: const Icon(Icons.clear),
-                        ),
+                child: SizedBox(
+                  child: TextField(
+                    keyboardType: TextInputType.phone,
+                    maxLines: 1,
+                    maxLength: 10,
+                    autofocus: false,
+                    controller: _controllerTextPhoneNumber,
+                    onChanged: (String contentValue) {
+                      phoneNumber = contentValue;
+                      if (contentValue.isNotEmpty) {
+                        setState(
+                          () {
+                            isPhoneValid = isValidPhoneNumber(contentValue);
+                          },
+                        );
+                      }
+                      debugPrint(phoneNumber);
+                      if (contentValue.length == 10) {
+                        setState(
+                          () {
+                            isFullFillPhoneNumber = true;
+                          },
+                        );
+                      } else {
+                        setState(
+                          () {
+                            isFullFillPhoneNumber = false;
+                          },
+                        );
+                      }
+                    },
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: 'Your phone number',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          _controllerTextPhoneNumber.clear();
+                          isPhoneValid = true;
+                        },
+                        icon: const Icon(Icons.clear),
                       ),
                     ),
                   ),
                 ),
               ),
+              isPhoneValid
+                  ? const SizedBox0H()
+                  : const Text(
+                      'Invalid phone number',
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 13,
+                          fontStyle: FontStyle.italic),
+                    ),
               Container(
-                margin: const EdgeInsets.only(bottom: 10),
+                margin: const EdgeInsets.only(bottom: 10, top: 10),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: SizedBox(
@@ -117,7 +143,9 @@ class _LoginPageState extends State<LoginPage> {
                       autofocus: false,
                       controller: _controllerTextOTP,
                       onChanged: (String contentValue) {
-                        if (contentValue.length > 5) {
+                        smsOtpCode = contentValue;
+                        // debugPrint(smsOtpCode);
+                        if (contentValue.length == 6) {
                           setState(
                             () {
                               isFullFillOTP = true;
@@ -132,9 +160,17 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       },
                       decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
                         labelText: 'OTP',
                         suffixIcon: TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            try {
+                              await verifyPhoneNumberFirebase();
+                            } catch (e) {
+                              // ignore: avoid_print
+                              print('Error get OTP: $e');
+                            }
+                          },
                           child: Text(
                             'Send',
                             textAlign: TextAlign.right,
@@ -147,7 +183,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-
               const SizedBox(
                 height: 40,
               ),
@@ -158,58 +193,60 @@ class _LoginPageState extends State<LoginPage> {
                 nameOfButton: "Login",
                 onTap: !(isFullFillPhoneNumber == true && isFullFillOTP == true)
                     ? () {}
-                    : () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AppNavigationConfig(),
-                          ),
-                        );
+                    : () async {
+                        // _controllerTextOTP.clear();
+                        String accessToken = '';
+
+                        try {
+                          accessToken =
+                              await getTokenWhenSignInWithCredential();
+                        } catch (e) {
+                          // ignore: avoid_print
+                          print(e);
+                        }
+                        if (accessToken.isNotEmpty) {
+                          // ignore: use_build_context_synchronously
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AppNavigationConfig(),
+                            ),
+                          );
+                        }
                       },
-                // onTap: () {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => const AppNavigationConfig(),
-                //     ),
-                //   );
-                // },
               ),
-              // Container(
-              //   // color: AppColors.activeStateGreen,
-              //   alignment: Alignment.center,
-              //   child: ElevatedButton(
-              //     onPressed: () {
-              //       debugPrint('press login');
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //           builder: (context) => const LoginOtpPage(),
-              //         ),
-              //       );
-              //     },
-              //     style: ElevatedButton.styleFrom(
-              //       shape: const StadiumBorder(),
-              //       backgroundColor: isFullFillPhoneNumber != true
-              //           ? AppColor.pinkAccent
-              //           : AppColor.light,
-              //       fixedSize: const Size(350, 44),
-              //     ),
-              //     child: Text(
-              //       'NEXT',
-              //       style: AppTextStyle.body15.copyWith(
-              //         fontWeight: FontWeight.bold,
-              //         color: isFullFillPhoneNumber != false
-              //             ? AppTextColor.dark
-              //             : AppTextColor.light,
-              //       ),
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> verifyPhoneNumberFirebase() async {
+    // ignore: avoid_print
+    auth.verifyPhoneNumber(
+      phoneNumber: '+84${phoneNumber.substring(1)}',
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {},
+      codeSent: (String verificationId, int? resendToken) {
+        verificationIdVar = verificationId;
+        debugPrint('verificationId : $verificationId');
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
+  Future<String> getTokenWhenSignInWithCredential() async {
+    String accessToken = '';
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: verificationIdVar,
+      smsCode: smsOtpCode,
+    );
+
+    await auth.signInWithCredential(credential);
+    accessToken = await auth.currentUser!.getIdToken();
+
+    print(accessToken);
+    return accessToken;
   }
 }

@@ -1,7 +1,7 @@
-import 'package:elderly_fall_stray_detection/common/mock/app_infor_mock.dart';
-import 'package:elderly_fall_stray_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
-import 'package:elderly_fall_stray_detection/themes/app_color.dart';
-import 'package:elderly_fall_stray_detection/themes/app_text_style.dart';
+import 'package:motorbike_crash_detection/common/mock/app_infor_mock.dart';
+import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
+import 'package:motorbike_crash_detection/themes/app_color.dart';
+import 'package:motorbike_crash_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/term/app_term.dart';
@@ -53,11 +53,11 @@ class _PersonalPageState extends State<PersonalPage> {
                   height: 100,
                 ),
               ),
-              const SizedBox10H(),
+              const SizedBox15H(),
               const Divider(
-                thickness: 2,
-                color: AppColor.lightGray1,
-                height: 5,
+                thickness: 1.5,
+                color: AppColor.lightGray2,
+                height: 1.5,
               ),
               Container(
                 margin: const EdgeInsets.only(top: 10),
@@ -89,9 +89,9 @@ class _PersonalPageState extends State<PersonalPage> {
                   content: VehicleInforDataMock.vehicleDescription),
               const SizedBox10H(),
               const Divider(
-                thickness: 2,
-                color: AppColor.lightGray1,
-                height: 5,
+                color: AppColor.lightGray2,
+                thickness: 1.5,
+                height: 1.5,
               ),
               Container(
                 margin: const EdgeInsets.only(top: 10),

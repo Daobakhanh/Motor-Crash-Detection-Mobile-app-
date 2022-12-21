@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:elderly_fall_stray_detection/common/enum/app_theme_state_enum.dart';
+import 'package:motorbike_crash_detection/common/enum/app_theme_state_enum.dart';
 import 'package:flutter/material.dart';
 
 import '../../providers/bloc_provider.dart';

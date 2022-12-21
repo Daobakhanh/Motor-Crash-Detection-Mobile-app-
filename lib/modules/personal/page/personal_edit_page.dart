@@ -1,6 +1,6 @@
-import 'package:elderly_fall_stray_detection/common/mock/app_infor_mock.dart';
-import 'package:elderly_fall_stray_detection/common/term/app_term.dart';
-import 'package:elderly_fall_stray_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
+import 'package:motorbike_crash_detection/common/mock/app_infor_mock.dart';
+import 'package:motorbike_crash_detection/common/term/app_term.dart';
+import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

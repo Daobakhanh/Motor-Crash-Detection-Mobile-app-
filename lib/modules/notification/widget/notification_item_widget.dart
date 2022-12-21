@@ -1,6 +1,6 @@
-import 'package:elderly_fall_stray_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
-import 'package:elderly_fall_stray_detection/themes/app_color.dart';
-import 'package:elderly_fall_stray_detection/themes/app_text_style.dart';
+import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
+import 'package:motorbike_crash_detection/themes/app_color.dart';
+import 'package:motorbike_crash_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 class NotificationItem extends StatefulWidget {

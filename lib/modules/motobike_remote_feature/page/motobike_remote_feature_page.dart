@@ -1,3 +1,4 @@
+import 'package:motorbike_crash_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/term/app_term.dart';
@@ -18,7 +19,11 @@ class _MotobikeRemoteFeaturePageState extends State<MotobikeRemoteFeaturePage> {
         centerTitle: true,
         title: const Text(AppRouteName.feature),
       ),
-      body: const Center(child: Text(AppTerm.featureComingSoon)),
+      body: const Center(
+          child: Text(
+        AppTerm.featureComingSoon,
+        style: AppTextStyle.h1,
+      )),
     );
   }
 }
