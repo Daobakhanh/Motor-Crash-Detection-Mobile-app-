@@ -1,4 +1,4 @@
-package com.example.elderly_fall_stray_detection
+package com.example.motorbike_crash_detection
 
 import io.flutter.embedding.android.FlutterActivity
 

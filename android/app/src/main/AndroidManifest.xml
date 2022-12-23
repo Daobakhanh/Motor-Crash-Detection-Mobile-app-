@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.elderly_fall_stray_detection">
+    package="com.example.motorbike_crash_detection">
    <application
-        android:label="elderly_fall_stray_detection"
+        android:label="motorbike_crash_detection"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

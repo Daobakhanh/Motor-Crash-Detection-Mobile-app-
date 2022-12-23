@@ -15,7 +15,7 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
   final T? bloc;
 
   @override
-  _BlocProviderState<T> createState() => _BlocProviderState<T>();
+  BlocProviderState<T> createState() => BlocProviderState<T>();
 
   static T? of<T extends BlocBase>(BuildContext context) {
     final _BlocProviderInherited<T>? provider = context
@@ -25,7 +25,7 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
   }
 }
 
-class _BlocProviderState<T extends BlocBase> extends State<BlocProvider<T>> {
+class BlocProviderState<T extends BlocBase> extends State<BlocProvider<T>> {
   @override
   void dispose() {
     widget.bloc?.dispose();

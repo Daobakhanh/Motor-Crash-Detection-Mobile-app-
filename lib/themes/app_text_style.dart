@@ -1,5 +1,5 @@
-import 'package:elderly_fall_stray_detection/themes/app_color.dart';
-import 'package:elderly_fall_stray_detection/themes/app_font.dart';
+import 'package:motorbike_crash_detection/themes/app_color.dart';
+import 'package:motorbike_crash_detection/themes/app_font.dart';
 import 'package:flutter/material.dart';
 
 class AppTextStyle {

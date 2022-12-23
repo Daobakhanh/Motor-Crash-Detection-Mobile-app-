@@ -1,4 +1,4 @@
-name: elderly_fall_stray_detection
+name: motorbike_crash_detection
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -39,10 +39,18 @@ dependencies:
   cached_network_image: ^3.2.3
   unicons: ^2.1.0
   shared_preferences: ^2.0.15
-
+  badges: ^2.0.3
+  socket_io_client: ^2.0.0
+  firebase_core: ^2.4.0
+  firebase_auth: ^4.2.1
+  phone_number: ^1.0.0
+  json_annotation: ^4.7.0
+  firebase_messaging: ^14.1.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.0.0
+  json_serializable: ^6.5.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
