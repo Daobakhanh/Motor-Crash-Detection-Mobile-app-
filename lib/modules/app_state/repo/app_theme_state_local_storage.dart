@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../common/enum/app_theme_state_enum.dart';
-import '../../../common/term/local_storage_pref_key.dart';
+import '../../../data/enum/app_theme_state_enum.dart';
+import '../../../data/term/local_storage_pref_key.dart';
 
 Future<AppThemeStateEnum> readAppThemeStateFromLocalStorage() async {
   final prefs = await SharedPreferences.getInstance();

@@ -1,7 +1,7 @@
 import 'package:motorbike_crash_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-import '../../../common/term/app_term.dart';
+import '../../../data/term/app_term.dart';
 
 class MotobikeRemoteFeaturePage extends StatefulWidget {
   const MotobikeRemoteFeaturePage({super.key});

@@ -1,4 +1,5 @@
-import 'package:motorbike_crash_detection/common/enum/app_theme_state_enum.dart';
+import 'package:bloc/bloc.dart';
+import 'package:motorbike_crash_detection/data/enum/app_theme_state_enum.dart';
 import 'package:motorbike_crash_detection/firebase_options.dart';
 import 'package:motorbike_crash_detection/modules/providers/bloc_provider.dart';
 import 'package:motorbike_crash_detection/themes/app_font.dart';
@@ -7,15 +8,17 @@ import 'package:flutter/material.dart';
 
 import 'modules/app_state/bloc/app_state_bloc.dart';
 import 'modules/auth/page/auth_page.dart';
+import 'modules/bloc/bloc_observer/app_bloc_observer.dart';
 import 'themes/app_color.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(const MyApp());
+  Bloc.observer = AppBlocObserver();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {

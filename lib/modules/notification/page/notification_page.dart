@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../common/term/app_term.dart';
+import '../../../data/term/app_term.dart';
 import '../widget/notification_item_widget.dart';
 
 class NotificationPage extends StatefulWidget {
