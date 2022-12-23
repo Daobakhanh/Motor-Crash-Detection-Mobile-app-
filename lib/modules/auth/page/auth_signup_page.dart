@@ -1,31 +1,36 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:motorbike_crash_detection/modules/auth/page/auth_signup_personal_infor_page.dart';
 import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_style.dart';
 import '../../../utils/validate_phone_number.dart';
-import '../../navigation/pages/app_navigation.dart';
 import '../../widget/widget/stateless_widget/button_stl_widget.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignupPage extends StatefulWidget {
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  FirebaseAuth auth = FirebaseAuth.instance;
+class _SignupPageState extends State<SignupPage> {
+  //firebase instance, variable
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  String verificationIdVar = '';
+  String fcmToken = '';
 
+  //text controller
   late TextEditingController _controllerTextPhoneNumber;
   late TextEditingController _controllerTextOTP;
-  String verificationIdVar = '';
   String phoneNumber = '';
-  bool isPhoneValid = true;
   String smsOtpCode = '';
   bool isFullFillPhoneNumber = false;
   bool isFullFillOTP = false;
+  bool isPhoneValid = true;
 
   @override
   void dispose() {
@@ -47,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Login'),
+          title: const Text('Signup'),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -55,23 +60,11 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 30, bottom: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Welcome back! ',
-                      style: AppTextStyle.largeTitle,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      'Login to your account',
-                      style: AppTextStyle.body17,
-                    ),
-                  ],
+              const Padding(
+                padding: EdgeInsets.only(top: 30, bottom: 40),
+                child: Text(
+                  'Create an account',
+                  style: AppTextStyle.largeTitle,
                 ),
               ),
               Container(
@@ -183,36 +176,35 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 40,
-              ),
+              const SizedBox50H(),
               LongStadiumButton(
                 color: isFullFillPhoneNumber == true && isFullFillOTP == true
                     ? AppColor.pinkAccent
                     : AppColor.light,
-                nameOfButton: "Login",
-                onTap: !(isFullFillPhoneNumber == true && isFullFillOTP == true)
+                nameOfButton: "Next",
+                onTap: (isFullFillPhoneNumber == true && isFullFillOTP == true)
                     ? () {}
                     : () async {
                         // _controllerTextOTP.clear();
-                        String accessToken = '';
+                        String? accessToken;
 
                         try {
                           accessToken =
-                              await getTokenWhenSignInWithCredential();
+                              await getAccessTokenWhenSignInWithCredential();
                         } catch (e) {
                           // ignore: avoid_print
                           print(e);
                         }
-                        if (accessToken.isNotEmpty) {
-                          // ignore: use_build_context_synchronously
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AppNavigationConfig(),
+                        // ignore: use_build_context_synchronously
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignupFillPersonalInforPage(
+                              accessToken: accessToken,
+                              phoneNumber: phoneNumber,
                             ),
-                          );
-                        }
+                          ),
+                        );
                       },
               ),
             ],
@@ -224,7 +216,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> verifyPhoneNumberFirebase() async {
     // ignore: avoid_print
-    auth.verifyPhoneNumber(
+    _auth.verifyPhoneNumber(
       phoneNumber: '+84${phoneNumber.substring(1)}',
       verificationCompleted: (PhoneAuthCredential credential) {},
       verificationFailed: (FirebaseAuthException e) {},
@@ -236,17 +228,23 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<String> getTokenWhenSignInWithCredential() async {
+  Future<String> getAccessTokenWhenSignInWithCredential() async {
     String accessToken = '';
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationIdVar,
       smsCode: smsOtpCode,
     );
 
-    await auth.signInWithCredential(credential);
-    accessToken = await auth.currentUser!.getIdToken();
+    await _auth.signInWithCredential(credential);
+    accessToken = await _auth.currentUser!.getIdToken();
 
+    // ignore: avoid_print
     print(accessToken);
     return accessToken;
+  }
+
+  Future<String?> getFcmToken() async {
+    final fcmToken = await _firebaseMessaging.getToken();
+    return fcmToken;
   }
 }
