@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../common/term/app_term.dart';
+import '../../../data/term/app_term.dart';
 import '../widget/notification_item_widget.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -16,7 +16,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(AppRouteName.notification),
+          title: const Text(AppPageName.notification),
           actions: [
             IconButton(
                 onPressed: () {

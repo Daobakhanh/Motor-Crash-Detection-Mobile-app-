@@ -1,10 +1,10 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../common/enum/app_theme_state_enum.dart';
-import '../../../common/term/local_storage_pref_key.dart';
+import '../../../data/enum/app_state_enum.dart';
+import '../../../data/term/local_storage_pref_key.dart';
 
 Future<AppThemeStateEnum> readAppThemeStateFromLocalStorage() async {
   final prefs = await SharedPreferences.getInstance();
-  final String? appThemeMode = prefs.getString(PrefsKey.appThemeMode);
+  final String? appThemeMode = prefs.getString(SharedPrefsKey.appThemeMode);
 
   if (appThemeMode == AppThemeStateEnum.dark.toString()) {
     return AppThemeStateEnum.dark;
@@ -16,5 +16,6 @@ Future<AppThemeStateEnum> readAppThemeStateFromLocalStorage() async {
 Future<void> saveAppThemeStateToLocalStorage(
     AppThemeStateEnum appThemeStateEnum) async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.setString(PrefsKey.appThemeMode, appThemeStateEnum.toString());
+  await prefs.setString(
+      SharedPrefsKey.appThemeMode, appThemeStateEnum.toString());
 }

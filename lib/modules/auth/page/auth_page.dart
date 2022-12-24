@@ -1,7 +1,7 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:motorbike_crash_detection/common/term/app_term.dart';
+import 'package:motorbike_crash_detection/data/term/app_term.dart';
 import 'package:flutter/material.dart';
-import 'package:motorbike_crash_detection/modules/app_state/service/app_get_fcm_token_local_storage.dart';
+import 'package:motorbike_crash_detection/modules/app_state/repo/app_get_fcm_token_local_storage_repo.dart';
+import 'package:motorbike_crash_detection/route/app_route.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../themes/app_color.dart';
@@ -9,7 +9,6 @@ import '../../../themes/app_text_style.dart';
 import '../../widget/widget/stateless_widget/button_stl_widget.dart';
 import '../utils/auth_show_diolog_utils.dart';
 import '../widget/auth_widget.dart';
-import 'auth_signin_page.dart';
 import 'auth_signup_page.dart';
 
 class AuthPage extends StatefulWidget {
@@ -62,33 +61,38 @@ class _AuthPageState extends State<AuthPage> {
                     AppTextStyle.body17.copyWith(fontWeight: FontWeight.w300),
               ),
             ),
+
+            //LOGIN Button
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 5),
               child: LongStadiumButton(
-                nameOfButton: 'Log In',
-                onTap: () {
-                  // ignore: avoid_print
-                  // print('press log in');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SigninPage()),
-                  );
+                color: AppColor.pinkAccent,
+                nameOfButton: 'Sign In',
+                onTap: () async {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => const SigninPage(),
+                  //   ),
+                  // );
+                  Navigator.of(context).pushNamed(AppRoute.signin);
                 },
               ),
             ),
+
+            //SIGNIN Button
             LongStadiumButton(
-              color: AppColor.pinkAccent,
               nameOfButton: 'Sign Up',
               onTap: () async {
                 // ignore: avoid_print
-                print('Press sign up');
+                // print('Press sign up');
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: ((context) => const SignupPage()),
                   ),
                 );
-                final String? fcmToken = await getFcmToken();
+                final String? fcmToken = await getFcmTokenFromLocalStorage();
                 // ignore: avoid_print
                 print('fcmToken: $fcmToken');
               },
@@ -146,14 +150,5 @@ class _AuthPageState extends State<AuthPage> {
         ),
       ),
     );
-  }
-
-  Future<String?> getFcmToken() async {
-    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-    String? fcmToken = '';
-
-    //don't save fcm to local storage
-    fcmToken = await firebaseMessaging.getToken();
-    return fcmToken;
   }
 }

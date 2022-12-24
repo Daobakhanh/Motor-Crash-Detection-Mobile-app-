@@ -3,10 +3,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:motorbike_crash_detection/modules/auth/page/auth_signup_personal_infor_page.dart';
 import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
+import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_style.dart';
 import '../../../utils/validate_phone_number.dart';
+import '../../app_state/repo/app_access_token_local_storage_repo.dart';
 import '../../widget/widget/stateless_widget/button_stl_widget.dart';
 
 class SignupPage extends StatefulWidget {
@@ -85,7 +87,7 @@ class _SignupPageState extends State<SignupPage> {
                           },
                         );
                       }
-                      debugPrint(phoneNumber);
+                      // debugPrint(phoneNumber);
                       if (contentValue.length == 10) {
                         setState(
                           () {
@@ -161,7 +163,11 @@ class _SignupPageState extends State<SignupPage> {
                               await verifyPhoneNumberFirebase();
                             } catch (e) {
                               // ignore: avoid_print
-                              print('Error get OTP: $e');
+                              DebugPrint.dataLog(
+                                data: e,
+                                title: 'Error get OTP',
+                                currentFile: 'auth_signup_page',
+                              );
                             }
                           },
                           child: Text(
@@ -182,7 +188,7 @@ class _SignupPageState extends State<SignupPage> {
                     ? AppColor.pinkAccent
                     : AppColor.light,
                 nameOfButton: "Next",
-                onTap: (isFullFillPhoneNumber == true && isFullFillOTP == true)
+                onTap: !(isFullFillPhoneNumber == true && isFullFillOTP == true)
                     ? () {}
                     : () async {
                         // _controllerTextOTP.clear();
@@ -191,9 +197,15 @@ class _SignupPageState extends State<SignupPage> {
                         try {
                           accessToken =
                               await getAccessTokenWhenSignInWithCredential();
+                          await setFbUserAccessTokenToLocalStorage(
+                              accessToken: accessToken);
                         } catch (e) {
                           // ignore: avoid_print
-                          print(e);
+                          DebugPrint.dataLog(
+                            currentFile: 'auth_signup_page',
+                            data: e,
+                            title: 'get_fbaccessToken',
+                          );
                         }
                         // ignore: use_build_context_synchronously
                         Navigator.push(
@@ -222,7 +234,7 @@ class _SignupPageState extends State<SignupPage> {
       verificationFailed: (FirebaseAuthException e) {},
       codeSent: (String verificationId, int? resendToken) {
         verificationIdVar = verificationId;
-        debugPrint('verificationId : $verificationId');
+        // debugPrint('verificationId : $verificationId');
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
@@ -239,7 +251,7 @@ class _SignupPageState extends State<SignupPage> {
     accessToken = await _auth.currentUser!.getIdToken();
 
     // ignore: avoid_print
-    print(accessToken);
+    // print(accessToken);
     return accessToken;
   }
 

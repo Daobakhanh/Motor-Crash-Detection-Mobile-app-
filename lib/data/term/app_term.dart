@@ -9,9 +9,10 @@ class AppTerm {
   static const vehicle = "Vehicle";
   static const owner = "Owner";
   static const personal = "Personal";
+  static const appLogState = "AppLogState";
 }
 
-class AppRouteName {
+class AppPageName {
   static const homepage = "Home";
   static const notification = "Notifications";
   static const personal = "Personal";

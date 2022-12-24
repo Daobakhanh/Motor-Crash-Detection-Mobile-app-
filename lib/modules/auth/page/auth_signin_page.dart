@@ -1,12 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:motorbike_crash_detection/data/enum/app_state_enum.dart';
+import 'package:motorbike_crash_detection/modules/auth/bloc/auth_bloc.dart';
 import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
+import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 
+import '../../../route/app_route.dart';
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_style.dart';
 import '../../../utils/validate_phone_number.dart';
-import '../../navigation/pages/app_navigation.dart';
+import '../../app_state/repo/app_access_token_local_storage_repo.dart';
 import '../../widget/widget/stateless_widget/button_stl_widget.dart';
 
 class SigninPage extends StatefulWidget {
@@ -19,7 +22,6 @@ class SigninPage extends StatefulWidget {
 class _SigninPageState extends State<SigninPage> {
   //firebase instance, variable
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   String verificationIdVar = '';
   String fcmToken = '';
 
@@ -97,7 +99,7 @@ class _SigninPageState extends State<SigninPage> {
                           },
                         );
                       }
-                      debugPrint(phoneNumber);
+                      // debugPrint(phoneNumber);
                       if (contentValue.length == 10) {
                         setState(
                           () {
@@ -173,7 +175,11 @@ class _SigninPageState extends State<SigninPage> {
                               await verifyPhoneNumberFirebase();
                             } catch (e) {
                               // ignore: avoid_print
-                              print('Error get OTP: $e');
+                              DebugPrint.dataLog(
+                                data: e,
+                                title: 'Error get OTP',
+                                currentFile: 'auth_signup_page',
+                              );
                             }
                           },
                           child: Text(
@@ -193,28 +199,47 @@ class _SigninPageState extends State<SigninPage> {
                 color: isFullFillPhoneNumber == true && isFullFillOTP == true
                     ? AppColor.pinkAccent
                     : AppColor.light,
-                nameOfButton: "Login",
+                nameOfButton: "LOGIN",
                 onTap: !(isFullFillPhoneNumber == true && isFullFillOTP == true)
                     ? () {}
                     : () async {
-                        // _controllerTextOTP.clear();
+                        _controllerTextOTP.clear();
                         String accessToken = '';
-
+                        bool isSignInSuccessfull = false;
                         try {
-                          accessToken =
-                              await getAccessTokenWhenSignInWithCredential();
+                          await signInWithCredential();
+                          accessToken = await getFbAccessTokenFromFirebase();
+                          await setFbUserAccessTokenToLocalStorage(
+                              accessToken: accessToken);
+                          isSignInSuccessfull = await AuthBloc.signIn();
                         } catch (e) {
-                          // ignore: avoid_print
-                          print(e);
-                        }
-                        if (accessToken.isNotEmpty) {
-                          // ignore: use_build_context_synchronously
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AppNavigationConfig(),
-                            ),
+                          DebugPrint.authenLog(
+                            message: AppStateEnum.fail.toString(),
+                            currentFile: 'Auth_signin_page',
+                            title:
+                                'Auth signin page: error when call Signin Repo ',
                           );
+                          rethrow;
+                        }
+                        if (isSignInSuccessfull) {
+                          // ignore: avoid_print
+                          DebugPrint.dataLog(
+                              currentFile: 'auth_signin_page',
+                              title: 'Auth signin page: accessToken ',
+                              data: accessToken);
+
+                          // ignore: use_build_context_synchronously
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const AppNavigationConfig(),
+                          //   ),
+                          // );
+                          // ignore: use_build_context_synchronously
+                          Navigator.of(context)
+                              .pushNamed(AppRoute.appNavigatorConfig);
+                        } else {
+                          //TODO: Show alert signin fail
                         }
                       },
               ),
@@ -233,29 +258,27 @@ class _SigninPageState extends State<SigninPage> {
       verificationFailed: (FirebaseAuthException e) {},
       codeSent: (String verificationId, int? resendToken) {
         verificationIdVar = verificationId;
-        debugPrint('verificationId : $verificationId');
+        // debugPrint('verificationId : $verificationId');
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
 
-  Future<String> getAccessTokenWhenSignInWithCredential() async {
-    String accessToken = '';
+  Future<void> signInWithCredential() async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationIdVar,
       smsCode: smsOtpCode,
     );
-
     await _auth.signInWithCredential(credential);
-    accessToken = await _auth.currentUser!.getIdToken();
-
-    // ignore: avoid_print
-    print(accessToken);
-    return accessToken;
   }
 
-  Future<String?> getFcmToken() async {
-    final fcmToken = await _firebaseMessaging.getToken();
-    return fcmToken;
+  Future<String> getFbAccessTokenFromFirebase() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    String accessToken;
+    accessToken = await auth.currentUser!.getIdToken();
+    return accessToken;
+
+    //need to extend exp time
+    // getAccessTokenFromLocalStorage()
   }
 }

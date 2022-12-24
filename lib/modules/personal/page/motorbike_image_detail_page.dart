@@ -1,4 +1,4 @@
-import 'package:motorbike_crash_detection/common/term/app_term.dart';
+import 'package:motorbike_crash_detection/data/term/app_term.dart';
 import 'package:motorbike_crash_detection/themes/app_color.dart';
 import 'package:flutter/material.dart';
 

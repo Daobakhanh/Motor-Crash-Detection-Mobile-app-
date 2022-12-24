@@ -1,10 +1,10 @@
-import 'package:motorbike_crash_detection/common/mock/app_infor_mock.dart';
+import 'package:motorbike_crash_detection/data/mock/app_infor_mock.dart';
 import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 import 'package:motorbike_crash_detection/themes/app_color.dart';
 import 'package:motorbike_crash_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-import '../../../common/term/app_term.dart';
+import '../../../data/term/app_term.dart';
 import '../widget/personal_infor_widget.dart';
 import 'motorbike_image_detail_page.dart';
 import 'personal_drawer_page.dart';
@@ -26,7 +26,7 @@ class _PersonalPageState extends State<PersonalPage> {
     final widthScreen = size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppRouteName.personal),
+        title: const Text(AppPageName.personal),
       ),
       endDrawer: const PersonalDrawerPage(),
       body: Stack(

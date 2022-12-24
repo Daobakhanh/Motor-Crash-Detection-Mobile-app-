@@ -1,14 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_signup_model.dart';
+part of 'user_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthSignUpModel _$AuthSignUpModelFromJson(Map<String, dynamic> json) =>
-    AuthSignUpModel(
-      id: json['id'] as String?,
+UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       name: json['name'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
       address: json['address'] as String?,
@@ -22,10 +20,10 @@ AuthSignUpModel _$AuthSignUpModelFromJson(Map<String, dynamic> json) =>
       fcmTokens: (json['fcmTokens'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      id: json['id'] as String?,
     );
 
-Map<String, dynamic> _$AuthSignUpModelToJson(AuthSignUpModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'phoneNumber': instance.phoneNumber,
