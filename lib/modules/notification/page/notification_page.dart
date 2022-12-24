@@ -16,7 +16,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(AppRouteName.notification),
+          title: const Text(AppPageName.notification),
           actions: [
             IconButton(
                 onPressed: () {

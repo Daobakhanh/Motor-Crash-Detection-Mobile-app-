@@ -1,1 +1,0 @@
-enum AppThemeStateEnum { dark, light }

@@ -2,12 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
+import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_style.dart';
 import '../../../utils/validate_phone_number.dart';
 import '../../navigation/pages/app_navigation.dart';
 import '../../widget/widget/stateless_widget/button_stl_widget.dart';
+import '../bloc/auth_bloc.dart';
 
 class SignupFillPersonalInforPage extends StatefulWidget {
   final String? accessToken;
@@ -37,11 +39,13 @@ class _SignupFillPersonalInforPageState
 
   String userName = '';
   String userAddress = '';
-  String? dateOfBirth;
-  String citizenNumber = '';
+  String? userDateOfBirth;
+  String userCitizenNumber = '';
 
   bool isFullFillUserName = false;
-  bool isFullFillOTP = false;
+  bool isFullFillAdress = false;
+  bool isFullFillDoB = false;
+  bool isFullFillCitizenNumber = false;
   bool isPhoneValid = true;
 
   @override
@@ -59,8 +63,9 @@ class _SignupFillPersonalInforPageState
     _controllerTextUserName = TextEditingController(text: userName);
     _controllerTextUserAddress = TextEditingController(text: userAddress);
     _controllerTextUserCitizenNumber =
-        TextEditingController(text: citizenNumber);
-    _controllerTextUserDateOfBirth = TextEditingController(text: dateOfBirth);
+        TextEditingController(text: userCitizenNumber);
+    _controllerTextUserDateOfBirth =
+        TextEditingController(text: userDateOfBirth);
   }
 
   @override
@@ -104,7 +109,7 @@ class _SignupFillPersonalInforPageState
                           );
                         }
                         // debugPrint(userName);
-                        if (contentValue.length == 10) {
+                        if (contentValue.length > 5) {
                           setState(
                             () {
                               isFullFillUserName = true;
@@ -149,19 +154,19 @@ class _SignupFillPersonalInforPageState
                         // debugPrint(smsOtpCode);
 
                         //detect full fill
-                        // if (contentValue.length == 6) {
-                        //   setState(
-                        //     () {
-                        //       isFullFillOTP = true;
-                        //     },
-                        //   );
-                        // } else {
-                        //   setState(
-                        //     () {
-                        //       isFullFillOTP = false;
-                        //     },
-                        //   );
-                        // }
+                        if (contentValue.length > 10) {
+                          setState(
+                            () {
+                              isFullFillAdress = true;
+                            },
+                          );
+                        } else {
+                          setState(
+                            () {
+                              isFullFillAdress = false;
+                            },
+                          );
+                        }
                       },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
@@ -186,23 +191,23 @@ class _SignupFillPersonalInforPageState
                       autofocus: false,
                       controller: _controllerTextUserDateOfBirth,
                       onChanged: (String contentValue) {
-                        dateOfBirth = contentValue;
+                        userDateOfBirth = contentValue;
                         // debugPrint(smsOtpCode);
 
                         //detect full fill
-                        // if (contentValue.length == 6) {
-                        //   setState(
-                        //     () {
-                        //       isFullFillOTP = true;
-                        //     },
-                        //   );
-                        // } else {
-                        //   setState(
-                        //     () {
-                        //       isFullFillOTP = false;
-                        //     },
-                        //   );
-                        // }
+                        if (contentValue.length >= 8) {
+                          setState(
+                            () {
+                              isFullFillDoB = true;
+                            },
+                          );
+                        } else {
+                          setState(
+                            () {
+                              isFullFillDoB = false;
+                            },
+                          );
+                        }
                       },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
@@ -232,23 +237,23 @@ class _SignupFillPersonalInforPageState
                       autofocus: false,
                       controller: _controllerTextUserCitizenNumber,
                       onChanged: (String contentValue) {
-                        citizenNumber = contentValue;
+                        userCitizenNumber = contentValue;
                         // debugPrint(smsOtpCode);
 
                         //detect full fill
-                        // if (contentValue.length == 6) {
-                        //   setState(
-                        //     () {
-                        //       isFullFillOTP = true;
-                        //     },
-                        //   );
-                        // } else {
-                        //   setState(
-                        //     () {
-                        //       isFullFillOTP = false;
-                        //     },
-                        //   );
-                        // }
+                        if (contentValue.length >= 10) {
+                          setState(
+                            () {
+                              isFullFillCitizenNumber = true;
+                            },
+                          );
+                        } else {
+                          setState(
+                            () {
+                              isFullFillCitizenNumber = false;
+                            },
+                          );
+                        }
                       },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
@@ -269,24 +274,29 @@ class _SignupFillPersonalInforPageState
 
                 //Submit button
                 LongStadiumButton(
-                  color: isFullFillUserName == true && isFullFillOTP == true
-                      ? AppColor.pinkAccent
-                      : AppColor.light,
+                  color:
+                      isFullFillInfor() ? AppColor.pinkAccent : AppColor.light,
                   nameOfButton: "SUBMIT",
-                  onTap: !(isFullFillUserName == true && isFullFillOTP == true)
+                  onTap: !(isFullFillInfor())
                       ? () {}
                       : () async {
                           // _controllerTextOTP.clear();
-                          String accessToken = '';
+                          bool isSignUpSuccessfull = false;
 
                           try {
-                            accessToken =
-                                await getAccessTokenWhenSignInWithCredential();
+                            // await getAccessTokenWhenSignInWithCredential();
+                            isSignUpSuccessfull = await AuthBloc.signUp(
+                              createSignUpData(),
+                            );
                           } catch (e) {
                             // ignore: avoid_print
-                            print(e);
+                            DebugPrint.dataLog(
+                              currentFile: 'signup_fill_infor',
+                              title: 'Auth.bloc error',
+                              data: e,
+                            );
                           }
-                          if (accessToken.isNotEmpty) {
+                          if (isSignUpSuccessfull) {
                             // ignore: use_build_context_synchronously
                             Navigator.push(
                               context,
@@ -315,7 +325,7 @@ class _SignupFillPersonalInforPageState
       verificationFailed: (FirebaseAuthException e) {},
       codeSent: (String verificationId, int? resendToken) {
         verificationIdVar = verificationId;
-        debugPrint('verificationId : $verificationId');
+        // debugPrint('verificationId : $verificationId');
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
@@ -332,12 +342,32 @@ class _SignupFillPersonalInforPageState
     accessToken = await _auth.currentUser!.getIdToken();
 
     // ignore: avoid_print
-    print(accessToken);
+    // print(accessToken);
     return accessToken;
   }
 
   Future<String?> getFcmToken() async {
     final fcmToken = await _firebaseMessaging.getToken();
     return fcmToken;
+  }
+
+  Map<String, dynamic> createSignUpData() {
+    return {
+      'name': userName.toString(),
+      'phoneNumber': widget.phoneNumber.toString(),
+      'address': userAddress.toString(),
+      'avatarUrl': null,
+      'dateOfBirth': userDateOfBirth.toString(),
+      'citizenNumber': userCitizenNumber.toString(),
+      'fcmTokens': [],
+      'sosNumbers': []
+    };
+  }
+
+  bool isFullFillInfor() {
+    return isFullFillUserName == true &&
+        isFullFillAdress == true &&
+        isFullFillCitizenNumber == true &&
+        isFullFillDoB == true;
   }
 }

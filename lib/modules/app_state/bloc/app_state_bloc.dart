@@ -1,21 +1,26 @@
 import 'dart:async';
-import 'package:motorbike_crash_detection/data/enum/app_theme_state_enum.dart';
+import 'package:motorbike_crash_detection/data/enum/app_state_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:motorbike_crash_detection/data/term/local_storage_pref_key.dart';
+import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../personal/repo/personal_infor_repo.dart';
 import '../../providers/bloc_provider.dart';
-import '../repo/app_theme_state_local_storage.dart';
+import '../repo/app_theme_state_local_storage_repo.dart';
 
 //custom Bloc
 class AppThemeBloc implements BlocBase {
-  @override
-  void dispose() {}
-
   StreamController<AppThemeStateEnum> appStateBlocStreamController =
       StreamController<AppThemeStateEnum>();
   Stream<AppThemeStateEnum> get stream => appStateBlocStreamController.stream;
 
   AppThemeBloc() {
     readAppThemeStateFromLocalStorageAndEmitStream();
+  }
+  @override
+  void dispose() {
+    appStateBlocStreamController.close();
   }
 
   Future<void> readAppThemeStateFromLocalStorageAndEmitStream() async {
@@ -42,51 +47,51 @@ class AppThemeBloc implements BlocBase {
   }
 }
 
-// //create bloc using official doc
-// class AppThemeBloc extends StateStreamableSource<Object?> {
-//   StreamController<AppThemeStateEnum> appStateBlocStreamController =
-//       StreamController<AppThemeStateEnum>();
-//   @override
-//   Stream<AppThemeStateEnum> get stream => appStateBlocStreamController.stream;
+class AppAuthStateBloc implements BlocBase {
+  //create Stream controler
+  StreamController<AppAuthStateEnum> appStateStreamController =
+      StreamController<AppAuthStateEnum>();
 
-//   AppThemeBloc() {
-//     readAppThemeStateFromLocalStorageAndEmitStream();
-//   }
+  //getter stream from stream controller
+  Stream<AppAuthStateEnum> get appAuthStateStream =>
+      appStateStreamController.stream;
 
-//   Future<void> readAppThemeStateFromLocalStorageAndEmitStream() async {
-//     final AppThemeStateEnum appThemeMode =
-//         await readAppThemeStateFromLocalStorage();
+  //initial state
+  AppAuthStateEnum get initAppAuthState => AppAuthStateEnum.loading;
 
-//     if (appThemeMode == AppThemeStateEnum.dark) {
-//       appStateBlocStreamController.sink.add(AppThemeStateEnum.dark);
-//     } else {
-//       appStateBlocStreamController.sink.add(AppThemeStateEnum.light);
-//     }
-//   }
+  @override
+  void dispose() {
+    appStateStreamController.close();
+  }
 
-//   Future<void> changeAppThemeStateAndEmitStream(bool isDarkMode) async {
-//     if (isDarkMode) {
-//       debugPrint(isDarkMode.toString());
-//       appStateBlocStreamController.sink.add(AppThemeStateEnum.dark);
-//       await saveAppThemeStateToLocalStorage(AppThemeStateEnum.dark);
-//     } else {
-//       debugPrint(isDarkMode.toString());
-//       appStateBlocStreamController.sink.add(AppThemeStateEnum.light);
-//       await saveAppThemeStateToLocalStorage(AppThemeStateEnum.light);
-//     }
-//   }
+  AppAuthStateBloc() {
+    launchApp();
+  }
 
-//   @override
-//   FutureOr<void> close() {
-//     // TODO: implement close
-//     throw UnimplementedError();
-//   }
+  Future<void> launchApp() async {
+    final isBackendUserTokenExpried =
+        await PersonalInforRepo.isBackendUserAccessTokenExpired();
+    await changeAppAuthState(isBackendUserTokenExpried);
+  }
 
-//   @override
-//   // TODO: implement isClosed
-//   bool get isClosed => throw UnimplementedError();
+  Future<void> changeAppAuthState(bool isUserTokenExpried) async {
+    // final storePref = await SharedPreferences.getInstance();
 
-//   @override
-//   // TODO: implement state
-//   Object? get state => throw UnimplementedError();
-// }
+    if (isUserTokenExpried) {
+      //expried = out date
+      appStateStreamController.sink.add(AppAuthStateEnum.unAuthorized);
+    } else {
+      appStateStreamController.sink.add(AppAuthStateEnum.authorized);
+    }
+  }
+
+  static Future<void> logout() async {
+    final pref = await SharedPreferences.getInstance();
+    pref.remove(SharedPrefsKey.backendUserAccessToken);
+    DebugPrint.authenLog(
+      currentFile: 'app_state_bloc',
+      title: 'Logout and remove accessToken',
+      message: AppStateEnum.successful.toString(),
+    );
+  }
+}

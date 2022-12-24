@@ -1,30 +1,45 @@
 import 'package:motorbike_crash_detection/base/dio_base.dart';
+import 'package:motorbike_crash_detection/data/enum/app_state_enum.dart';
 import 'package:motorbike_crash_detection/data/term/network_term.dart';
+import 'package:motorbike_crash_detection/modules/auth/model/auth_model.dart';
 import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 
-import '../../../model/user/user_model.dart';
-
 class AuthRepo {
-  static Future<void> signUp({required Map<String, dynamic> signUnData}) async {
+  static Future<AuthModel> signUpRepo(
+      {required Map<String, dynamic> signUnData}) async {
     try {
-      final res = await DioBase.post(
+      final res = await DioBaseAuth.post(
         endUrl: ApiConstants.authSignUp,
         data: signUnData,
       );
 
       if (res.statusCode == 200) {
-        DebugPrint.dataLog(title: 'SignUp res', data: res);
+        DebugPrint.authenLog(
+            title: 'SignUp res',
+            data: res,
+            currentFile: 'auth_repo',
+            message: AppStateEnum.successful.toString());
+        final signUpRes = AuthModel.fromJson(res.data['data']);
+        return signUpRes;
+      } else {
+        return AuthModel();
       }
     } catch (e) {
       // ignore: avoid_print
-      print(e);
+      DebugPrint.authenLog(
+        currentFile: "auth_repo",
+        message: AppStateEnum.fail.toString(),
+        title: "Auth Repo signup",
+        data: e,
+      );
+      rethrow;
     }
     // return true;
   }
 
-  static Future<void> signIn({required String fcmToken}) async {
+  static Future<AuthModel?> signInRepo({required String fcmToken}) async {
     try {
-      final res = await DioBase.post(
+      final res = await DioBaseAuth.post(
         endUrl: ApiConstants.authSignIn,
         data: {
           "fcmToken": fcmToken,
@@ -32,12 +47,24 @@ class AuthRepo {
       );
 
       if (res.statusCode == 200) {
-        DebugPrint.dataLog(title: 'signIn res', data: res);
+        DebugPrint.authenLog(
+            currentFile: 'auth_repo',
+            title: 'signIn res',
+            data: res,
+            message: AppStateEnum.successful.toString());
+        final signInRes = AuthModel.fromJson(res.data['data']);
+        return signInRes;
+      } else {
+        return null;
       }
     } catch (e) {
-      // ignore: avoid_print
-      print(e);
+      DebugPrint.authenLog(
+        message: AppStateEnum.fail.toString(),
+        currentFile: 'auth_repo',
+        title: "signin",
+        data: e,
+      );
+      rethrow;
     }
-    // return true;
   }
 }

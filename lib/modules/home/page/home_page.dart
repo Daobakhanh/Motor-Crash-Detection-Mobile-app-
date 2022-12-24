@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(AppRouteName.homepage),
+        title: const Text(AppPageName.homepage),
       ),
       body: const Center(
           child: Text(

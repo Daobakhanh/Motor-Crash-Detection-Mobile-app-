@@ -1,16 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:motorbike_crash_detection/modules/auth/repo/auth_repo.dart';
+import 'package:motorbike_crash_detection/data/enum/app_state_enum.dart';
+import 'package:motorbike_crash_detection/modules/auth/bloc/auth_bloc.dart';
 import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 
+import '../../../route/app_route.dart';
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_style.dart';
 import '../../../utils/validate_phone_number.dart';
-import '../../app_state/repo/app_access_token_local_storage.dart';
-import '../../app_state/repo/app_get_fcm_token_local_storage.dart';
-import '../../navigation/pages/app_navigation.dart';
+import '../../app_state/repo/app_access_token_local_storage_repo.dart';
 import '../../widget/widget/stateless_widget/button_stl_widget.dart';
 
 class SigninPage extends StatefulWidget {
@@ -23,7 +22,6 @@ class SigninPage extends StatefulWidget {
 class _SigninPageState extends State<SigninPage> {
   //firebase instance, variable
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   String verificationIdVar = '';
   String fcmToken = '';
 
@@ -101,7 +99,7 @@ class _SigninPageState extends State<SigninPage> {
                           },
                         );
                       }
-                      debugPrint(phoneNumber);
+                      // debugPrint(phoneNumber);
                       if (contentValue.length == 10) {
                         setState(
                           () {
@@ -177,7 +175,11 @@ class _SigninPageState extends State<SigninPage> {
                               await verifyPhoneNumberFirebase();
                             } catch (e) {
                               // ignore: avoid_print
-                              print('Error get OTP: $e');
+                              DebugPrint.dataLog(
+                                data: e,
+                                title: 'Error get OTP',
+                                currentFile: 'auth_signup_page',
+                              );
                             }
                           },
                           child: Text(
@@ -203,31 +205,41 @@ class _SigninPageState extends State<SigninPage> {
                     : () async {
                         _controllerTextOTP.clear();
                         String accessToken = '';
+                        bool isSignInSuccessfull = false;
                         try {
                           await signInWithCredential();
-                          accessToken = await getAccessTokenFromFirebase();
-                          await setAccessTokenToLocalStorage(
+                          accessToken = await getFbAccessTokenFromFirebase();
+                          await setFbUserAccessTokenToLocalStorage(
                               accessToken: accessToken);
-                          final fcmToken = await getFcmToken();
-                          await AuthRepo.signIn(fcmToken: fcmToken ?? '');
-                          // await set
+                          isSignInSuccessfull = await AuthBloc.signIn();
                         } catch (e) {
-                          // ignore: avoid_print
-                          print(e);
+                          DebugPrint.authenLog(
+                            message: AppStateEnum.fail.toString(),
+                            currentFile: 'Auth_signin_page',
+                            title:
+                                'Auth signin page: error when call Signin Repo ',
+                          );
+                          rethrow;
                         }
-                        if (accessToken.isNotEmpty) {
+                        if (isSignInSuccessfull) {
                           // ignore: avoid_print
                           DebugPrint.dataLog(
+                              currentFile: 'auth_signin_page',
                               title: 'Auth signin page: accessToken ',
                               data: accessToken);
 
                           // ignore: use_build_context_synchronously
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AppNavigationConfig(),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const AppNavigationConfig(),
+                          //   ),
+                          // );
+                          // ignore: use_build_context_synchronously
+                          Navigator.of(context)
+                              .pushNamed(AppRoute.appNavigatorConfig);
+                        } else {
+                          //TODO: Show alert signin fail
                         }
                       },
               ),
@@ -258,26 +270,15 @@ class _SigninPageState extends State<SigninPage> {
       smsCode: smsOtpCode,
     );
     await _auth.signInWithCredential(credential);
-    // await _auth.signInWithCustomToken(token)
   }
 
-  Future<String> getAccessTokenFromFirebase() async {
+  Future<String> getFbAccessTokenFromFirebase() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     String accessToken;
-    String? refreshToken;
     accessToken = await auth.currentUser!.getIdToken();
-    refreshToken = auth.currentUser!.refreshToken;
-    DebugPrint.dataLog(
-        title: 'AUTH SIGNIN PAGE: RefreshToken', data: refreshToken);
     return accessToken;
 
     //need to extend exp time
     // getAccessTokenFromLocalStorage()
-  }
-
-  Future<String?> getFcmToken() async {
-    final fcmToken = await _firebaseMessaging.getToken();
-    DebugPrint.dataLog(title: 'FCM', data: fcmToken);
-    return fcmToken;
   }
 }

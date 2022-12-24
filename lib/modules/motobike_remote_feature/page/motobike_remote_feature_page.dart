@@ -17,7 +17,7 @@ class _MotobikeRemoteFeaturePageState extends State<MotobikeRemoteFeaturePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(AppRouteName.feature),
+        title: const Text(AppPageName.feature),
       ),
       body: const Center(
           child: Text(

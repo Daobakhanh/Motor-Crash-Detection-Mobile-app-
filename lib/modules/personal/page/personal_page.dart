@@ -26,7 +26,7 @@ class _PersonalPageState extends State<PersonalPage> {
     final widthScreen = size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppRouteName.personal),
+        title: const Text(AppPageName.personal),
       ),
       endDrawer: const PersonalDrawerPage(),
       body: Stack(
