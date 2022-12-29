@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:motorbike_crash_detection/data/term/app_term.dart';
 import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 
@@ -86,7 +87,7 @@ class _SignupFillPersonalInforPageState
                 const Padding(
                   padding: EdgeInsets.only(top: 30, bottom: 40),
                   child: Text(
-                    'Fill all to submit',
+                    AppAuthTerm.fillAllToSubmit,
                     style: AppTextStyle.largeTitle,
                   ),
                 ),
@@ -125,7 +126,7 @@ class _SignupFillPersonalInforPageState
                       },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
-                        labelText: 'Your fullname',
+                        labelText: AppFillTextTerm.yourFullName,
                         suffixIcon: IconButton(
                           onPressed: () {
                             _controllerTextUserName.clear();
@@ -170,7 +171,7 @@ class _SignupFillPersonalInforPageState
                       },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
-                        labelText: 'Your address',
+                        labelText: AppFillTextTerm.yourAddress,
                         suffixIcon: IconButton(
                           onPressed: () {
                             _controllerTextUserAddress.clear();
@@ -211,7 +212,7 @@ class _SignupFillPersonalInforPageState
                       },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
-                        labelText: 'Your birthday',
+                        labelText: AppFillTextTerm.yourBirthday,
                         suffixIcon: IconButton(
                           onPressed: () {
                             _controllerTextUserDateOfBirth.clear();
@@ -257,7 +258,7 @@ class _SignupFillPersonalInforPageState
                       },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
-                        labelText: 'Your citizen number',
+                        labelText: AppFillTextTerm.yourCitizenNumber,
                         suffixIcon: IconButton(
                           onPressed: () {
                             _controllerTextUserCitizenNumber.clear();
@@ -276,7 +277,7 @@ class _SignupFillPersonalInforPageState
                 LongStadiumButton(
                   color:
                       isFullFillInfor() ? AppColor.pinkAccent : AppColor.light,
-                  nameOfButton: "SUBMIT",
+                  nameOfButton: AppAuthTerm.authSubmit,
                   onTap: !(isFullFillInfor())
                       ? () {}
                       : () async {

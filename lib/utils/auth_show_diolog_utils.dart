@@ -1,7 +1,7 @@
 import 'dart:io' show Platform, exit;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:motorbike_crash_detection/main.dart';
+import 'package:motorbike_crash_detection/route/app_route.dart';
 
 Future<void> showMyDialogAuth(BuildContext context) async {
   return showDialog<void>(
@@ -91,10 +91,13 @@ Future<void> logOutShowMyDialog(BuildContext context) async {
           ),
           TextButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MyApp()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const MyApp()),
+              // );
+
+              Navigator.pushNamedAndRemoveUntil(
+                  context, AppRoute.auth, (route) => false);
             },
             child: const Text('OK'),
           ),

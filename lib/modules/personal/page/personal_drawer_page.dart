@@ -1,5 +1,4 @@
 import 'package:motorbike_crash_detection/modules/app_state/repo/app_theme_state_local_storage_repo.dart';
-import 'package:motorbike_crash_detection/modules/auth/page/auth_page.dart';
 import 'package:motorbike_crash_detection/themes/app_color.dart';
 import 'package:flutter/material.dart';
 
@@ -27,10 +26,16 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     super.dispose();
-    _appAuthStateBloc.dispose();
-    _appThemeBloc!.dispose();
+    // _appAuthStateBloc.dispose();
+    // _appThemeBloc!.dispose();
   }
 
   @override
@@ -105,7 +110,8 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
             //Logout feature
             TextButton.icon(
               onPressed: () {
-                AppAuthStateBloc.logout();
+                _appAuthStateBloc.logout();
+                // ignore: use_build_context_synchronously
                 logOutShowMyDialog(context);
               },
               icon: const Icon(
@@ -130,29 +136,5 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
     } else {
       isDarkMode = false;
     }
-  }
-
-  void showConfirmLogoutDialog() {
-    showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Logout confirm'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const AuthPage()),
-                  (Route<dynamic> route) => false);
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
   }
 }

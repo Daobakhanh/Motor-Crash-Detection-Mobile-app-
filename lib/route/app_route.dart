@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:motorbike_crash_detection/main.dart';
 import 'package:motorbike_crash_detection/modules/auth/page/auth_page.dart';
 import 'package:motorbike_crash_detection/modules/auth/page/auth_signin_page.dart';
 import 'package:motorbike_crash_detection/modules/auth/page/auth_signup_page.dart';
 import 'package:motorbike_crash_detection/modules/home/page/home_page.dart';
+import 'package:motorbike_crash_detection/modules/navigation/pages/app_navigation.dart';
 import 'package:motorbike_crash_detection/modules/notification/page/notification_page.dart';
 import 'package:motorbike_crash_detection/modules/personal/page/personal_edit_page.dart';
 import 'package:motorbike_crash_detection/modules/personal/page/personal_page.dart';
 
 class AppRoute {
-  static const String appNavigatorConfig = '/';
+  static const String myApp = '/';
+  static const String appNavigatorConfig = '/appNavigatorConfig';
   static const String home = '/home';
   static const String signin = '/signin';
   static const String signup = '/signup';
@@ -20,21 +23,29 @@ class AppRoute {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case myApp:
+        return MaterialPageRoute(
+          builder: (_) => const MyApp(),
+        );
+      case appNavigatorConfig:
+        return MaterialPageRoute(
+          builder: (_) => const AppNavigationConfig(),
+        );
       case home:
         return MaterialPageRoute(
           builder: (_) => const HomePage(),
         );
       case signin:
         return MaterialPageRoute(
-          builder: (_) => const SigninPage(),
+          builder: (BuildContext context) => const SigninPage(),
         );
       case signup:
         return MaterialPageRoute(
-          builder: (_) => const SignupPage(),
+          builder: (BuildContext context) => const SignupPage(),
         );
       case auth:
         return MaterialPageRoute(
-          builder: (_) => const AuthPage(),
+          builder: (BuildContext context) => const AuthPage(),
         );
       case notification:
         return MaterialPageRoute(
@@ -46,7 +57,9 @@ class AppRoute {
         );
       case personalUpdateInfor:
         return MaterialPageRoute(
-          builder: (_) => const PersonalEditInforPage(),
+          builder: (_) => const PersonalEditInforPage(
+            deviceId: '',
+          ),
         );
       default:
         return MaterialPageRoute(

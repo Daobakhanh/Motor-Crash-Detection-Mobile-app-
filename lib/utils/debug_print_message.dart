@@ -7,7 +7,7 @@ class DebugPrint {
     required dynamic data,
   }) {
     debugPrint(
-      '##### $currentFile - $title : $data',
+      '##### DATA LOG AT $currentFile - $title : $data',
     );
   }
 

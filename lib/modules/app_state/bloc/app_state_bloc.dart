@@ -50,7 +50,7 @@ class AppThemeBloc implements BlocBase {
 class AppAuthStateBloc implements BlocBase {
   //create Stream controler
   StreamController<AppAuthStateEnum> appStateStreamController =
-      StreamController<AppAuthStateEnum>();
+      StreamController<AppAuthStateEnum>.broadcast();
 
   //getter stream from stream controller
   Stream<AppAuthStateEnum> get appAuthStateStream =>
@@ -71,13 +71,13 @@ class AppAuthStateBloc implements BlocBase {
   Future<void> launchApp() async {
     final isBackendUserTokenExpried =
         await PersonalInforRepo.isBackendUserAccessTokenExpired();
-    await changeAppAuthState(isBackendUserTokenExpried);
+    await changeAppAuthState(isUserTokenExpired: isBackendUserTokenExpried);
   }
 
-  Future<void> changeAppAuthState(bool isUserTokenExpried) async {
+  Future<void> changeAppAuthState({required bool isUserTokenExpired}) async {
     // final storePref = await SharedPreferences.getInstance();
 
-    if (isUserTokenExpried) {
+    if (isUserTokenExpired) {
       //expried = out date
       appStateStreamController.sink.add(AppAuthStateEnum.unAuthorized);
     } else {
@@ -85,9 +85,10 @@ class AppAuthStateBloc implements BlocBase {
     }
   }
 
-  static Future<void> logout() async {
+  Future<void> logout() async {
     final pref = await SharedPreferences.getInstance();
     pref.remove(SharedPrefsKey.backendUserAccessToken);
+    await changeAppAuthState(isUserTokenExpired: true);
     DebugPrint.authenLog(
       currentFile: 'app_state_bloc',
       title: 'Logout and remove accessToken',
