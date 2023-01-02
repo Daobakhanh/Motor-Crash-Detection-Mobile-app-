@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../personal/repo/personal_infor_repo.dart';
 import '../../providers/bloc_provider.dart';
+import '../repo/app_get_fcm_token_local_storage_repo.dart';
 import '../repo/app_theme_state_local_storage_repo.dart';
 
 //custom Bloc
@@ -72,6 +73,8 @@ class AppAuthStateBloc implements BlocBase {
     final isBackendUserTokenExpried =
         await PersonalInforRepo.isBackendUserAccessTokenExpired();
     await changeAppAuthState(isUserTokenExpired: isBackendUserTokenExpried);
+    String fcm = await getFcmTokenFromLocalStorage() ?? '';
+    DebugPrint.dataLog(currentFile: 'app_state_bloc', title: 'fcm', data: fcm);
   }
 
   Future<void> changeAppAuthState({required bool isUserTokenExpired}) async {

@@ -29,7 +29,7 @@ class _AuthPageState extends State<AuthPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'MoCraDe',
+          AppTerm.appName,
           style: AppTextStyle.appName
               .copyWith(fontStyle: FontStyle.italic, fontSize: 30),
         ),

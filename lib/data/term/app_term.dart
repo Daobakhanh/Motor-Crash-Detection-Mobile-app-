@@ -1,6 +1,6 @@
 class AppTerm {
   static const appNameFull = "Motorbike Crash Detection";
-  static const appName = 'MoCraDe';
+  static const appName = 'iSafe';
   static const appDescription =
       'Motorcycle accident detection system, motorcycle dump warning, intelligent anti-theft';
   static const featureComingSoon = "Feature Coming Soon";

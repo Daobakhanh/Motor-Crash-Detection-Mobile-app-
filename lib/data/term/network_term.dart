@@ -7,6 +7,8 @@ class ApiConstants {
   static const String userUpdateInfor = '/users/me';
   static const String deviceGetInfor = '/devices/';
   static const String deviceLinkToUser = '/devices/link';
+  static const String getAllNoti = '/user-notifications';
+
   static String deviceUpdateInfor({required String deviceId}) {
     DebugPrint.dataLog(
         currentFile: 'network_term',
