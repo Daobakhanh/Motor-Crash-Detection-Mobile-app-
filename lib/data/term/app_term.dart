@@ -61,4 +61,5 @@ class PersonalInforTerm {
   static const dob = "DoB";
   static const citizenId = "Citizen ID";
   static const phoneNumber = "Phone number";
+  static const sosNumber = "SOS Number";
 }

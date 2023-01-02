@@ -38,6 +38,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
   String vehicleBrand = '';
   String vehicleModel = '';
   String vehicleNumberPlate = '';
+  String vehicleSOSNumber = '';
 
   String ownerAddress = '';
   String ownerName = '';
@@ -50,6 +51,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
   late TextEditingController _controllerTextVehicleModel;
   late TextEditingController _controllerTextVehicleDescription;
   late TextEditingController _controllerTextVehicleNumberPlate;
+  late TextEditingController _controllerTextVehicleSOSNumber;
 
   late TextEditingController _controllerTextOwnerAddress;
   late TextEditingController _controllerTextOwnerName;
@@ -66,6 +68,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
     _controllerTextVehicleBrand.dispose();
     _controllerTextVehicleNumberPlate.dispose();
     _controllerTextVehicleModel.dispose();
+    _controllerTextVehicleSOSNumber.dispose();
 
     _controllerTextOwnerAddress.dispose();
     _controllerTextOwnerName.dispose();
@@ -83,6 +86,10 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
     vehicleModel = vehicleInfor.model ?? VehicleInforDataMock.vehicleModel;
     vehicleNumberPlate =
         vehicleInfor.licensePlate ?? VehicleInforDataMock.vehicleNumberPlates;
+
+    if (personalInfor.sosNumbers!.isNotEmpty) {
+      vehicleSOSNumber = personalInfor.sosNumbers![0];
+    }
 
     ownerAddress = personalInfor.address ?? PersonalInforDataMock.addr;
     ownerName = personalInfor.name ?? PersonalInforDataMock.name;
@@ -103,6 +110,12 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
     _controllerTextVehicleNumberPlate = TextEditingController(
         text: vehicleInfor.licensePlate ??
             VehicleInforDataMock.vehicleNumberPlates);
+    if (personalInfor.sosNumbers!.isNotEmpty) {
+      _controllerTextVehicleSOSNumber =
+          TextEditingController(text: personalInfor.sosNumbers![0]);
+    } else {
+      _controllerTextVehicleSOSNumber = TextEditingController(text: '');
+    }
 
     _controllerTextOwnerAddress = TextEditingController(
         text: personalInfor.address ?? PersonalInforDataMock.addr);
@@ -317,6 +330,35 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
                 ),
               ),
 
+              //sos phone number
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                  child: SizedBox(
+                    child: TextField(
+                      // maxLines: (address / 38 ).roundToDouble() + 1,
+                      maxLength: 12,
+                      keyboardType: TextInputType.phone,
+                      maxLines: 1,
+                      autofocus: false,
+                      controller: _controllerTextVehicleSOSNumber,
+                      onChanged: (String contentValue) {
+                        vehicleSOSNumber = contentValue;
+                      },
+                      decoration: InputDecoration(
+                        labelText: PersonalInforTerm.sosNumber,
+                        suffixIcon: IconButton(
+                          onPressed: _controllerTextVehicleSOSNumber.clear,
+                          icon: const Icon(Icons.clear),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
               const SizedBox10H(),
               const Divider(
                 thickness: 2,
@@ -489,7 +531,8 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
       "phoneNumber": ownerPhoneNumber,
       "address": ownerAddress,
       "dateOfBirth": ownerDoB,
-      "citizenNumber": ownerCitizenID
+      "citizenNumber": ownerCitizenID,
+      "sosNumbers": [vehicleSOSNumber],
     };
     Map<String, dynamic> vehicleInforUpdateData = <String, dynamic>{
       "vehicle": {

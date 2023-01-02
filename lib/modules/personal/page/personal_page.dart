@@ -48,10 +48,10 @@ class _PersonalPageState extends State<PersonalPage> {
         builder: (context, state) {
           final personalInfor = state.user;
           final deviceInfor = state.device;
-          // final vehicleInfor = state.device!.vehicle;
           final personalInforError = state.error;
           if (personalInfor != null && deviceInfor != null) {
             final vehicleInfor = state.device!.vehicle;
+
             return RefreshIndicator(
               onRefresh: () async {
                 _personalInforBloc.add(
@@ -72,13 +72,13 @@ class _PersonalPageState extends State<PersonalPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => MotorbikeImageDetail(
-                                imageUrl: vehicleInfor?.photoUrl ?? imageUrl,
+                                imageUrl: vehicleInfor.photoUrl ?? imageUrl,
                               ),
                             ),
                           );
                         }),
                         child: Image.asset(
-                          vehicleInfor?.photoUrl ?? imageUrl,
+                          vehicleInfor!.photoUrl ?? imageUrl,
                           fit: BoxFit.contain,
                           // width: 200,
                           height: 100,
@@ -102,31 +102,37 @@ class _PersonalPageState extends State<PersonalPage> {
                       ItemPersonalInforWidget(
                         icon: Icons.branding_watermark,
                         title: VehicleInforTerm.brand,
-                        content: vehicleInfor?.brand ??
+                        content: vehicleInfor.brand ??
                             VehicleInforDataMock.vehicleBrand,
                       ),
                       ItemPersonalInforWidget(
                         icon: Icons.motorcycle,
                         title: VehicleInforTerm.model,
-                        content: vehicleInfor?.model ??
+                        content: vehicleInfor.model ??
                             VehicleInforDataMock.vehicleModel,
                       ),
                       ItemPersonalInforWidget(
                         icon: Icons.color_lens,
                         title: VehicleInforTerm.color,
-                        content: vehicleInfor?.color ??
+                        content: vehicleInfor.color ??
                             VehicleInforDataMock.vehicleColor,
                       ),
                       ItemPersonalInforWidget(
                         icon: Icons.credit_card,
                         title: VehicleInforTerm.numberPlates,
-                        content: vehicleInfor?.licensePlate ??
+                        content: vehicleInfor.licensePlate ??
                             VehicleInforDataMock.vehicleNumberPlates,
                       ),
                       const ItemPersonalInforDescriptionWidget(
                           icon: Icons.description,
                           title: VehicleInforTerm.description,
                           content: VehicleInforDataMock.vehicleDescription),
+                      ItemPersonalInforWidget(
+                        icon: Icons.sos,
+                        title: PersonalInforTerm.sosNumber,
+                        content: personalInfor.sosNumbers![0],
+                      ),
+
                       const SizedBox10H(),
                       const Divider(
                         color: AppColor.lightGray2,
@@ -177,6 +183,8 @@ class _PersonalPageState extends State<PersonalPage> {
                       const SizedBox50H()
                     ],
                   ),
+
+                  //Edit infor buttom
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: SizedBox(
