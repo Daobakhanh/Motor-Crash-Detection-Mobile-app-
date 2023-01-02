@@ -31,10 +31,13 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
             themeData == Brightness.dark ? AppColor.dark : AppColor.lightGray1,
         items: [
           const BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.person),
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.motorcycle),
+            icon: Icon(
+              Icons.motorcycle,
+              size: 40,
+            ),
           ),
           BottomNavigationBarItem(
             icon: Badge(
@@ -45,14 +48,11 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
               child: const Icon(Icons.notifications),
             ),
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-          ),
         ],
       ),
       tabBuilder: (context, index) {
         switch (index) {
-          case 0:
+          case 1:
             return CupertinoTabView(
               // onGenerateRoute: ,
               // routes: {
@@ -65,14 +65,7 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
                 );
               },
             );
-          case 1:
-            return CupertinoTabView(
-              builder: (context) {
-                return const CupertinoPageScaffold(
-                  child: MotobikeRemoteFeaturePage(),
-                );
-              },
-            );
+
           case 2:
             return CupertinoTabView(
               builder: (context) {
@@ -81,7 +74,7 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
                 );
               },
             );
-          case 3:
+          case 0:
             return CupertinoTabView(
               builder: (context) {
                 return const CupertinoPageScaffold(

@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_style.dart';
 import '../../navigation/pages/app_navigation.dart';
-import '../bloc/personal_infor_bloc.dart';
 import '../bloc/personal_update_bloc.dart';
 
 class PersonalEditInforPage extends StatefulWidget {
@@ -30,7 +29,6 @@ class PersonalEditInforPage extends StatefulWidget {
 class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
   int maxLine = 5;
   bool isDone = false;
-  final _personalInforBloc = PersonalInforBloc();
 
   UserModel get personalInfor => widget.personalInfor!;
   VehicleDataModel get vehicleInfor => widget.vehicleInfor!;

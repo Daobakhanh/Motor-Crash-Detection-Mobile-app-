@@ -36,4 +36,39 @@ class NotificationRepo {
     return null;
     // return listNoti;
   }
+
+  static Future<bool> readAllNotifications(
+      {required List<String> listNotiId}) async {
+    try {
+      final res = await DioBase.put(
+        data: {
+          "ids": listNotiId,
+          "isRead": true,
+        },
+        endUrl: ApiConstants.seeAllNoti,
+      );
+
+      if (res.statusCode == 200) {
+        DebugPrint.dataLog(
+          data: null,
+          title: 'read all noti successful',
+          currentFile: "notification_repo",
+        );
+
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      // ignore: avoid_print
+      DebugPrint.dataLog(
+        currentFile: 'notification_repo',
+        title: "getAllNoti",
+        data: e,
+      );
+      // rethrow;
+    }
+    return false;
+    //
+  }
 }

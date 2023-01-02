@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:motorbike_crash_detection/themes/app_color.dart';
 import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
@@ -99,6 +100,8 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  bool isOnAntiThief = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,14 +109,64 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: const Text(AppPageName.homepage),
       ),
-      body: GoogleMap(
-        // polylines: {},
-        markers: Set<Marker>.of(_marker.values),
-        initialCameraPosition: _cameraPosition,
-        mapType: MapType.normal,
-        onMapCreated: ((GoogleMapController controller) {
-          _controller.complete(controller);
-        }),
+      body: Stack(
+        children: [
+          GoogleMap(
+            // polylines: {},
+            markers: Set<Marker>.of(_marker.values),
+            initialCameraPosition: _cameraPosition,
+            mapType: MapType.normal,
+            onMapCreated: ((GoogleMapController controller) {
+              _controller.complete(controller);
+            }),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              // color: AppColor.activeStateBlue,
+              margin: const EdgeInsets.only(bottom: 25),
+              height: 100,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 4,
+                  backgroundColor: Colors.grey.withOpacity(0.5),
+                  shape: const CircleBorder(),
+                ),
+                child: const Icon(
+                  Icons.location_searching,
+                  size: 60,
+                  color: AppColor.dark,
+                ),
+                onPressed: () {},
+              ),
+            ),
+          ),
+          Positioned(
+            left: 15,
+            bottom: 40,
+            child: SizedBox(
+              height: 70,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 4,
+                  backgroundColor:
+                      isOnAntiThief ? AppColor.activeStateGreen : Colors.grey,
+                  shape: const CircleBorder(),
+                ),
+                child: Icon(
+                  isOnAntiThief == true ? Icons.lock : Icons.lock_open,
+                  size: 40,
+                  color: AppColor.dark,
+                ),
+                onPressed: () {
+                  setState(() {
+                    isOnAntiThief = !isOnAntiThief;
+                  });
+                },
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

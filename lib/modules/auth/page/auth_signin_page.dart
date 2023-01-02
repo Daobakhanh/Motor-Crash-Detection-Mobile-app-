@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:motorbike_crash_detection/data/enum/app_state_enum.dart';
 import 'package:motorbike_crash_detection/data/term/app_term.dart';
 import 'package:motorbike_crash_detection/modules/app_state/bloc/app_state_bloc.dart';
-import 'package:motorbike_crash_detection/modules/auth/bloc/auth_bloc.dart';
 import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 

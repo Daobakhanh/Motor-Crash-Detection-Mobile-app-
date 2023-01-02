@@ -26,12 +26,6 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
     super.dispose();
     // _appAuthStateBloc.dispose();
