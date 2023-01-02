@@ -16,6 +16,8 @@ class PersonalInforRepo {
             currentFile: 'personal_infor',
             title: 'be user token actice',
             data: true);
+        final signUpRes = UserModel.fromJson(res.data['data']);
+
         return false;
       } else {
         DebugPrint.callApiLog(

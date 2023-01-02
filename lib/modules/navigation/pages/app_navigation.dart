@@ -24,6 +24,7 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
     return CupertinoTabScaffold(
       // backgroundColor: AppColor.greyBold,
       tabBar: CupertinoTabBar(
+        currentIndex: 1,
         activeColor: AppColor.pinkAccent,
         inactiveColor:
             themeData == Brightness.dark ? AppColor.grey : AppColor.dark,
@@ -52,6 +53,15 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
       ),
       tabBuilder: (context, index) {
         switch (index) {
+          case 0:
+            return CupertinoTabView(
+              builder: (context) {
+                return const CupertinoPageScaffold(
+                  child: PersonalPage(),
+                );
+              },
+            );
+
           case 1:
             return CupertinoTabView(
               // onGenerateRoute: ,
@@ -74,31 +84,15 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
                 );
               },
             );
-          case 0:
+
+          default:
             return CupertinoTabView(
               builder: (context) {
                 return const CupertinoPageScaffold(
-                  child: PersonalPage(),
+                  child: HomePage(),
                 );
               },
             );
-
-          default:
-            return widget.navigateKeyPersonal == true
-                ? CupertinoTabView(
-                    builder: (context) {
-                      return const CupertinoPageScaffold(
-                        child: PersonalPage(),
-                      );
-                    },
-                  )
-                : CupertinoTabView(
-                    builder: (context) {
-                      return const CupertinoPageScaffold(
-                        child: HomePage(),
-                      );
-                    },
-                  );
         }
       },
     );

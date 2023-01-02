@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:motorbike_crash_detection/modules/home/bloc/home_bloc.dart';
+import 'package:motorbike_crash_detection/modules/home/bloc/home_bloc_event.dart';
 import 'package:motorbike_crash_detection/themes/app_color.dart';
+import 'package:motorbike_crash_detection/themes/app_text_style.dart';
 import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../../../data/term/app_term.dart';
+import '../../auth/repo/auth_local_storage_repo.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,27 +28,20 @@ class _HomePageState extends State<HomePage> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  @override
-  void initState() {
-    super.initState();
-    _marker = <MarkerId, Marker>{};
-    _marker.clear();
-    initSocket();
-  }
-
   Future<void> initSocket() async {
     try {
       // socket = io.Socket(io: );
       // socket = io.Socket()
+      String backendUserAccessToken = await AuthLocalStorageRepo
+              .getBackendUserAccesskenFromLocalStorage() ??
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZlVaS3RHcWZ4UmI3Zmt3SXRodzJEYVA0ZU9mMSIsInBob25lTnVtYmVyIjoiMDM1NzY5ODU3MCIsImFkZHJlc3MiOiIxOSBuZ28gMTUgVGEgUXVhbmcgQnV1IiwiYXZhdGFyVXJsIjpudWxsLCJjaXRpemVuTnVtYmVyIjoiMDMwMjAwMDA1ODIxIiwibmFtZSI6IkRhbyBCYSBLaGFuaCIsImRhdGVPZkJpcnRoIjoiMy85LzIwMDAiLCJzb3NOdW1iZXJzIjpbXSwiZmNtVG9rZW5zIjpbImZUUWVRRlpCU2xTSXhTMXJZaXFHb206QVBBOTFiRlROU2xaWl9SczlZV0RPQ0xlRF96M2NEd0FzU3d3RWtLVFE5MG9BaGZCRGJobXBvbnlKZ29pWnlqVF8xY0NyYXpmUTU4dERHZjdodGpJdGluVGJEclMxRVdORVI4MWNydDFnVXFEaWpaQndjNWt3Y05LUVM2NDlNQ1JOcUZrMzhHV0xYN3MiXSwibGFzdFNpZ25JbkF0IjoiMjAyMi0xMi0yNVQwNjozNjoxMC43MTFaIn0sImlhdCI6MTY3MTk1MDE3MCwiZXhwIjoxNjc0NTQyMTcwfQ.UyKibh5LaR8ClX4tBxd9YtIxVstNHwqzcIjaEQvQZnM';
+
       socket = io.io(
         'https://ba66-2402-800-61b1-e0f1-6913-6d2a-306e-5781.ap.ngrok.io',
         <String, dynamic>{
           'transports': ['websocket'],
           'autoConnect': true,
-          'query': {
-            'accessToken':
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZlVaS3RHcWZ4UmI3Zmt3SXRodzJEYVA0ZU9mMSIsInBob25lTnVtYmVyIjoiKzg0MzU3Njk4NTcwIiwibmFtZSI6Iktow6FuaCIsInNvc051bWJlcnMiOltdLCJmY21Ub2tlbnMiOlsiZlFjdGJobFNSOEtLZmViR084TzNBYzpBUEE5MWJGMkVqckQ5ckNYWnhlbzVjUGFvb3ZDMDJJREhTelVCM3l4akhCWHNWM2JubDVyY19ZeDdIWEZPMXdvcVY4ZjNMN1lQd2xFY2JTbVFXdHBvcTF5UjFINzlib3hKd24tY2htNElWN2FNRV9hU0RhNWdCSnNqdUNFSDVYRDVWY003Um5ibzk5biJdLCJjaXRpemVuTnVtYmVyIjoiMDMwMzAzMDMwMzAiLCJhdmF0YXJVcmwiOm51bGwsImRhdGVPZkJpcnRoIjoiMjAwMC8wOS8wMyIsImFkZHJlc3MiOiJITiIsImxhc3RTaWduSW5BdCI6IjIwMjItMTItMjNUMTU6MjM6NDcuNzc3WiJ9LCJpYXQiOjE2NzE4MDkwMjcsImV4cCI6MTY3NDQwMTAyN30.rsMlgMEfycaCwzSjqrQumfAO6HgQuwQLgXIxrE1DiUI'
-          }
+          'query': {'accessToken': backendUserAccessToken}
         },
       );
       socket.connect();
@@ -52,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                 currentFile: "Home_page", title: "socket connected", data: data)
           });
       socket.on(
-        'location-change',
+        AppSocketTerm.socketEvent,
         (data) async {
           var latLng = data;
 
@@ -65,8 +63,8 @@ class _HomePageState extends State<HomePage> {
             CameraUpdate.newCameraPosition(
               CameraPosition(
                 target: LatLng(
-                  latLng["lat"] as double,
-                  latLng["lng"] as double,
+                  latLng[AppSocketTerm.lat] as double,
+                  latLng[AppSocketTerm.long] as double,
                 ),
                 zoom: 19,
               ),
@@ -83,8 +81,8 @@ class _HomePageState extends State<HomePage> {
             markerId: const MarkerId('ID'),
             icon: image,
             position: LatLng(
-              latLng["lat"],
-              latLng["lng"],
+              latLng[AppSocketTerm.lat],
+              latLng[AppSocketTerm.long],
             ),
           );
 
@@ -101,6 +99,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool isOnAntiThief = true;
+  bool isWarning = true;
+  final _homeBloc = HomeBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _marker = <MarkerId, Marker>{};
+    _marker.clear();
+    initSocket();
+    _homeBloc.add(
+        HomeBlocEvent(homeBlocEvent: HomeBlocEventEnum.getCurrentLocation));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,65 +119,199 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: const Text(AppPageName.homepage),
       ),
-      body: Stack(
-        children: [
-          GoogleMap(
-            // polylines: {},
-            markers: Set<Marker>.of(_marker.values),
-            initialCameraPosition: _cameraPosition,
-            mapType: MapType.normal,
-            onMapCreated: ((GoogleMapController controller) {
-              _controller.complete(controller);
-            }),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              // color: AppColor.activeStateBlue,
-              margin: const EdgeInsets.only(bottom: 25),
-              height: 100,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 4,
-                  backgroundColor: Colors.grey.withOpacity(0.5),
-                  shape: const CircleBorder(),
+      body: BlocBuilder<HomeBloc, HomeBlocState>(
+        bloc: _homeBloc,
+        builder: (context, state) {
+          final homeError = state.error;
+          final device = state.device;
+          if (device != null) {
+            final bool toggleAntiThiefState = device.config!.antiTheft ?? true;
+
+            return Stack(
+              children: [
+                GoogleMap(
+                  // polylines: {},
+                  markers: Set<Marker>.of(_marker.values),
+                  initialCameraPosition: _cameraPosition,
+                  mapType: MapType.normal,
+                  onMapCreated: ((GoogleMapController controller) {
+                    _controller.complete(controller);
+                  }),
                 ),
-                child: const Icon(
-                  Icons.location_searching,
-                  size: 60,
-                  color: AppColor.dark,
-                ),
-                onPressed: () {},
+
+                isWarning
+                    ?
+                    //Get current location widget
+                    Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          // color: AppColor.activeStateBlue,
+                          margin: const EdgeInsets.only(bottom: 25),
+                          height: 100,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 4,
+                              backgroundColor: AppColor.grey.withOpacity(0.5),
+                              shape: const CircleBorder(),
+                            ),
+                            // child: Column(
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   children: [
+                            //     Text(
+                            //       'SAFE',
+                            //       style: AppTextStyle.body17.copyWith(
+                            //         color: AppTextColor.dark,
+                            //         fontWeight: FontWeight.bold,
+                            //       ),
+                            //     ),
+                            //     Text(
+                            //       'Confirm',
+                            //       style: AppTextStyle.body17.copyWith(
+                            //         color: AppTextColor.dark,
+                            //         fontWeight: FontWeight.bold,
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+                            child: const Icon(
+                              Icons.warning_sharp,
+                              size: 60,
+                              color: AppColor.activeStateYellow,
+                            ),
+                            onPressed: () async {
+                              setState(
+                                () {
+                                  isWarning = !isWarning;
+                                },
+                              );
+                              await showConfirmSafeDialog(context);
+                            },
+                          ),
+                        ),
+                      )
+                    : Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          // color: AppColor.activeStateBlue,
+                          margin: const EdgeInsets.only(bottom: 25),
+                          height: 100,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 4,
+                              backgroundColor:
+                                  AppColor.lightBlue.withOpacity(0.5),
+                              shape: const CircleBorder(),
+                            ),
+                            child: const Icon(
+                              Icons.location_searching,
+                              size: 60,
+                              color: AppColor.dark,
+                            ),
+                            onPressed: () {
+                              setState(
+                                () {
+                                  isWarning = !isWarning;
+                                },
+                              );
+                              // _homeBloc.add(
+                              //   HomeBlocEvent(
+                              //       homeBlocEvent:
+                              //           HomeBlocEventEnum.getCurrentLocation),
+                              // );
+                            },
+                          ),
+                        ),
+                      ),
+
+                //toggle antithief widget
+                Positioned(
+                  left: 15,
+                  bottom: 40,
+                  child: SizedBox(
+                    height: 70,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 4,
+                        backgroundColor: toggleAntiThiefState
+                            ? AppColor.safety
+                            : AppColor.grey.withOpacity(0.5),
+                        shape: const CircleBorder(),
+                      ),
+                      child: Icon(
+                        toggleAntiThiefState == true
+                            ? Icons.lock
+                            : Icons.lock_open,
+                        size: 40,
+                        color: AppColor.dark,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isOnAntiThief = !isOnAntiThief;
+                        });
+                        _homeBloc.add(
+                          HomeBlocEvent(
+                            homeBlocEvent: HomeBlocEventEnum.toggleAntiThief,
+                            stateToggleAntiThief: !toggleAntiThiefState,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                )
+              ],
+            );
+          }
+          if (homeError != null) {
+            return Center(
+              child: Text(
+                homeError.toString(),
               ),
-            ),
-          ),
-          Positioned(
-            left: 15,
-            bottom: 40,
-            child: SizedBox(
-              height: 70,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 4,
-                  backgroundColor:
-                      isOnAntiThief ? AppColor.activeStateGreen : Colors.grey,
-                  shape: const CircleBorder(),
-                ),
-                child: Icon(
-                  isOnAntiThief == true ? Icons.lock : Icons.lock_open,
-                  size: 40,
-                  color: AppColor.dark,
-                ),
-                onPressed: () {
-                  setState(() {
-                    isOnAntiThief = !isOnAntiThief;
-                  });
-                },
-              ),
-            ),
-          )
-        ],
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
+    );
+  }
+
+  Future<void> showConfirmSafeDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm off warning'),
+          // content: SingleChildScrollView(
+          //   child: ListBody(
+          //     children: const <Widget>[
+          //       Text('Thank you'),
+          //       // Text('Would you like to approve of this message?'),
+          //     ],
+          //   ),
+          // ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _homeBloc.add(
+                  HomeBlocEvent(
+                    homeBlocEvent: HomeBlocEventEnum.offWarning,
+                  ),
+                );
+                Future.delayed(const Duration(seconds: 1), () {
+                  Navigator.pop(context, 'OK');
+                });
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

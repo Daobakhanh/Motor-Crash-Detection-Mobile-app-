@@ -12,6 +12,12 @@ class AppTerm {
   static const appLogState = "AppLogState";
 }
 
+class AppSocketTerm {
+  static const socketEvent = 'location-change';
+  static const lat = 'lat';
+  static const long = 'lng';
+}
+
 class AppAuthTerm {
   static const authSignIn = "Sign In";
   static const authSignUp = "Sign Up";

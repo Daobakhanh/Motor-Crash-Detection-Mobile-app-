@@ -5,4 +5,5 @@ class SharedPrefsKey {
   static const String appThemeMode = 'theme_mode';
   static const String fcmToken = "fcm_token";
   static const String firstOpenAppState = "app_log_state";
+  static const String deviceID = "device_id";
 }
