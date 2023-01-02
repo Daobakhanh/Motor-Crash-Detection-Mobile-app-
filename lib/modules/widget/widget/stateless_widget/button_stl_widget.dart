@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../themes/app_color.dart';
@@ -33,6 +34,31 @@ class LongStadiumButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class LongStadiumButtonIndicator extends StatelessWidget {
+  final Color? color;
+  // final String? nameOfButton;
+  // final VoidCallback? onTap;
+  const LongStadiumButtonIndicator({Key? key, this.color}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // color: AppColors.activeStateGreen,
+      alignment: Alignment.center,
+      child: ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            shape: const StadiumBorder(),
+            backgroundColor: color ?? AppColor.light,
+            fixedSize: const Size(350, 44),
+          ),
+          child: const CupertinoActivityIndicator(
+            color: AppColor.light,
+          )),
     );
   }
 }

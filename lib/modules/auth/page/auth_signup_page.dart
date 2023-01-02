@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:motorbike_crash_detection/data/term/app_term.dart';
 import 'package:motorbike_crash_detection/modules/auth/page/auth_signup_personal_infor_page.dart';
 import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
@@ -54,7 +55,7 @@ class _SignupPageState extends State<SignupPage> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Signup'),
+          title: const Text(AppAuthTerm.authSignUp),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -65,7 +66,7 @@ class _SignupPageState extends State<SignupPage> {
               const Padding(
                 padding: EdgeInsets.only(top: 30, bottom: 40),
                 child: Text(
-                  'Create an account',
+                  AppAuthTerm.createAnAccount,
                   style: AppTextStyle.largeTitle,
                 ),
               ),
@@ -104,7 +105,7 @@ class _SignupPageState extends State<SignupPage> {
                     },
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      labelText: 'Your phone number',
+                      labelText: AppFillTextTerm.yourPhoneNumber,
                       suffixIcon: IconButton(
                         onPressed: () {
                           _controllerTextPhoneNumber.clear();
@@ -119,7 +120,7 @@ class _SignupPageState extends State<SignupPage> {
               isPhoneValid
                   ? const SizedBox0H()
                   : const Text(
-                      'Invalid phone number',
+                      AppFillTextTerm.invalidPhoneNumber,
                       style: TextStyle(
                           color: Colors.red,
                           fontSize: 13,
@@ -156,7 +157,7 @@ class _SignupPageState extends State<SignupPage> {
                       },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
-                        labelText: 'OTP',
+                        labelText: AppFillTextTerm.otpCode,
                         suffixIcon: TextButton(
                           onPressed: () async {
                             try {
@@ -171,7 +172,7 @@ class _SignupPageState extends State<SignupPage> {
                             }
                           },
                           child: Text(
-                            'Send',
+                            AppFillTextTerm.send,
                             textAlign: TextAlign.right,
                             style: AppTextStyle.body15
                                 .copyWith(color: AppColor.activeStateBlue),
@@ -187,7 +188,7 @@ class _SignupPageState extends State<SignupPage> {
                 color: isFullFillPhoneNumber == true && isFullFillOTP == true
                     ? AppColor.pinkAccent
                     : AppColor.light,
-                nameOfButton: "Next",
+                nameOfButton: AppAuthTerm.authNext,
                 onTap: !(isFullFillPhoneNumber == true && isFullFillOTP == true)
                     ? () {}
                     : () async {

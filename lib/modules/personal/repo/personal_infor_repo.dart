@@ -12,13 +12,17 @@ class PersonalInforRepo {
       );
 
       if (res.statusCode == 200) {
+        DebugPrint.dataLog(
+            currentFile: 'personal_infor',
+            title: 'be user token actice',
+            data: true);
+        return false;
+      } else {
         DebugPrint.callApiLog(
             currentFile: 'Personal_infor_repo',
             httpMethod: 'get',
             message: 'Personal',
             url: ApiConstants.userGetInfor);
-        return false;
-      } else {
         return true;
       }
     } catch (e) {
@@ -57,5 +61,32 @@ class PersonalInforRepo {
       // rethrow;
     }
     return null;
+  }
+
+  static Future<void> updatePersonalInfor(
+      Map<String, dynamic> userInforUpdateData) async {
+    try {
+      final res = await DioBase.put(
+        data: userInforUpdateData,
+        endUrl: ApiConstants.userUpdateInfor,
+      );
+
+      if (res.statusCode == 200) {
+        DebugPrint.callApiLog(
+            httpMethod: 'put',
+            url: '/users/me',
+            currentFile: "personal_infor_repo",
+            data: res.data,
+            message: 'updateDevice');
+      } else {}
+    } catch (e) {
+      // ignore: avoid_print
+      DebugPrint.dataLog(
+        currentFile: 'personal_infor_repo',
+        title: "updateDevice error",
+        data: e,
+      );
+      // rethrow;
+    }
   }
 }

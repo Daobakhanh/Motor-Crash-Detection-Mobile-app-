@@ -1,5 +1,8 @@
 import 'package:motorbike_crash_detection/data/mock/app_infor_mock.dart';
 import 'package:motorbike_crash_detection/data/term/app_term.dart';
+import 'package:motorbike_crash_detection/model/user/user_model.dart';
+import 'package:motorbike_crash_detection/modules/device/model/vehicle_model/vehicle_model.dart';
+import 'package:motorbike_crash_detection/modules/personal/page/personal_page.dart';
 import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +10,17 @@ import 'package:flutter/material.dart';
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_style.dart';
 import '../../navigation/pages/app_navigation.dart';
+import '../bloc/personal_update_bloc.dart';
 
 class PersonalEditInforPage extends StatefulWidget {
-  const PersonalEditInforPage({super.key});
+  final UserModel? personalInfor;
+  final VehicleDataModel? vehicleInfor;
+  final String deviceId;
+  const PersonalEditInforPage(
+      {super.key,
+      this.personalInfor,
+      this.vehicleInfor,
+      required this.deviceId});
 
   @override
   State<PersonalEditInforPage> createState() => _PersonalEditInforPageState();
@@ -18,8 +29,25 @@ class PersonalEditInforPage extends StatefulWidget {
 class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
   int maxLine = 5;
   bool isDone = false;
+
+  UserModel get personalInfor => widget.personalInfor!;
+  VehicleDataModel get vehicleInfor => widget.vehicleInfor!;
+  String get deviceId => widget.deviceId;
+
+  String vehicleColor = '';
+  String vehicleBrand = '';
+  String vehicleModel = '';
+  String vehicleNumberPlate = '';
+
+  String ownerAddress = '';
+  String ownerName = '';
+  String ownerDoB = '';
+  String ownerPhoneNumber = '';
+  String ownerCitizenID = '';
+
   late TextEditingController _controllerTextVehicleColor;
   late TextEditingController _controllerTextVehicleBrand;
+  late TextEditingController _controllerTextVehicleModel;
   late TextEditingController _controllerTextVehicleDescription;
   late TextEditingController _controllerTextVehicleNumberPlate;
 
@@ -32,10 +60,12 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
   @override
   void dispose() {
     super.dispose();
+
     _controllerTextVehicleColor.dispose();
     _controllerTextVehicleDescription.dispose();
     _controllerTextVehicleBrand.dispose();
     _controllerTextVehicleNumberPlate.dispose();
+    _controllerTextVehicleModel.dispose();
 
     _controllerTextOwnerAddress.dispose();
     _controllerTextOwnerName.dispose();
@@ -47,25 +77,43 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
   @override
   void initState() {
     super.initState();
-    _controllerTextVehicleBrand =
-        TextEditingController(text: VehicleInforDataMock.vehicleBrand);
-    _controllerTextVehicleColor =
-        TextEditingController(text: VehicleInforDataMock.vehicleColor);
+
+    vehicleColor = vehicleInfor.color ?? VehicleInforDataMock.vehicleColor;
+    vehicleBrand = vehicleInfor.brand ?? VehicleInforDataMock.vehicleBrand;
+    vehicleModel = vehicleInfor.model ?? VehicleInforDataMock.vehicleModel;
+    vehicleNumberPlate =
+        vehicleInfor.licensePlate ?? VehicleInforDataMock.vehicleNumberPlates;
+
+    ownerAddress = personalInfor.address ?? PersonalInforDataMock.addr;
+    ownerName = personalInfor.name ?? PersonalInforDataMock.name;
+    ownerDoB = personalInfor.dateOfBirth ?? PersonalInforDataMock.dob;
+    ownerPhoneNumber =
+        personalInfor.phoneNumber ?? PersonalInforDataMock.phoneNumber;
+    ownerCitizenID =
+        personalInfor.citizenNumber ?? PersonalInforDataMock.citizenId;
+
+    _controllerTextVehicleBrand = TextEditingController(
+        text: vehicleInfor.brand ?? VehicleInforDataMock.vehicleBrand);
+    _controllerTextVehicleModel = TextEditingController(
+        text: vehicleInfor.model ?? VehicleInforDataMock.vehicleModel);
+    _controllerTextVehicleColor = TextEditingController(
+        text: vehicleInfor.color ?? VehicleInforDataMock.vehicleColor);
     _controllerTextVehicleDescription =
         TextEditingController(text: VehicleInforDataMock.vehicleDescription);
-    _controllerTextVehicleNumberPlate =
-        TextEditingController(text: VehicleInforDataMock.vehicleNumberPlates);
+    _controllerTextVehicleNumberPlate = TextEditingController(
+        text: vehicleInfor.licensePlate ??
+            VehicleInforDataMock.vehicleNumberPlates);
 
-    _controllerTextOwnerAddress =
-        TextEditingController(text: PersonalInforDataMock.addr);
-    _controllerTextOwnerCitizenID =
-        TextEditingController(text: PersonalInforDataMock.citizenId);
-    _controllerTextOwnerDoB =
-        TextEditingController(text: PersonalInforDataMock.dob);
-    _controllerTextOwnerName =
-        TextEditingController(text: PersonalInforDataMock.name);
-    _controllerTextOwnerPhoneNumber =
-        TextEditingController(text: PersonalInforDataMock.phoneNumber);
+    _controllerTextOwnerAddress = TextEditingController(
+        text: personalInfor.address ?? PersonalInforDataMock.addr);
+    _controllerTextOwnerCitizenID = TextEditingController(
+        text: personalInfor.citizenNumber ?? PersonalInforDataMock.citizenId);
+    _controllerTextOwnerDoB = TextEditingController(
+        text: personalInfor.dateOfBirth ?? PersonalInforDataMock.dob);
+    _controllerTextOwnerName = TextEditingController(
+        text: personalInfor.name ?? PersonalInforDataMock.name);
+    _controllerTextOwnerPhoneNumber = TextEditingController(
+        text: personalInfor.phoneNumber ?? PersonalInforDataMock.phoneNumber);
   }
 
   @override
@@ -87,12 +135,17 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
           actions: [
             TextButton(
               onPressed: () {
-                // _handleUpdatePersonalProfile(fisrtName, lastName, bio);
+                _handleUpdatePersonalProfile();
+                FocusManager.instance.primaryFocus?.unfocus();
                 setState(() {
                   isDone = !isDone;
                 });
-                Future.delayed(const Duration(seconds: 1), () {
-                  Navigator.pop(context);
+                Future.delayed(const Duration(seconds: 1), () async {
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const PersonalPage()),
+                      (Route<dynamic> route) => false);
                 });
               },
               child: isDone
@@ -136,14 +189,43 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
                       autofocus: false,
                       controller: _controllerTextVehicleBrand,
                       onChanged: (String contentValue) {
-                        // fisrtName = contentValue;
-                        // debugPrint(fisrtName);
+                        vehicleBrand = contentValue;
                       },
                       decoration: InputDecoration(
                         labelText: VehicleInforTerm.brand,
                         suffixIcon: IconButton(
                           onPressed: () {
                             _controllerTextVehicleBrand.clear();
+                            setState(() {
+                              maxLine = 1;
+                            });
+                          },
+                          icon: const Icon(Icons.clear),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              //vehicle model editting
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SizedBox(
+                    child: TextField(
+                      maxLines: 1,
+                      autofocus: false,
+                      controller: _controllerTextVehicleModel,
+                      onChanged: (String contentValue) {
+                        vehicleModel = contentValue;
+                      },
+                      decoration: InputDecoration(
+                        labelText: VehicleInforTerm.model,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            _controllerTextVehicleModel.clear();
                             setState(() {
                               maxLine = 1;
                             });
@@ -166,8 +248,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
                       autofocus: false,
                       controller: _controllerTextVehicleColor,
                       onChanged: (String contentValue) {
-                        // fisrtName = contentValue;
-                        // debugPrint(fisrtName);
+                        vehicleColor = contentValue;
                       },
                       decoration: InputDecoration(
                         labelText: VehicleInforTerm.color,
@@ -191,8 +272,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
                       autofocus: false,
                       controller: _controllerTextVehicleNumberPlate,
                       onChanged: (String contentValue) {
-                        // fisrtName = contentValue;
-                        // debugPrint(fisrtName);
+                        vehicleNumberPlate = contentValue;
                       },
                       decoration: InputDecoration(
                         labelText: VehicleInforTerm.numberPlates,
@@ -249,7 +329,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
                 margin: const EdgeInsets.only(top: 20),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Owner',
+                  AppTerm.owner,
                   style:
                       AppTextStyle.body17.copyWith(fontWeight: FontWeight.bold),
                 ),
@@ -268,8 +348,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
                       autofocus: false,
                       controller: _controllerTextOwnerName,
                       onChanged: (String contentValue) {
-                        // fisrtName = contentValue;
-                        // debugPrint(fisrtName);
+                        ownerName = contentValue;
                       },
                       decoration: InputDecoration(
                         labelText: PersonalInforTerm.name,
@@ -297,8 +376,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
                       autofocus: false,
                       controller: _controllerTextOwnerDoB,
                       onChanged: (String contentValue) {
-                        // fisrtName = contentValue;
-                        // debugPrint(fisrtName);
+                        ownerDoB = contentValue;
                       },
                       decoration: InputDecoration(
                         labelText: PersonalInforTerm.dob,
@@ -325,8 +403,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
                       autofocus: false,
                       controller: _controllerTextOwnerAddress,
                       onChanged: (String contentValue) {
-                        // fisrtName = contentValue;
-                        // debugPrint(fisrtName);
+                        ownerAddress = contentValue;
                       },
                       decoration: InputDecoration(
                         labelText: PersonalInforTerm.addr,
@@ -342,20 +419,20 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
 
               //owner phone number
               Container(
-                margin: const EdgeInsets.only(top: 20, bottom: 10),
+                margin: const EdgeInsets.only(top: 20),
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                   child: SizedBox(
                     child: TextField(
                       // maxLines: (address / 38 ).roundToDouble() + 1,
+                      maxLength: 10,
                       keyboardType: TextInputType.phone,
                       maxLines: 1,
                       autofocus: false,
                       controller: _controllerTextOwnerPhoneNumber,
                       onChanged: (String contentValue) {
-                        // fisrtName = contentValue;
-                        // debugPrint(fisrtName);
+                        ownerPhoneNumber = contentValue;
                       },
                       decoration: InputDecoration(
                         labelText: PersonalInforTerm.phoneNumber,
@@ -371,20 +448,20 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
 
               //owner citizen ID
               Container(
-                margin: const EdgeInsets.only(top: 20, bottom: 10),
+                margin: const EdgeInsets.only(top: 10, bottom: 10),
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                   child: SizedBox(
                     child: TextField(
                       // maxLines: (address / 38 ).roundToDouble() + 1,
+                      maxLength: 12,
                       keyboardType: TextInputType.phone,
                       maxLines: 1,
                       autofocus: false,
                       controller: _controllerTextOwnerCitizenID,
                       onChanged: (String contentValue) {
-                        // fisrtName = contentValue;
-                        // debugPrint(fisrtName);
+                        ownerCitizenID = contentValue;
                       },
                       decoration: InputDecoration(
                         labelText: PersonalInforTerm.citizenId,
@@ -404,6 +481,28 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleUpdatePersonalProfile() async {
+    Map<String, dynamic> userInforUpdateData = <String, dynamic>{
+      "name": ownerName,
+      "phoneNumber": ownerPhoneNumber,
+      "address": ownerAddress,
+      "dateOfBirth": ownerDoB,
+      "citizenNumber": ownerCitizenID
+    };
+    Map<String, dynamic> vehicleInforUpdateData = <String, dynamic>{
+      "vehicle": {
+        "brand": vehicleBrand,
+        "model": vehicleModel,
+        "color": vehicleColor,
+        "licensePlate": vehicleNumberPlate,
+      },
+    };
+    await PersonalUpdateBloc.updateProfileAndVehicleEvent(
+        deviceId: deviceId,
+        userInforUpdateData: userInforUpdateData,
+        vehicleInforUpdateData: vehicleInforUpdateData);
   }
 
   void showAlertConfirmEditDone(BuildContext context) {

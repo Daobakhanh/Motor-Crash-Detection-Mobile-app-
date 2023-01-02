@@ -14,6 +14,7 @@ class AuthBloc implements BlocBase {
 
   static Future<bool> signIn() async {
     String fcmToken = await getFcmTokenFromLocalStorage() ?? '';
+    DebugPrint.dataLog(currentFile: 'auth_bloc', title: 'FCM', data: fcmToken);
     final AuthModel? signInRes = await AuthRepo.signInRepo(fcmToken: fcmToken);
     if (signInRes!.accessToken != null) {
       await AuthLocalStorageRepo.setBackendUserAccessTokenToLocalStorage(
