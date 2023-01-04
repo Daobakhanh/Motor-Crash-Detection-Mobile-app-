@@ -98,13 +98,14 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  bool isOnAntiThief = true;
+  late bool isOnAntiThief;
   bool isWarning = true;
   final _homeBloc = HomeBloc();
 
   @override
   void initState() {
     super.initState();
+    isOnAntiThief = true;
     _marker = <MarkerId, Marker>{};
     _marker.clear();
     initSocket();
@@ -125,7 +126,12 @@ class _HomePageState extends State<HomePage> {
           final homeError = state.error;
           final device = state.device;
           if (device != null) {
-            final bool toggleAntiThiefState = device.config!.antiTheft ?? true;
+            isOnAntiThief = device.config!.antiTheft!;
+            // final bool toggleAntiThiefState = device.config!.antiTheft!;
+            DebugPrint.dataLog(
+                currentFile: 'home_page',
+                title: 'toggleAntiThiefState',
+                data: isOnAntiThief);
 
             return Stack(
               children: [
@@ -232,28 +238,21 @@ class _HomePageState extends State<HomePage> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 4,
-                        backgroundColor: toggleAntiThiefState
+                        backgroundColor: isOnAntiThief
                             ? AppColor.safety
                             : AppColor.grey.withOpacity(0.5),
                         shape: const CircleBorder(),
                       ),
                       child: Icon(
-                        toggleAntiThiefState == true
-                            ? Icons.lock
-                            : Icons.lock_open,
+                        isOnAntiThief == true ? Icons.lock : Icons.lock_open,
                         size: 40,
                         color: AppColor.dark,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        await toggleAntiThief(!isOnAntiThief);
                         setState(() {
                           isOnAntiThief = !isOnAntiThief;
                         });
-                        _homeBloc.add(
-                          HomeBlocEvent(
-                            homeBlocEvent: HomeBlocEventEnum.toggleAntiThief,
-                            stateToggleAntiThief: !toggleAntiThiefState,
-                          ),
-                        );
                       },
                     ),
                   ),
@@ -272,6 +271,15 @@ class _HomePageState extends State<HomePage> {
             child: CircularProgressIndicator(),
           );
         },
+      ),
+    );
+  }
+
+  Future<void> toggleAntiThief(bool antiThiefState) async {
+    _homeBloc.add(
+      HomeBlocEvent(
+        homeBlocEvent: HomeBlocEventEnum.toggleAntiThief,
+        stateToggleAntiThief: antiThiefState,
       ),
     );
   }

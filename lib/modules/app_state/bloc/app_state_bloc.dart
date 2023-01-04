@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:motorbike_crash_detection/data/enum/app_state_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:motorbike_crash_detection/data/term/local_storage_pref_key.dart';
+import 'package:motorbike_crash_detection/modules/device/repo/device_repo.dart';
 import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,7 +63,7 @@ class AppAuthStateBloc implements BlocBase {
 
   @override
   void dispose() {
-    appStateStreamController.close();
+    // appStateStreamController.close();
   }
 
   AppAuthStateBloc() {
@@ -72,6 +73,10 @@ class AppAuthStateBloc implements BlocBase {
   Future<void> launchApp() async {
     final isBackendUserTokenExpried =
         await PersonalInforRepo.isBackendUserAccessTokenExpired();
+
+    //get device infor, save device ID to local storage
+    await DeviceRepo.getDevice();
+
     await changeAppAuthState(isUserTokenExpired: isBackendUserTokenExpried);
     String fcm = await getFcmTokenFromLocalStorage() ?? '';
     DebugPrint.dataLog(currentFile: 'app_state_bloc', title: 'fcm', data: fcm);

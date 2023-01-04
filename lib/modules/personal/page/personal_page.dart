@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/term/app_term.dart';
 import '../widget/personal_infor_widget.dart';
-import 'motorbike_image_detail_page.dart';
+import 'personal_motorbike_image_detail_page.dart';
 import 'personal_drawer_page.dart';
 import 'personal_edit_page.dart';
 

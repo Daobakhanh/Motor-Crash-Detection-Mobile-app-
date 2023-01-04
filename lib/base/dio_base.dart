@@ -10,7 +10,7 @@ class DioBase {
   static Future<Dio> dioWithBaseOption() async {
     String apiUrl = await getApiUrl() ?? '';
     return Dio(
-      BaseOptions(baseUrl: apiUrl, connectTimeout: 3000),
+      BaseOptions(baseUrl: apiUrl, connectTimeout: 10000),
     );
   }
 

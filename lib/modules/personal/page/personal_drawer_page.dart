@@ -1,4 +1,6 @@
 import 'package:motorbike_crash_detection/modules/app_state/repo/app_theme_state_local_storage_repo.dart';
+import 'package:motorbike_crash_detection/modules/personal/page/personal_link_to_device.dart';
+import 'package:motorbike_crash_detection/route/app_route.dart';
 import 'package:motorbike_crash_detection/themes/app_color.dart';
 import 'package:flutter/material.dart';
 
@@ -87,6 +89,23 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               onPressed: () {},
               label: const Text(
                 'Help',
+              ),
+            ),
+
+            //link User to device
+            TextButton.icon(
+              icon: const Icon(
+                Icons.link,
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PersonalLinkToDevice(),
+                    ));
+              },
+              label: const Text(
+                'Link Device',
               ),
             ),
 

@@ -11,10 +11,12 @@ class HomeRepo {
     try {
       //get device ID from local storage here
       String deviceId = await DeviceRepo.getDeviceIdFromLocalStorage() ?? '';
+      DebugPrint.dataLog(
+          currentFile: 'home_repo',
+          title: 'toggleAntiTheft state pass from home',
+          data: toggleAntiTheft);
       final res = await DioBase.post(
-        data: {
-          "toggleAntiTheft": toggleAntiTheft,
-        },
+        data: {"antiTheft": toggleAntiTheft},
         endUrl: ApiConstants.requestDevice(deviceId: deviceId),
       );
 
@@ -48,10 +50,9 @@ class HomeRepo {
     try {
       //get device ID from local storage here
       String deviceId = await DeviceRepo.getDeviceIdFromLocalStorage() ?? '';
+
       final res = await DioBase.post(
-        data: {
-          "needUpdateLocation": true,
-        },
+        data: {"updateLocation": true},
         endUrl: ApiConstants.requestDevice(deviceId: deviceId),
       );
 
@@ -86,9 +87,7 @@ class HomeRepo {
       //get device ID from local storage here
       String deviceId = await DeviceRepo.getDeviceIdFromLocalStorage() ?? '';
       final res = await DioBase.post(
-        data: {
-          "offWarning": true,
-        },
+        data: {"warning": true},
         endUrl: ApiConstants.requestDevice(deviceId: deviceId),
       );
 
@@ -108,7 +107,7 @@ class HomeRepo {
       // ignore: avoid_print
       DebugPrint.dataLog(
         currentFile: 'home_repo',
-        title: "offWarning",
+        title: "offWarning false",
         data: e,
       );
       // rethrow;

@@ -5,8 +5,9 @@ import 'package:motorbike_crash_detection/modules/auth/page/auth_signin_page.dar
 import 'package:motorbike_crash_detection/modules/auth/page/auth_signup_page.dart';
 import 'package:motorbike_crash_detection/modules/home/page/home_page.dart';
 import 'package:motorbike_crash_detection/modules/navigation/pages/app_navigation.dart';
-import 'package:motorbike_crash_detection/modules/notification/page/notification_page.dart';
+import 'package:motorbike_crash_detection/modules/notification/page/notification_stream_page.dart';
 import 'package:motorbike_crash_detection/modules/personal/page/personal_edit_page.dart';
+import 'package:motorbike_crash_detection/modules/personal/page/personal_link_to_device.dart';
 import 'package:motorbike_crash_detection/modules/personal/page/personal_page.dart';
 
 class AppRoute {
@@ -19,6 +20,8 @@ class AppRoute {
   static const String notification = '/notification';
   static const String personal = '/personal';
   static const String personalUpdateInfor = '/personal-update-information';
+  static const String personalLinkToDevice = '/personal-link-to-device';
+
   static const String personalDrawer = '/personal-drawer';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -49,7 +52,8 @@ class AppRoute {
         );
       case notification:
         return MaterialPageRoute(
-          builder: (_) => const NotificationPage(),
+          // builder: (_) => const NotificationPage(),
+          builder: (_) => const NotificationStreamPage(),
         );
       case personal:
         return MaterialPageRoute(
@@ -60,6 +64,10 @@ class AppRoute {
           builder: (_) => const PersonalEditInforPage(
             deviceId: '',
           ),
+        );
+      case personalLinkToDevice:
+        return MaterialPageRoute(
+          builder: (_) => const PersonalLinkToDevice(),
         );
       default:
         return MaterialPageRoute(

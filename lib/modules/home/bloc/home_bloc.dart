@@ -19,7 +19,9 @@ class HomeBloc extends Bloc<HomeBlocEvent, HomeBlocState> {
             try {
               HomeBlocState(isLoading: true, isLoadDone: false);
               DeviceModel? resDevice = await HomeRepo.toggleAntiThief(
-                  toggleAntiTheft: event.getStateToggleAntiThief ?? true);
+                  toggleAntiTheft: event.getStateToggleAntiThief!);
+              print(resDevice);
+
               // final deviceRes = await DeviceRepo.getDevice();
               if (resDevice != null) {
                 emit(
