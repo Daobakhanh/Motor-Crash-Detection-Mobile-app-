@@ -30,68 +30,65 @@ class _NotificationStreamPageState extends State<NotificationStreamPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      bloc: _notificationBlocStream,
-      child: StreamBuilder<NotificationBlocStreamState>(
-        stream: _notificationBlocStream.notiStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data!.notifications != null) {
-            final listNotiId = snapshot.data!.listNotiId;
-            final notifications = snapshot.data!.notifications;
-            return Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                title: const Text(AppPageName.notification),
-                actions: [
-                  isLoadingSeeAll
-                      ? Row(
-                          children: const [
-                            CupertinoActivityIndicator(
-                              color: AppColor.light,
-                            ),
-                            SizedBox15W()
-                          ],
-                        )
-                      : IconButton(
-                          onPressed: () async {
+    return StreamBuilder<NotificationBlocStreamState>(
+      stream: _notificationBlocStream.notiStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data!.notifications != null) {
+          final listNotiId = snapshot.data!.listNotiId;
+          final notifications = snapshot.data!.notifications;
+          return Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: const Text(AppPageName.notification),
+              actions: [
+                isLoadingSeeAll
+                    ? Row(
+                        children: const [
+                          CupertinoActivityIndicator(
+                            color: AppColor.light,
+                          ),
+                          SizedBox15W()
+                        ],
+                      )
+                    : IconButton(
+                        onPressed: () async {
+                          setState(() {
+                            isLoadingSeeAll = true;
+                          });
+                          await readAllNoti(listNotiId!);
+                          await getAllNoti();
+                          Future.delayed(
+                              const Duration(seconds: 1, microseconds: 500),
+                              () async {
+                            debugPrint('See All Notices');
                             setState(() {
-                              isLoadingSeeAll = true;
+                              isLoadingSeeAll = false;
                             });
-                            await readAllNoti(listNotiId!);
                             await getAllNoti();
-                            Future.delayed(
-                                const Duration(seconds: 1, microseconds: 500),
-                                () async {
-                              debugPrint('See All Notices');
-                              setState(() {
-                                isLoadingSeeAll = false;
-                              });
-                              await getAllNoti();
-                            });
-                          },
-                          icon: const Icon(Icons.done_all))
-                ],
+                          });
+                        },
+                        icon: const Icon(Icons.done_all))
+              ],
+            ),
+            body: RefreshIndicator(
+              onRefresh: () async {
+                await getAllNoti();
+              },
+              child: ListView.builder(
+                itemBuilder: ((context, index) {
+                  return NotificationItem(
+                    notificationModel: notifications[index],
+                  );
+                }),
+                itemCount: notifications!.length,
               ),
-              body: RefreshIndicator(
-                onRefresh: () async {
-                  await getAllNoti();
-                },
-                child: ListView.builder(
-                  itemBuilder: ((context, index) {
-                    return NotificationItem(
-                      notificationModel: notifications[index],
-                    );
-                  }),
-                  itemCount: notifications!.length,
-                ),
-              ),
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
+            ),
           );
-        },
-      ),
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 
