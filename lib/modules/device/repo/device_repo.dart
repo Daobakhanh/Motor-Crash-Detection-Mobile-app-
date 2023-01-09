@@ -16,15 +16,19 @@ class DeviceRepo {
 
       if (res.statusCode == 200) {
         DebugPrint.callApiLog(currentFile: "device_repo", message: 'getDevice');
-        final device = DeviceModel.fromJson(
-            res.data['data'][0]); //res list device, but get once
-        await saveDeviceIdToLocalStorage(deviceID: device.id!);
-        return device;
+
+        if (res.data['data'].length != 0) {
+          final device = DeviceModel.fromJson(
+              res.data['data'][0]); //res list device, but get once
+          await saveDeviceIdToLocalStorage(deviceID: device.id!);
+          return device;
+        } else {
+          return null;
+        }
       } else {
         return null;
       }
     } catch (e) {
-      // ignore: avoid_print
       DebugPrint.dataLog(
         currentFile: 'device_repo',
         title: "getDevice error",
@@ -32,7 +36,7 @@ class DeviceRepo {
       );
       // rethrow;
     }
-    return null;
+    // return null;
   }
 
   static Future<VehicleDataModel?> getVehicle() async {

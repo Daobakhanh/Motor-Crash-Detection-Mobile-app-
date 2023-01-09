@@ -17,8 +17,8 @@ class AppTerm {
 
 class AppSocketTerm {
   static const socketEvent = 'location-change';
-  static const lat = 'lat';
-  static const long = 'lng';
+  static const lat = 'latitude';
+  static const long = 'longitude';
 }
 
 class AppAuthTerm {

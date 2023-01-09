@@ -1,4 +1,5 @@
 import 'package:motorbike_crash_detection/base/dio_base.dart';
+import 'package:motorbike_crash_detection/data/term/app_term.dart';
 import 'package:motorbike_crash_detection/model/user/user_model.dart';
 
 import '../../../data/term/network_term.dart';
@@ -16,7 +17,7 @@ class PersonalInforRepo {
             currentFile: 'personal_infor',
             title: 'be user token actice',
             data: true);
-        final signUpRes = UserModel.fromJson(res.data['data']);
+        // final signUpRes = UserModel.fromJson(res.data['data']);
 
         return false;
       } else {
@@ -66,7 +67,8 @@ class PersonalInforRepo {
   }
 
   static Future<void> updatePersonalInfor(
-      Map<String, dynamic> userInforUpdateData) async {
+    Map<String, dynamic> userInforUpdateData,
+  ) async {
     try {
       final res = await DioBase.put(
         data: userInforUpdateData,
@@ -86,6 +88,34 @@ class PersonalInforRepo {
       DebugPrint.dataLog(
         currentFile: 'personal_infor_repo',
         title: "updateDevice error",
+        data: e,
+      );
+      // rethrow;
+    }
+  }
+
+  static Future<void> linkDeviceToUser(
+    Map<String, dynamic> linkDeviceToUser,
+  ) async {
+    try {
+      final res = await DioBase.post(
+        data: linkDeviceToUser,
+        endUrl: ApiConstants.deviceLinkToUser,
+      );
+
+      if (res.statusCode == 200) {
+        DebugPrint.callApiLog(
+            httpMethod: 'post',
+            url: ApiConstants.deviceLinkToUser,
+            currentFile: "personal_infor_repo",
+            data: res.data,
+            message: 'linkDeviceToUser');
+      } else {}
+    } catch (e) {
+      // ignore: avoid_print
+      DebugPrint.dataLog(
+        currentFile: 'personal_infor_repo',
+        title: "linkDeviceToUser error",
         data: e,
       );
       // rethrow;

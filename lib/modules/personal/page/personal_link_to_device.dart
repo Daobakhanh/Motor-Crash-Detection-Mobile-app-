@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:motorbike_crash_detection/modules/personal/bloc/personal_bloc_link_device_user_bloc.dart';
+import 'package:motorbike_crash_detection/modules/personal/bloc/personal_infor_bloc.dart';
 import 'package:motorbike_crash_detection/modules/personal/page/personal_page.dart';
 
 import '../../../data/term/app_term.dart';
@@ -53,8 +55,10 @@ class _PersonalLinkToDeviceState extends State<PersonalLinkToDevice> {
         ),
         actions: [
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               // _handleUpdatePersonalProfile();
+              await _handleLinkDeviceToUser();
+
               FocusManager.instance.primaryFocus?.unfocus();
               setState(() {
                 isDone = !isDone;
@@ -97,6 +101,7 @@ class _PersonalLinkToDeviceState extends State<PersonalLinkToDevice> {
                 ),
               ),
               const SizedBox10H(),
+
               //device Id
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 5),
@@ -104,7 +109,7 @@ class _PersonalLinkToDeviceState extends State<PersonalLinkToDevice> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: SizedBox(
                     child: TextField(
-                      maxLength: 14,
+                      maxLength: 17,
                       maxLines: 1,
                       autofocus: false,
                       controller: _controllerTextDeviceId,
@@ -156,5 +161,15 @@ class _PersonalLinkToDeviceState extends State<PersonalLinkToDevice> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleLinkDeviceToUser() async {
+    Map<String, dynamic> linkDeviceToUserData = <String, dynamic>{
+      "deviceId": deviceId,
+      "verificationCode": verificationCode
+    };
+
+    await PersonalLinkUserDeviceBloc.personalLinkUserDeviceEvent(
+        linkDeviceToUser: linkDeviceToUserData);
   }
 }

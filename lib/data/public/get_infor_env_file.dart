@@ -10,3 +10,13 @@ Future<String?> getApiUrl() async {
       data: apiUrl);
   return apiUrl;
 }
+
+Future<String?> getSocketUrl() async {
+  await dotenv.load(fileName: ".env");
+  String? apiUrl = dotenv.env['SOCKETAPI'];
+  DebugPrint.dataLog(
+      currentFile: 'get_infor_env',
+      title: 'socketAPI from env file',
+      data: apiUrl);
+  return apiUrl;
+}

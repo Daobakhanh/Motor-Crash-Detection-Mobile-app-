@@ -18,8 +18,12 @@ class PersonalInforBloc extends Bloc<PersonalBlocEvent, PersonalInforState> {
             try {
               final personalRes = await PersonalInforRepo.getUserInfor();
               final deviceRes = await DeviceRepo.getDevice();
-              if (personalRes != null && deviceRes != null) {
-                emit(PersonalInforState(user: personalRes, device: deviceRes));
+              if (personalRes != null) {
+                emit(PersonalInforState(user: personalRes));
+                if (deviceRes != null) {
+                  emit(
+                      PersonalInforState(user: personalRes, device: deviceRes));
+                }
               }
             } catch (e) {
               emit(PersonalInforState(error: e));

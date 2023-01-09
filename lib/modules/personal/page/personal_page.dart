@@ -2,12 +2,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motorbike_crash_detection/data/mock/app_infor_mock.dart';
 import 'package:motorbike_crash_detection/modules/personal/bloc/personal_bloc_event.dart';
 import 'package:motorbike_crash_detection/modules/personal/bloc/personal_infor_bloc.dart';
+import 'package:motorbike_crash_detection/modules/personal/page/personal_link_to_device.dart';
 import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 import 'package:motorbike_crash_detection/themes/app_color.dart';
 import 'package:motorbike_crash_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/term/app_term.dart';
+import '../../device/model/device_model/device_model.dart';
 import '../widget/personal_infor_widget.dart';
 import 'personal_motorbike_image_detail_page.dart';
 import 'personal_drawer_page.dart';
@@ -49,8 +51,10 @@ class _PersonalPageState extends State<PersonalPage> {
           final personalInfor = state.user;
           final deviceInfor = state.device;
           final personalInforError = state.error;
-          if (personalInfor != null && deviceInfor != null) {
-            final vehicleInfor = state.device!.vehicle;
+          if (personalInfor != null) {
+            final vehicleInfor = (deviceInfor == null)
+                ? deviceMock.vehicle
+                : state.device!.vehicle!;
 
             return RefreshIndicator(
               onRefresh: () async {
@@ -65,81 +69,138 @@ class _PersonalPageState extends State<PersonalPage> {
                   ListView(
                     children: [
                       const SizedBox15H(),
-                      GestureDetector(
-                        onTap: (() {
-                          debugPrint('Press see image detail');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MotorbikeImageDetail(
-                                imageUrl: vehicleInfor.photoUrl ?? imageUrl,
-                              ),
+                      deviceInfor != null
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: GestureDetector(
+                                    onTap: (() {
+                                      debugPrint('Press see image detail');
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              MotorbikeImageDetail(
+                                            imageUrl: vehicleInfor.photoUrl ??
+                                                imageUrl,
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                    child: Image.asset(
+                                      vehicleInfor!.photoUrl ?? imageUrl,
+                                      fit: BoxFit.contain,
+                                      // width: 200,
+                                      height: 100,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox15H(),
+                                const Divider(
+                                  thickness: 1.5,
+                                  color: AppColor.lightGray2,
+                                  height: 1.5,
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Text(
+                                    AppTerm.vehicle,
+                                    style: AppTextStyle.body17
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                ItemPersonalInforWidget(
+                                  icon: Icons.branding_watermark,
+                                  title: VehicleInforTerm.brand,
+                                  content: vehicleInfor.brand ??
+                                      VehicleInforDataMock.vehicleBrand,
+                                ),
+                                ItemPersonalInforWidget(
+                                  icon: Icons.motorcycle,
+                                  title: VehicleInforTerm.model,
+                                  content: vehicleInfor.model ??
+                                      VehicleInforDataMock.vehicleModel,
+                                ),
+                                ItemPersonalInforWidget(
+                                  icon: Icons.color_lens,
+                                  title: VehicleInforTerm.color,
+                                  content: vehicleInfor.color ??
+                                      VehicleInforDataMock.vehicleColor,
+                                ),
+                                ItemPersonalInforWidget(
+                                  icon: Icons.credit_card,
+                                  title: VehicleInforTerm.numberPlates,
+                                  content: vehicleInfor.licensePlate ??
+                                      VehicleInforDataMock.vehicleNumberPlates,
+                                ),
+                                const ItemPersonalInforDescriptionWidget(
+                                    icon: Icons.description,
+                                    title: VehicleInforTerm.description,
+                                    content: VehicleInforDataMock
+                                        .vehicleDescription),
+                                ItemPersonalInforWidget(
+                                  icon: Icons.sos,
+                                  title: PersonalInforTerm.sosNumber,
+                                  content: personalInfor.sosNumbers![0],
+                                ),
+                                const SizedBox10H(),
+                                const Divider(
+                                  color: AppColor.lightGray2,
+                                  thickness: 1.5,
+                                  height: 1.5,
+                                ),
+                              ],
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Text(
+                                    AppTerm.vehicle,
+                                    style: AppTextStyle.body17
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                const SizedBox10H(),
+                                Container(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: const Text(
+                                    'Vehicle not found, Please add Vehicle',
+                                    style:
+                                        TextStyle(fontStyle: FontStyle.italic),
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const PersonalLinkToDevice(),
+                                          ));
+                                    },
+                                    icon: const Icon(Icons.link),
+                                    label: const Text('Add vehicle here'),
+                                  ),
+                                ),
+                                const SizedBox10H(),
+                                const Divider(
+                                  color: AppColor.lightGray2,
+                                  thickness: 1.5,
+                                  height: 1.5,
+                                ),
+                              ],
                             ),
-                          );
-                        }),
-                        child: Image.asset(
-                          vehicleInfor!.photoUrl ?? imageUrl,
-                          fit: BoxFit.contain,
-                          // width: 200,
-                          height: 100,
-                        ),
-                      ),
-                      const SizedBox15H(),
-                      const Divider(
-                        thickness: 1.5,
-                        color: AppColor.lightGray2,
-                        height: 1.5,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          AppTerm.vehicle,
-                          style: AppTextStyle.body17
-                              .copyWith(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      ItemPersonalInforWidget(
-                        icon: Icons.branding_watermark,
-                        title: VehicleInforTerm.brand,
-                        content: vehicleInfor.brand ??
-                            VehicleInforDataMock.vehicleBrand,
-                      ),
-                      ItemPersonalInforWidget(
-                        icon: Icons.motorcycle,
-                        title: VehicleInforTerm.model,
-                        content: vehicleInfor.model ??
-                            VehicleInforDataMock.vehicleModel,
-                      ),
-                      ItemPersonalInforWidget(
-                        icon: Icons.color_lens,
-                        title: VehicleInforTerm.color,
-                        content: vehicleInfor.color ??
-                            VehicleInforDataMock.vehicleColor,
-                      ),
-                      ItemPersonalInforWidget(
-                        icon: Icons.credit_card,
-                        title: VehicleInforTerm.numberPlates,
-                        content: vehicleInfor.licensePlate ??
-                            VehicleInforDataMock.vehicleNumberPlates,
-                      ),
-                      const ItemPersonalInforDescriptionWidget(
-                          icon: Icons.description,
-                          title: VehicleInforTerm.description,
-                          content: VehicleInforDataMock.vehicleDescription),
-                      ItemPersonalInforWidget(
-                        icon: Icons.sos,
-                        title: PersonalInforTerm.sosNumber,
-                        content: personalInfor.sosNumbers![0],
-                      ),
-
-                      const SizedBox10H(),
-                      const Divider(
-                        color: AppColor.lightGray2,
-                        thickness: 1.5,
-                        height: 1.5,
-                      ),
-
                       //Vehicle Owner
                       Container(
                         margin: const EdgeInsets.only(top: 10),
@@ -195,7 +256,7 @@ class _PersonalPageState extends State<PersonalPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => PersonalEditInforPage(
-                                deviceId: deviceInfor.id ?? '',
+                                deviceId: deviceInfor!.id ?? '',
                                 personalInfor: personalInfor,
                                 vehicleInfor: vehicleInfor,
                               ),
@@ -230,4 +291,6 @@ class _PersonalPageState extends State<PersonalPage> {
       ),
     );
   }
+
+  final deviceMock = DeviceModel();
 }
