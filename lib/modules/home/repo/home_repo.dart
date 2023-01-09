@@ -6,17 +6,20 @@ import '../../../data/term/network_term.dart';
 import '../../../utils/debug_print_message.dart';
 
 class HomeRepo {
-  static Future<DeviceModel?> toggleAntiThief(
-      {required bool toggleAntiTheft}) async {
+  static Future<DeviceModel?> toggleAntiThief({required bool antiTheft}) async {
     try {
       //get device ID from local storage here
       String deviceId = await DeviceRepo.getDeviceIdFromLocalStorage() ?? '';
       DebugPrint.dataLog(
           currentFile: 'home_repo',
           title: 'toggleAntiTheft state pass from home',
-          data: toggleAntiTheft);
+          data: antiTheft);
       final res = await DioBase.post(
-        data: {"antiTheft": toggleAntiTheft},
+        data: {
+          "antiTheft": antiTheft,
+          "updateLocation": true,
+          "warning": false
+        },
         endUrl: ApiConstants.requestDevice(deviceId: deviceId),
       );
 
@@ -45,14 +48,19 @@ class HomeRepo {
     // return listNoti;
   }
 
-  static Future<DeviceModel?> getCurrentLocation() async {
+  static Future<DeviceModel?> getCurrentLocation(
+      {required bool antiTheft}) async {
     //call for socket io push
     try {
       //get device ID from local storage here
       String deviceId = await DeviceRepo.getDeviceIdFromLocalStorage() ?? '';
 
       final res = await DioBase.post(
-        data: {"updateLocation": true},
+        data: {
+          "updateLocation": true,
+          "antiTheft": antiTheft,
+          "warning": false
+        },
         endUrl: ApiConstants.requestDevice(deviceId: deviceId),
       );
 
@@ -81,13 +89,18 @@ class HomeRepo {
     // return listNoti;
   }
 
-  static Future<DeviceModel?> offWarning() async {
+  static Future<DeviceModel?> offWarning({required bool antiTheft}) async {
     //call for socket io push
     try {
       //get device ID from local storage here
       String deviceId = await DeviceRepo.getDeviceIdFromLocalStorage() ?? '';
       final res = await DioBase.post(
-        data: {"warning": true},
+        //fasle to of warning
+        data: {
+          "warning": false,
+          "antiTheft": antiTheft,
+          "updateLocation": true
+        },
         endUrl: ApiConstants.requestDevice(deviceId: deviceId),
       );
 
