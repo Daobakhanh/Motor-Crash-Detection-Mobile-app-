@@ -1,7 +1,11 @@
 import 'dart:async';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide BlocProvider;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:motorbike_crash_detection/data/mock/access_token.dart';
+import 'package:motorbike_crash_detection/data/public/get_infor_env_file.dart';
 import 'package:motorbike_crash_detection/modules/home/bloc/home_bloc.dart';
 import 'package:motorbike_crash_detection/modules/home/bloc/home_bloc_event.dart';
 import 'package:motorbike_crash_detection/themes/app_color.dart';
@@ -9,8 +13,11 @@ import 'package:motorbike_crash_detection/themes/app_text_style.dart';
 import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
+import '../../../base/notification_service.dart';
 import '../../../data/term/app_term.dart';
 import '../../auth/repo/auth_local_storage_repo.dart';
+import '../../notification/bloc/notification_stream_bloc.dart';
+import '../../providers/bloc_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,8 +30,9 @@ class _HomePageState extends State<HomePage> {
   late io.Socket socket;
   late Map<MarkerId, Marker> _marker;
 
-  static const CameraPosition _cameraPosition =
-      CameraPosition(target: LatLng(21.006560, 105.848429), zoom: 14);
+  // ignore: prefer_final_fields
+  CameraPosition _cameraPosition =
+      const CameraPosition(target: LatLng(21.006560, 105.848429), zoom: 14);
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
@@ -34,10 +42,12 @@ class _HomePageState extends State<HomePage> {
       // socket = io.Socket()
       String backendUserAccessToken = await AuthLocalStorageRepo
               .getBackendUserAccesskenFromLocalStorage() ??
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZlVaS3RHcWZ4UmI3Zmt3SXRodzJEYVA0ZU9mMSIsInBob25lTnVtYmVyIjoiMDM1NzY5ODU3MCIsImFkZHJlc3MiOiIxOSBuZ28gMTUgVGEgUXVhbmcgQnV1IiwiYXZhdGFyVXJsIjpudWxsLCJjaXRpemVuTnVtYmVyIjoiMDMwMjAwMDA1ODIxIiwibmFtZSI6IkRhbyBCYSBLaGFuaCIsImRhdGVPZkJpcnRoIjoiMy85LzIwMDAiLCJzb3NOdW1iZXJzIjpbXSwiZmNtVG9rZW5zIjpbImZUUWVRRlpCU2xTSXhTMXJZaXFHb206QVBBOTFiRlROU2xaWl9SczlZV0RPQ0xlRF96M2NEd0FzU3d3RWtLVFE5MG9BaGZCRGJobXBvbnlKZ29pWnlqVF8xY0NyYXpmUTU4dERHZjdodGpJdGluVGJEclMxRVdORVI4MWNydDFnVXFEaWpaQndjNWt3Y05LUVM2NDlNQ1JOcUZrMzhHV0xYN3MiXSwibGFzdFNpZ25JbkF0IjoiMjAyMi0xMi0yNVQwNjozNjoxMC43MTFaIn0sImlhdCI6MTY3MTk1MDE3MCwiZXhwIjoxNjc0NTQyMTcwfQ.UyKibh5LaR8ClX4tBxd9YtIxVstNHwqzcIjaEQvQZnM';
-
+          AccessToken.accessToken;
+      final String socketUrl = await getSocketUrl() ?? '';
+      print('///////////////');
+      print(socketUrl);
       socket = io.io(
-        'https://ba66-2402-800-61b1-e0f1-6913-6d2a-306e-5781.ap.ngrok.io',
+        socketUrl,
         <String, dynamic>{
           'transports': ['websocket'],
           'autoConnect': true,
@@ -56,15 +66,21 @@ class _HomePageState extends State<HomePage> {
 
           DebugPrint.dataLog(
               currentFile: 'homepage',
-              title: 'Data on emit',
+              title: 'Data on emit socket',
               data: latLng.toString());
           GoogleMapController controller = await _controller.future;
           controller.animateCamera(
             CameraUpdate.newCameraPosition(
               CameraPosition(
                 target: LatLng(
-                  latLng[AppSocketTerm.lat] as double,
-                  latLng[AppSocketTerm.long] as double,
+                  latLng[AppSocketTerm.lat] == 0 ||
+                          latLng[AppSocketTerm.lat] == null
+                      ? 21.006560
+                      : latLng[AppSocketTerm.lat],
+                  latLng[AppSocketTerm.long] == 0 ||
+                          latLng[AppSocketTerm.long] == null
+                      ? 105.848429
+                      : latLng[AppSocketTerm.long],
                 ),
                 zoom: 19,
               ),
@@ -81,36 +97,57 @@ class _HomePageState extends State<HomePage> {
             markerId: const MarkerId('ID'),
             icon: image,
             position: LatLng(
-              latLng[AppSocketTerm.lat],
-              latLng[AppSocketTerm.long],
+              latLng[AppSocketTerm.lat] == 0 ||
+                      latLng[AppSocketTerm.lat] == null
+                  ? 21.006560
+                  : latLng[AppSocketTerm.lat],
+              latLng[AppSocketTerm.long] == 0 ||
+                      latLng[AppSocketTerm.long] == null
+                  ? 105.848429
+                  : latLng[AppSocketTerm.long],
             ),
           );
 
           setState(() {
             _marker[const MarkerId('ID')] = marker;
           });
+
+          _homeBloc.add(HomeBlocEvent(
+            homeBlocEvent: HomeBlocEventEnum.getDeviceInfor,
+            stateToggleAntiThief: isOnAntiThief,
+          ));
         },
       );
     } catch (e) {
       DebugPrint.dataLog(
           currentFile: 'home_page', title: 'Init socket IO Fail', data: e);
-      rethrow;
+      // rethrow;
     }
   }
 
   late bool isOnAntiThief;
-  bool isWarning = true;
+
+  late bool isWarning;
+  bool isLoadingOfWarning = false;
+
   final _homeBloc = HomeBloc();
+  NotificationBlocStream get _notificationBlocStream =>
+      BlocProvider.of<NotificationBlocStream>(context)!;
 
   @override
   void initState() {
     super.initState();
     isOnAntiThief = true;
+    isWarning = true;
     _marker = <MarkerId, Marker>{};
     _marker.clear();
     initSocket();
     _homeBloc.add(
-        HomeBlocEvent(homeBlocEvent: HomeBlocEventEnum.getCurrentLocation));
+      HomeBlocEvent(
+        homeBlocEvent: HomeBlocEventEnum.getDeviceInfor,
+        stateToggleAntiThief: isOnAntiThief,
+      ),
+    );
   }
 
   @override
@@ -127,7 +164,8 @@ class _HomePageState extends State<HomePage> {
           final device = state.device;
           if (device != null) {
             isOnAntiThief = device.config!.antiTheft!;
-            // final bool toggleAntiThiefState = device.config!.antiTheft!;
+            final statusDevice = device.status ?? 0;
+
             DebugPrint.dataLog(
                 currentFile: 'home_page',
                 title: 'toggleAntiThiefState',
@@ -145,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                   }),
                 ),
 
-                isWarning
+                statusDevice != 0
                     ?
                     //Get current location widget
                     Align(
@@ -179,15 +217,20 @@ class _HomePageState extends State<HomePage> {
                             //     ),
                             //   ],
                             // ),
-                            child: const Icon(
-                              Icons.warning_sharp,
-                              size: 60,
-                              color: AppColor.activeStateYellow,
-                            ),
+                            child: isLoadingOfWarning
+                                ? const CupertinoActivityIndicator(
+                                    color: AppColor.light,
+                                  )
+                                : const Icon(
+                                    Icons.warning_sharp,
+                                    size: 60,
+                                    color: AppColor.activeStateYellow,
+                                  ),
                             onPressed: () async {
                               setState(
                                 () {
                                   isWarning = !isWarning;
+                                  isLoadingOfWarning = true;
                                 },
                               );
                               await showConfirmSafeDialog(context);
@@ -219,11 +262,12 @@ class _HomePageState extends State<HomePage> {
                                   isWarning = !isWarning;
                                 },
                               );
-                              // _homeBloc.add(
-                              //   HomeBlocEvent(
-                              //       homeBlocEvent:
-                              //           HomeBlocEventEnum.getCurrentLocation),
-                              // );
+                              _homeBloc.add(
+                                HomeBlocEvent(
+                                    stateToggleAntiThief: isOnAntiThief,
+                                    homeBlocEvent:
+                                        HomeBlocEventEnum.getCurrentLocation),
+                              );
                             },
                           ),
                         ),
@@ -308,10 +352,13 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 _homeBloc.add(
                   HomeBlocEvent(
-                    homeBlocEvent: HomeBlocEventEnum.offWarning,
-                  ),
+                      homeBlocEvent: HomeBlocEventEnum.offWarning,
+                      stateToggleAntiThief: isOnAntiThief),
                 );
                 Future.delayed(const Duration(seconds: 1), () {
+                  setState(() {
+                    isLoadingOfWarning = false;
+                  });
                   Navigator.pop(context, 'OK');
                 });
               },

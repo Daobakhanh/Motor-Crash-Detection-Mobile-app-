@@ -19,8 +19,7 @@ class HomeBloc extends Bloc<HomeBlocEvent, HomeBlocState> {
             try {
               HomeBlocState(isLoading: true, isLoadDone: false);
               DeviceModel? resDevice = await HomeRepo.toggleAntiThief(
-                  toggleAntiTheft: event.getStateToggleAntiThief!);
-              print(resDevice);
+                  antiTheft: event.getStateToggleAntiThief!);
 
               // final deviceRes = await DeviceRepo.getDevice();
               if (resDevice != null) {
@@ -42,7 +41,8 @@ class HomeBloc extends Bloc<HomeBlocEvent, HomeBlocState> {
           case HomeBlocEventEnum.getCurrentLocation:
             try {
               HomeBlocState(isLoading: true, isLoadDone: false);
-              DeviceModel? resDevice = await HomeRepo.getCurrentLocation();
+              DeviceModel? resDevice = await HomeRepo.getCurrentLocation(
+                  antiTheft: event.getStateToggleAntiThief!);
               // final deviceRes = await DeviceRepo.getDevice();
               if (resDevice != null) {
                 emit(
@@ -61,10 +61,10 @@ class HomeBloc extends Bloc<HomeBlocEvent, HomeBlocState> {
             }
             break;
           case HomeBlocEventEnum.offWarning:
-            // TODO: Handle this case.
             try {
               HomeBlocState(isLoading: true, isLoadDone: false);
-              DeviceModel? resDevice = await HomeRepo.offWarning();
+              DeviceModel? resDevice = await HomeRepo.offWarning(
+                  antiTheft: event.getStateToggleAntiThief!);
               // final deviceRes = await DeviceRepo.getDevice();
               if (resDevice != null) {
                 emit(
