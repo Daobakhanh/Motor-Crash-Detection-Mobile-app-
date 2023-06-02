@@ -1,5 +1,6 @@
-import 'package:motorbike_crash_detection/data/term/local_storage_pref_key.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../lib.dart';
 
 class AuthLocalStorageRepo {
   static Future<void> setBackendUserAccessTokenToLocalStorage(

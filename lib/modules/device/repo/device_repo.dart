@@ -1,9 +1,6 @@
-import 'package:motorbike_crash_detection/base/dio_base.dart';
-import 'package:motorbike_crash_detection/modules/device/model/device_model/device_model.dart';
-import 'package:motorbike_crash_detection/modules/device/model/vehicle_model/vehicle_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../data/term/network_term.dart';
-import '../../../utils/debug_print_message.dart';
+import '../../../lib.dart';
 
 class DeviceRepo {
   static Future<DeviceModel?> getDevice() async {
@@ -14,14 +11,19 @@ class DeviceRepo {
 
       if (res.statusCode == 200) {
         DebugPrint.callApiLog(currentFile: "device_repo", message: 'getDevice');
-        final device = DeviceModel.fromJson(
-            res.data['data'][0]); //res list device, but get once
-        return device;
+
+        if (res.data['data'].length != 0) {
+          final device = DeviceModel.fromJson(
+              res.data['data'][0]); //res list device, but get once
+          await saveDeviceIdToLocalStorage(deviceID: device.id!);
+          return device;
+        } else {
+          return null;
+        }
       } else {
         return null;
       }
     } catch (e) {
-      // ignore: avoid_print
       DebugPrint.dataLog(
         currentFile: 'device_repo',
         title: "getDevice error",
@@ -29,7 +31,7 @@ class DeviceRepo {
       );
       // rethrow;
     }
-    return null;
+    // return null;
   }
 
   static Future<VehicleDataModel?> getVehicle() async {
@@ -63,10 +65,7 @@ class DeviceRepo {
       {required String deviceId, required String verificationCode}) async {
     try {
       final res = await DioBase.post(
-        data: {
-          'deviceId': deviceId,
-          'verificationCode': verificationCode,
-        },
+        data: {'deviceId': deviceId, 'verificationCode': verificationCode},
         endUrl: ApiConstants.deviceLinkToUser,
       );
 
@@ -186,5 +185,18 @@ class DeviceRepo {
       // rethrow;
     }
     return null;
+  }
+
+  static Future<void> saveDeviceIdToLocalStorage(
+      {required String deviceID}) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(SharedPrefsKey.deviceID, deviceID);
+  }
+
+  static Future<String?> getDeviceIdFromLocalStorage() async {
+    String? deviceId;
+    final prefs = await SharedPreferences.getInstance();
+    deviceId = prefs.getString(SharedPrefsKey.deviceID);
+    return deviceId;
   }
 }

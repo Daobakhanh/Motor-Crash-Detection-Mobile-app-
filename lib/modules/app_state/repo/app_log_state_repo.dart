@@ -1,7 +1,6 @@
-import 'package:motorbike_crash_detection/data/enum/app_state_enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../data/term/local_storage_pref_key.dart';
+import '../../../lib.dart';
 
 Future<bool> isFirstAppOpen() async {
   final prefs = await SharedPreferences.getInstance();

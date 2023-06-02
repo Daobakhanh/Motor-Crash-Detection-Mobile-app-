@@ -1,8 +1,4 @@
-import 'package:motorbike_crash_detection/modules/notification/model/notification_model.dart';
-
-import '../../../base/dio_base.dart';
-import '../../../data/term/network_term.dart';
-import '../../../utils/debug_print_message.dart';
+import '../../../lib.dart';
 
 class NotificationRepo {
   static Future<List<NotificationModel>?> getAllNotifications() async {

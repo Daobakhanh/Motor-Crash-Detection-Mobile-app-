@@ -10,6 +10,15 @@ class AppTerm {
   static const owner = "Owner";
   static const personal = "Personal";
   static const appLogState = "AppLogState";
+  static const personalLinkToDevice = 'Link to Device';
+  static const personalLinkToDeviceGuide =
+      'Enter "Device Id" and "Verification Code" to link:';
+}
+
+class AppSocketTerm {
+  static const socketEvent = 'location-change';
+  static const lat = 'latitude';
+  static const long = 'longitude';
 }
 
 class AppAuthTerm {
@@ -49,10 +58,16 @@ class VehicleInforTerm {
   static const description = "Description";
 }
 
+class LinkUserToDevice {
+  static const deviceId = "Device ID";
+  static const verificationCode = 'Verification Code';
+}
+
 class PersonalInforTerm {
   static const name = "Name";
   static const addr = "Address";
   static const dob = "DoB";
   static const citizenId = "Citizen ID";
   static const phoneNumber = "Phone number";
+  static const sosNumber = "SOS Number";
 }

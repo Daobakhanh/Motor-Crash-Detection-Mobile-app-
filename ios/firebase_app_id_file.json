@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:737258673931:ios:60705db30205ea893d740e",
-  "FIREBASE_PROJECT_ID": "motorbike-crash-detection",
-  "GCM_SENDER_ID": "737258673931"
+  "GOOGLE_APP_ID": "1:1088481550003:ios:877c3de06f2ad775421ac6",
+  "FIREBASE_PROJECT_ID": "motorbike-crash-theft-detect",
+  "GCM_SENDER_ID": "1088481550003"
 }

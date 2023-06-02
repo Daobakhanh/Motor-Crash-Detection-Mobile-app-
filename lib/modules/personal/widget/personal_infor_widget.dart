@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../lib.dart';
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_style.dart';
 import '../../widget/widget/stateless_widget/sized_box_widget.dart';
@@ -146,6 +147,55 @@ class _ItemPersonalInforDescriptionWidgetState
               ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class PersonalInforWidget extends StatelessWidget {
+  const PersonalInforWidget({super.key, required this.personalInfor});
+  final UserModel personalInfor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            AppTerm.owner,
+            style: AppTextStyle.body17.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
+        ItemPersonalInforWidget(
+          icon: Icons.person,
+          title: PersonalInforTerm.name,
+          content: personalInfor.name ?? PersonalInforDataMock.name,
+        ),
+        ItemPersonalInforWidget(
+          icon: Icons.calendar_month,
+          title: PersonalInforTerm.dob,
+          content: personalInfor.dateOfBirth ?? PersonalInforDataMock.dob,
+        ),
+        ItemPersonalInforWidget(
+          icon: Icons.location_on,
+          title: PersonalInforTerm.addr,
+          content: personalInfor.address ?? PersonalInforDataMock.addr,
+        ),
+        ItemPersonalInforWidget(
+          icon: Icons.phone,
+          title: PersonalInforTerm.phoneNumber,
+          content:
+              personalInfor.phoneNumber ?? PersonalInforDataMock.phoneNumber,
+        ),
+        ItemPersonalInforWidget(
+          icon: Icons.fingerprint,
+          title: PersonalInforTerm.citizenId,
+          content:
+              personalInfor.citizenNumber ?? PersonalInforDataMock.citizenId,
         ),
       ],
     );

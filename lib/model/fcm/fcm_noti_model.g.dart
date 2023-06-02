@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'fcm_noti_model.dart';
+part of 'fcm_noti_model_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

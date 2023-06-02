@@ -1,8 +1,4 @@
-import 'package:motorbike_crash_detection/base/dio_base.dart';
-import 'package:motorbike_crash_detection/data/enum/app_state_enum.dart';
-import 'package:motorbike_crash_detection/data/term/network_term.dart';
-import 'package:motorbike_crash_detection/modules/auth/model/auth_model.dart';
-import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
+import '../../../lib.dart';
 
 class AuthRepo {
   static Future<AuthModel> signUpRepo(

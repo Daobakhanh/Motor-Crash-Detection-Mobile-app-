@@ -1,6 +1,6 @@
 {
-    "name": "motorbike_crash_detection",
-    "short_name": "motorbike_crash_detection",
+    "name": "motorbike_crash_theft_detection_system",
+    "short_name": "motorbike_crash_theft_detection_system",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

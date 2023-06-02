@@ -1,17 +1,7 @@
-import 'package:motorbike_crash_detection/data/term/app_term.dart';
 import 'package:flutter/material.dart';
-import 'package:motorbike_crash_detection/route/app_route.dart';
 import 'package:unicons/unicons.dart';
 
-import '../../../themes/app_color.dart';
-import '../../../themes/app_text_style.dart';
-import '../../app_state/bloc/app_state_bloc.dart';
-import '../../providers/bloc_provider.dart';
-import '../../widget/widget/stateless_widget/button_stl_widget.dart';
-import '../utils/auth_show_diolog_utils.dart';
-import '../widget/auth_widget.dart';
-import 'auth_signin_page.dart';
-import 'auth_signup_page.dart';
+import '../../../lib.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});

@@ -1,6 +1,7 @@
-import 'package:motorbike_crash_detection/themes/app_color.dart';
-import 'package:motorbike_crash_detection/themes/app_font.dart';
 import 'package:flutter/material.dart';
+
+import 'app_color.dart';
+import 'app_font.dart';
 
 class AppTextStyle {
   static const h1 = TextStyle(

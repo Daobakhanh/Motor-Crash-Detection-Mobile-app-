@@ -1,18 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-
-import '../create_at_model/create_at_model.dart';
-part 'location_model.g.dart';
-
-@JsonSerializable()
-class LocationModel {
-  final double? longitude;
-  final double? latitude;
-  final CreateAtModel? createAtModel;
-  LocationModel({this.latitude, this.longitude, this.createAtModel});
-
-  /// factory.
-  factory LocationModel.fromJson(Map<String, dynamic> json) =>
-      _$LocationModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$LocationModelToJson(this);
-}
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// Read more on README.md/Utils
+export 'location_model_dto.dart';
