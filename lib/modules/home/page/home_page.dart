@@ -1,23 +1,11 @@
 import 'dart:async';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide BlocProvider;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:motorbike_crash_detection/data/mock/access_token.dart';
-import 'package:motorbike_crash_detection/data/public/get_infor_env_file.dart';
-import 'package:motorbike_crash_detection/modules/home/bloc/home_bloc.dart';
-import 'package:motorbike_crash_detection/modules/home/bloc/home_bloc_event.dart';
-import 'package:motorbike_crash_detection/themes/app_color.dart';
-import 'package:motorbike_crash_detection/themes/app_text_style.dart';
-import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
-import '../../../base/notification_service.dart';
-import '../../../data/term/app_term.dart';
-import '../../auth/repo/auth_local_storage_repo.dart';
-import '../../notification/bloc/notification_stream_bloc.dart';
-import '../../providers/bloc_provider.dart';
+import '../../../lib.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -44,8 +32,8 @@ class _HomePageState extends State<HomePage> {
               .getBackendUserAccesskenFromLocalStorage() ??
           AccessToken.accessToken;
       final String socketUrl = await getSocketUrl() ?? '';
-      print('///////////////');
-      print(socketUrl);
+      debugPrint('///////////////');
+      debugPrint(socketUrl);
       socket = io.io(
         socketUrl,
         <String, dynamic>{
@@ -163,7 +151,8 @@ class _HomePageState extends State<HomePage> {
           final homeError = state.error;
           final device = state.device;
           if (device != null) {
-            isOnAntiThief = device.config!.antiTheft!;
+            //remote false if check nullable, mock test
+            isOnAntiThief = device.config?.antiTheft! ?? false;
             final statusDevice = device.status ?? 0;
 
             DebugPrint.dataLog(

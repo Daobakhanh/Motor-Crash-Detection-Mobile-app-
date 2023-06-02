@@ -1,17 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:motorbike_crash_detection/data/enum/app_state_enum.dart';
-import 'package:motorbike_crash_detection/data/term/app_term.dart';
-import 'package:motorbike_crash_detection/modules/app_state/bloc/app_state_bloc.dart';
-import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
-import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 
-import '../../../main.dart';
-import '../../../themes/app_color.dart';
-import '../../../themes/app_text_style.dart';
-import '../../../utils/validate_phone_number.dart';
-import '../../providers/bloc_provider.dart';
-import '../../widget/widget/stateless_widget/button_stl_widget.dart';
+import '../../../lib.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({Key? key}) : super(key: key);
@@ -71,11 +61,11 @@ class _SigninPageState extends State<SigninPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 30, bottom: 30),
+                const Padding(
+                  padding: EdgeInsets.only(top: 30, bottom: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         AppAuthTerm.welcomeBack,
                         style: AppTextStyle.largeTitle,
@@ -222,15 +212,16 @@ class _SigninPageState extends State<SigninPage> {
                                 bool isSignInSuccessfull = false;
 
                                 try {
-                                  // await signInWithCredential();
-                                  // fbAccessToken =
-                                  //     await getFbAccessTokenFromFirebase() ?? '';
-                                  // await setFbUserAccessTokenToLocalStorage(
-                                  //     accessToken: fbAccessToken);
-                                  // isSignInSuccessfull = await AuthBloc.signIn();
+                                  await signInWithCredential();
+                                  fbAccessToken =
+                                      await getFbAccessTokenFromFirebase() ??
+                                          '';
+                                  await setFbUserAccessTokenToLocalStorage(
+                                      accessToken: fbAccessToken);
+                                  isSignInSuccessfull = await AuthBloc.signIn();
 
-                                  //TODO: delete one code line below if test OK
-                                  isSignInSuccessfull = true;
+                                  // //TODO: delete one code line below if test OK
+                                  // isSignInSuccessfull = true;
                                 } catch (e) {
                                   DebugPrint.authenLog(
                                     message: AppStateEnum.fail.toString(),

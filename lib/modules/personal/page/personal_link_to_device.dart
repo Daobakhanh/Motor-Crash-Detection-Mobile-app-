@@ -1,13 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:motorbike_crash_detection/modules/personal/bloc/personal_bloc_link_device_user_bloc.dart';
-import 'package:motorbike_crash_detection/modules/personal/bloc/personal_infor_bloc.dart';
-import 'package:motorbike_crash_detection/modules/personal/page/personal_page.dart';
 
-import '../../../data/term/app_term.dart';
-import '../../../themes/app_color.dart';
-import '../../../themes/app_text_style.dart';
-import '../../widget/widget/stateless_widget/sized_box_widget.dart';
+import '../../../lib.dart';
 
 class PersonalLinkToDevice extends StatefulWidget {
   const PersonalLinkToDevice({super.key});

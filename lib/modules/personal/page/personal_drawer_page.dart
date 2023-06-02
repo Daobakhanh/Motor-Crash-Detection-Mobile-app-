@@ -1,14 +1,6 @@
-import 'package:motorbike_crash_detection/modules/app_state/repo/app_theme_state_local_storage_repo.dart';
-import 'package:motorbike_crash_detection/modules/personal/page/personal_link_to_device.dart';
-import 'package:motorbike_crash_detection/route/app_route.dart';
-import 'package:motorbike_crash_detection/themes/app_color.dart';
 import 'package:flutter/material.dart';
 
-import '../../../data/enum/app_state_enum.dart';
-import '../../../utils/auth_show_diolog_utils.dart';
-import '../../app_state/bloc/app_state_bloc.dart';
-import '../../providers/bloc_provider.dart';
-import '../../widget/widget/stateless_widget/sized_box_widget.dart';
+import '../../../lib.dart';
 
 class PersonalDrawerPage extends StatefulWidget {
   const PersonalDrawerPage({super.key});

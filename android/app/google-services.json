@@ -1,51 +1,26 @@
 {
   "project_info": {
-    "project_number": "737258673931",
-    "project_id": "motorbike-crash-detection",
-    "storage_bucket": "motorbike-crash-detection.appspot.com"
+    "project_number": "1088481550003",
+    "project_id": "motorbike-crash-theft-detect",
+    "storage_bucket": "motorbike-crash-theft-detect.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:737258673931:android:4bed7b343ba4824d3d740e",
+        "mobilesdk_app_id": "1:1088481550003:android:397a657d6224d1f6421ac6",
         "android_client_info": {
-          "package_name": "com.example.motorbike_crash_detection"
+          "package_name": "com.example.motorbike_crash_theft_detection_system"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "737258673931-u4l3e6tjeehu78sr8acm7l46ar2mn3g5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.motorbike_crash_detection",
-            "certificate_hash": "324482161d9022e216ac617901a4553bf0869a2e"
-          }
-        },
-        {
-          "client_id": "737258673931-75tm4ajrpul37upcbii7rhgaoftupqt6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA8Ar2aqL2aNiCJXoP9Bkj6yFohbbzBgUg"
+          "current_key": "AIzaSyAyFilb6lt8sOtarPkP7FtvUBvHluAyOtg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "737258673931-75tm4ajrpul37upcbii7rhgaoftupqt6.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "737258673931-csp1npa63jcq5163ar4cabt4hks15kso.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.elderlyFallStrayDetection"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

@@ -1,9 +1,4 @@
-import 'package:motorbike_crash_detection/modules/device/model/device_model/device_model.dart';
-import 'package:motorbike_crash_detection/modules/device/repo/device_repo.dart';
-
-import '../../../base/dio_base.dart';
-import '../../../data/term/network_term.dart';
-import '../../../utils/debug_print_message.dart';
+import '../../../lib.dart';
 
 class HomeRepo {
   static Future<DeviceModel?> toggleAntiThief({required bool antiTheft}) async {

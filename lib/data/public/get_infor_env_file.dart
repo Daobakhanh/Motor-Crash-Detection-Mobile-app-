@@ -1,5 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
+
+import '../../lib.dart';
 
 Future<String?> getApiUrl() async {
   await dotenv.load(fileName: ".env");

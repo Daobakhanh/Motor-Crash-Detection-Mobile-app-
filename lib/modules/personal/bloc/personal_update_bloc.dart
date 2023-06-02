@@ -1,13 +1,8 @@
-import 'package:motorbike_crash_detection/modules/device/repo/device_repo.dart';
-import 'package:motorbike_crash_detection/modules/providers/bloc_provider.dart';
-
-import '../repo/personal_infor_repo.dart';
+import '../../../lib.dart';
 
 class PersonalUpdateBloc extends BlocBase {
   @override
-  void dispose() {
-    // TODO: implement dispose
-  }
+  void dispose() {}
   PersonalUpdateBloc(state) : super();
 
   static Future<void> updateProfileAndVehicleEvent(

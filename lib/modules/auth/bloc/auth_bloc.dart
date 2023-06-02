@@ -1,10 +1,4 @@
-import 'package:motorbike_crash_detection/modules/auth/repo/auth_local_storage_repo.dart';
-import 'package:motorbike_crash_detection/modules/auth/repo/auth_repo.dart';
-import 'package:motorbike_crash_detection/modules/providers/bloc_provider.dart';
-import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
-
-import '../../app_state/repo/app_get_fcm_token_local_storage_repo.dart';
-import '../model/auth_model.dart';
+import '../../../lib.dart';
 
 class AuthBloc implements BlocBase {
   @override

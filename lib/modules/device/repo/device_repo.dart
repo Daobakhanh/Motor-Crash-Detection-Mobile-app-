@@ -1,11 +1,6 @@
-import 'package:motorbike_crash_detection/base/dio_base.dart';
-import 'package:motorbike_crash_detection/modules/device/model/device_model/device_model.dart';
-import 'package:motorbike_crash_detection/modules/device/model/vehicle_model/vehicle_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../data/term/local_storage_pref_key.dart';
-import '../../../data/term/network_term.dart';
-import '../../../utils/debug_print_message.dart';
+import '../../../lib.dart';
 
 class DeviceRepo {
   static Future<DeviceModel?> getDevice() async {
@@ -70,10 +65,7 @@ class DeviceRepo {
       {required String deviceId, required String verificationCode}) async {
     try {
       final res = await DioBase.post(
-        data: {
-          'deviceId': deviceId,
-          'verificationCode': verificationCode,
-        },
+        data: {'deviceId': deviceId, 'verificationCode': verificationCode},
         endUrl: ApiConstants.deviceLinkToUser,
       );
 

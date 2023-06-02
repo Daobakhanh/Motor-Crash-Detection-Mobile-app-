@@ -1,9 +1,4 @@
-import 'package:motorbike_crash_detection/base/dio_base.dart';
-import 'package:motorbike_crash_detection/data/term/app_term.dart';
-import 'package:motorbike_crash_detection/model/user/user_model.dart';
-
-import '../../../data/term/network_term.dart';
-import '../../../utils/debug_print_message.dart';
+import '../../../lib.dart';
 
 class PersonalInforRepo {
   static Future<bool> isBackendUserAccessTokenExpired() async {

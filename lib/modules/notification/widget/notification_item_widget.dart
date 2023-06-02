@@ -1,9 +1,5 @@
-import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
-import 'package:motorbike_crash_detection/themes/app_color.dart';
-import 'package:motorbike_crash_detection/themes/app_text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:motorbike_crash_detection/utils/time_format.dart';
-import '../model/notification_model.dart';
+import '../../../lib.dart';
 
 class NotificationItem extends StatefulWidget {
   final NotificationModel notificationModel;

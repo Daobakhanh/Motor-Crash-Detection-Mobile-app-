@@ -1,7 +1,4 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../data/term/local_storage_pref_key.dart';
 
 Future<String?> getFcmTokenFromLocalStorage() async {
   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;

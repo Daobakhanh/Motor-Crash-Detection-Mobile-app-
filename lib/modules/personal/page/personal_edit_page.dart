@@ -1,16 +1,7 @@
-import 'package:motorbike_crash_detection/data/mock/app_infor_mock.dart';
-import 'package:motorbike_crash_detection/data/term/app_term.dart';
-import 'package:motorbike_crash_detection/model/user/user_model.dart';
-import 'package:motorbike_crash_detection/modules/device/model/vehicle_model/vehicle_model.dart';
-import 'package:motorbike_crash_detection/modules/personal/page/personal_page.dart';
-import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../themes/app_color.dart';
-import '../../../themes/app_text_style.dart';
-import '../../navigation/pages/app_navigation.dart';
-import '../bloc/personal_update_bloc.dart';
+import '../../../lib.dart';
 
 class PersonalEditInforPage extends StatefulWidget {
   final UserModel? personalInfor;
@@ -31,7 +22,8 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
   bool isDone = false;
 
   UserModel get personalInfor => widget.personalInfor!;
-  VehicleDataModel get vehicleInfor => widget.vehicleInfor!;
+  VehicleDataModel get vehicleInfor =>
+      widget.vehicleInfor ?? VehicleDataModel();
   String get deviceId => widget.deviceId;
 
   String vehicleColor = '';
@@ -468,7 +460,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
                   child: SizedBox(
                     child: TextField(
                       // maxLines: (address / 38 ).roundToDouble() + 1,
-                      maxLength: 10,
+                      maxLength: 12,
                       keyboardType: TextInputType.phone,
                       maxLines: 1,
                       autofocus: false,
@@ -532,14 +524,14 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
       "address": ownerAddress,
       "dateOfBirth": ownerDoB,
       "citizenNumber": ownerCitizenID,
-      "sosNumbers": [vehicleSOSNumber],
+      "sosNumbers": [vehicleSOSNumber]
     };
     Map<String, dynamic> vehicleInforUpdateData = <String, dynamic>{
       "vehicle": {
         "brand": vehicleBrand,
         "model": vehicleModel,
         "color": vehicleColor,
-        "licensePlate": vehicleNumberPlate,
+        "licensePlate": vehicleNumberPlate
       },
     };
     await PersonalUpdateBloc.updateProfileAndVehicleEvent(

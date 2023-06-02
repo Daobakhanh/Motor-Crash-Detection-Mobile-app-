@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:motorbike_crash_detection/main.dart';
-import 'package:motorbike_crash_detection/modules/auth/page/auth_page.dart';
-import 'package:motorbike_crash_detection/modules/auth/page/auth_signin_page.dart';
-import 'package:motorbike_crash_detection/modules/auth/page/auth_signup_page.dart';
-import 'package:motorbike_crash_detection/modules/home/page/home_page.dart';
-import 'package:motorbike_crash_detection/modules/navigation/pages/app_navigation.dart';
-import 'package:motorbike_crash_detection/modules/notification/page/notification_stream_page.dart';
-import 'package:motorbike_crash_detection/modules/personal/page/personal_edit_page.dart';
-import 'package:motorbike_crash_detection/modules/personal/page/personal_link_to_device.dart';
-import 'package:motorbike_crash_detection/modules/personal/page/personal_page.dart';
+
+import '../lib.dart';
 
 class AppRoute {
   static const String myApp = '/';

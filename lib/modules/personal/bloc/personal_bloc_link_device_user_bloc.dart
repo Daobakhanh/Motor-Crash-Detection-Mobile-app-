@@ -1,7 +1,4 @@
-import 'package:motorbike_crash_detection/modules/device/repo/device_repo.dart';
-import 'package:motorbike_crash_detection/modules/providers/bloc_provider.dart';
-
-import '../repo/personal_infor_repo.dart';
+import '../../../lib.dart';
 
 class PersonalLinkUserDeviceBloc extends BlocBase {
   @override

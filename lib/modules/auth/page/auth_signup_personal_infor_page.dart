@@ -1,16 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:motorbike_crash_detection/data/term/app_term.dart';
-import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
-import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 
-import '../../../themes/app_color.dart';
-import '../../../themes/app_text_style.dart';
-import '../../../utils/validate_phone_number.dart';
-import '../../navigation/pages/app_navigation.dart';
-import '../../widget/widget/stateless_widget/button_stl_widget.dart';
-import '../bloc/auth_bloc.dart';
+import '../../../lib.dart';
 
 class SignupFillPersonalInforPage extends StatefulWidget {
   final String? accessToken;

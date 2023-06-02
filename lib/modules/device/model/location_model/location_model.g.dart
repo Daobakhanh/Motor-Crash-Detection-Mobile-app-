@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'location_model.dart';
+part of 'location_model_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

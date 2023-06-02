@@ -1,16 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:motorbike_crash_detection/data/term/app_term.dart';
-import 'package:motorbike_crash_detection/modules/auth/page/auth_signup_personal_infor_page.dart';
-import 'package:motorbike_crash_detection/modules/widget/widget/stateless_widget/sized_box_widget.dart';
-import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 
-import '../../../themes/app_color.dart';
-import '../../../themes/app_text_style.dart';
-import '../../../utils/validate_phone_number.dart';
-import '../../app_state/repo/app_access_token_local_storage_repo.dart';
-import '../../widget/widget/stateless_widget/button_stl_widget.dart';
+import '../../../lib.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);

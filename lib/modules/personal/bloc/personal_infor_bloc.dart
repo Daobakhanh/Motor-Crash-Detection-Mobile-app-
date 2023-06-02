@@ -1,11 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:motorbike_crash_detection/model/user/user_model.dart';
-import 'package:motorbike_crash_detection/modules/device/model/device_model/device_model.dart';
-import 'package:motorbike_crash_detection/modules/device/repo/device_repo.dart';
-import 'package:motorbike_crash_detection/modules/personal/repo/personal_infor_repo.dart';
-import 'package:motorbike_crash_detection/utils/debug_print_message.dart';
 
-import 'personal_bloc_event.dart';
+import '../../../lib.dart';
 
 class PersonalInforBloc extends Bloc<PersonalBlocEvent, PersonalInforState> {
   //String: event

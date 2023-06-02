@@ -9,9 +9,9 @@ Future<void> showMyDialogAuth(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Feature coming soon!'),
-        content: SingleChildScrollView(
+        content: const SingleChildScrollView(
           child: ListBody(
-            children: const <Widget>[
+            children: <Widget>[
               Text('Please login with "Login feature"!'),
               // Text('Would you like to approve of this message?'),
             ],
@@ -39,9 +39,9 @@ Future<void> showMyDialog(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Feature coming soon!'),
-        content: SingleChildScrollView(
+        content: const SingleChildScrollView(
           child: ListBody(
-            children: const <Widget>[
+            children: <Widget>[
               Text('Thank you'),
               // Text('Would you like to approve of this message?'),
             ],
@@ -69,9 +69,9 @@ Future<void> logOutShowMyDialog(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Log out successful'),
-        content: SingleChildScrollView(
+        content: const SingleChildScrollView(
           child: ListBody(
-            children: const <Widget>[
+            children: <Widget>[
               Text('Go to Login Screen?'),
               // Text('Would you like to approve of this message?'),
             ],
