@@ -63,6 +63,7 @@ class _SignupFillPersonalInforPageState
 
   @override
   Widget build(BuildContext context) {
+    double widthScreen = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -71,7 +72,7 @@ class _SignupFillPersonalInforPageState
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisAlignment: MainAxisAlignment.end,
@@ -267,6 +268,7 @@ class _SignupFillPersonalInforPageState
 
                 //Submit button
                 LongStadiumButton(
+                  width: widthScreen - 40,
                   color:
                       isFullFillInfor() ? AppColor.pinkAccent : AppColor.light,
                   nameOfButton: AppAuthTerm.authSubmit,
