@@ -2,6 +2,8 @@ import 'dart:io' show Platform, exit;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../lib.dart';
+
 Future<void> showMyDialogAuth(BuildContext context) async {
   return showDialog<void>(
     context: context,
@@ -12,7 +14,7 @@ Future<void> showMyDialogAuth(BuildContext context) async {
         content: const SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text('Please login with "Login feature"!'),
+              Text('Please signin with "Signin feature"!'),
               // Text('Would you like to approve of this message?'),
             ],
           ),
@@ -90,10 +92,10 @@ Future<void> logOutShowMyDialog(BuildContext context) async {
           ),
           TextButton(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const MyApp()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyApp()),
+              );
             },
             child: const Text('OK'),
           ),

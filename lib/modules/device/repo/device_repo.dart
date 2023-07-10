@@ -24,11 +24,6 @@ class DeviceRepo {
         return null;
       }
     } catch (e) {
-      DebugPrint.dataLog(
-        currentFile: 'device_repo',
-        title: "getDevice error",
-        data: e,
-      );
       // rethrow;
     }
     // return null;

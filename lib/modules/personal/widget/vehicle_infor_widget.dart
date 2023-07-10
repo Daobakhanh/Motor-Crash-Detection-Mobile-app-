@@ -39,7 +39,6 @@ class VehicleInforWidget extends StatelessWidget {
         const SizedBox25H(),
         Container(
           margin: const EdgeInsets.only(top: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             AppTerm.vehicle,
             style: AppTextStyle.body17.copyWith(fontWeight: FontWeight.bold),

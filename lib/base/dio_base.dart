@@ -1,21 +1,33 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dio/dio.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../lib.dart';
 
 class DioBase {
   static Future<Dio> dioWithBaseOption() async {
     String apiUrl = await getApiUrl() ?? '';
-    return Dio(
-      BaseOptions(baseUrl: apiUrl, connectTimeout: 10000),
+    final dio = Dio(
+      BaseOptions(baseUrl: apiUrl, connectTimeout: const Duration(seconds: 10)),
     );
+    dio.interceptors.add(PrettyDioLogger());
+    // customization
+    dio.interceptors.add(PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90));
+    return dio;
   }
 
   static Future<String> getAuthorization() async {
     String backendUserAccessToken =
         await AuthLocalStorageRepo.getBackendUserAccesskenFromLocalStorage() ??
             "";
-    print("TK: $backendUserAccessToken");
+    // print("TK: $backendUserAccessToken");
     String authorization = "Bearer $backendUserAccessToken";
     DebugPrint.dataLog(
         currentFile: "Diobase", title: "BEToken", data: authorization);
@@ -98,9 +110,20 @@ class DioBase {
 class DioBaseAuth {
   static Future<Dio> dioWithBaseOption() async {
     String apiUrl = await getApiUrl() ?? '';
-    return Dio(
-      BaseOptions(baseUrl: apiUrl, connectTimeout: 3000),
+    final dio = Dio(
+      BaseOptions(baseUrl: apiUrl, connectTimeout: const Duration(seconds: 10)),
     );
+    dio.interceptors.add(PrettyDioLogger());
+    // customization
+    dio.interceptors.add(PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 140));
+    return dio;
   }
 
   static Future<String> getAuthorization() async {
