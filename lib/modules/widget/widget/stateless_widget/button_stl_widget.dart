@@ -5,11 +5,16 @@ import '../../../../themes/app_color.dart';
 import '../../../../themes/app_text_style.dart';
 
 class LongStadiumButton extends StatelessWidget {
+  final double? width;
   final Color? color;
   final String? nameOfButton;
   final VoidCallback? onTap;
   const LongStadiumButton(
-      {Key? key, required this.nameOfButton, required this.onTap, this.color})
+      {Key? key,
+      required this.nameOfButton,
+      required this.onTap,
+      this.color,
+      this.width})
       : super(key: key);
 
   @override
@@ -22,7 +27,7 @@ class LongStadiumButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shape: const StadiumBorder(),
           backgroundColor: color ?? AppColor.light,
-          fixedSize: const Size(350, 44),
+          fixedSize: Size(width ?? 350, 44),
         ),
         child: Text(
           nameOfButton!,
