@@ -31,62 +31,81 @@ class _NotificationStreamPageState extends State<NotificationStreamPage> {
         if (snapshot.hasData && snapshot.data!.notifications != null) {
           final listNotiId = snapshot.data!.listNotiId;
           final notifications = snapshot.data!.notifications;
-          return Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: const Text(AppPageName.notification),
-              actions: [
-                isLoadingSeeAll
-                    ? const Row(
-                        children: [
-                          CupertinoActivityIndicator(
-                            color: AppColor.light,
-                          ),
-                          SizedBox15W()
-                        ],
-                      )
-                    : IconButton(
-                        onPressed: () async {
-                          setState(() {
-                            isLoadingSeeAll = true;
-                          });
-                          await readAllNoti(listNotiId!);
-                          await getAllNoti();
-                          Future.delayed(
-                              const Duration(seconds: 1, microseconds: 500),
-                              () async {
-                            debugPrint('See All Notices');
+          return SafeArea(
+            top: false,
+            child: Scaffold(
+              appBar: AppBar(
+                bottom: const PreferredSize(
+                    preferredSize: Size.zero,
+                    child: Divider(
+                      height: 2,
+                    )),
+                centerTitle: true,
+                title: const Text(AppPageName.notification),
+                actions: [
+                  isLoadingSeeAll
+                      ? const Row(
+                          children: [
+                            CupertinoActivityIndicator(
+                              color: AppColor.light,
+                            ),
+                            SizedBox15W()
+                          ],
+                        )
+                      : IconButton(
+                          onPressed: () async {
                             setState(() {
-                              isLoadingSeeAll = false;
+                              isLoadingSeeAll = true;
                             });
+                            await readAllNoti(listNotiId!);
                             await getAllNoti();
-                          });
-                        },
-                        icon: const Icon(Icons.done_all))
-              ],
-            ),
-            body: RefreshIndicator(
-              onRefresh: () async {
-                await getAllNoti();
-              },
-              child: ListView.builder(
-                itemBuilder: ((context, index) {
-                  return NotificationItem(
-                    notificationModel: notifications[index],
-                  );
-                }),
-                itemCount: notifications!.length,
+                            Future.delayed(
+                                const Duration(seconds: 1, microseconds: 500),
+                                () async {
+                              debugPrint('See All Notices');
+                              setState(() {
+                                isLoadingSeeAll = false;
+                              });
+                              await getAllNoti();
+                            });
+                          },
+                          icon: const Icon(Icons.done_all))
+                ],
+              ),
+              body: RefreshIndicator(
+                onRefresh: () async {
+                  await getAllNoti();
+                },
+                child: ListView.builder(
+                  itemBuilder: ((context, index) {
+                    return NotificationItem(
+                      notificationModel: notifications[index],
+                    );
+                  }),
+                  itemCount: notifications!.length,
+                ),
               ),
             ),
           );
         }
         return Scaffold(
           appBar: AppBar(
+            bottom: const PreferredSize(
+                preferredSize: Size.zero,
+                child: Divider(
+                  height: 2,
+                )),
             centerTitle: true,
             title: const Text(AppPageName.notification),
           ),
-          body: const Center(
-            child: Text('Don\'t have notifications'),
+          body: RefreshIndicator(
+            onRefresh: () async {
+              await getAllNoti();
+              // print('object');
+            },
+            child: const Center(
+              child: Text('Don\'t have notifications'),
+            ),
           ),
         );
       },
