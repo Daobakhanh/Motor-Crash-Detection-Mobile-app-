@@ -176,7 +176,7 @@ class _SignupPageState extends State<SignupPage> {
                               AppFillTextTerm.send,
                               textAlign: TextAlign.right,
                               style: AppTextStyle.body15
-                                  .copyWith(color: AppColor.activeStateBlue),
+                                  .copyWith(color: AppColors.activeStateBlue),
                             ),
                           ),
                         ),
@@ -188,8 +188,8 @@ class _SignupPageState extends State<SignupPage> {
                 LongStadiumButton(
                   width: widthScreen - 40,
                   color: isFullFillPhoneNumber == true && isFullFillOTP == true
-                      ? AppColor.pinkAccent
-                      : AppColor.light,
+                      ? AppColors.pinkAccent
+                      : AppColors.light,
                   nameOfButton: AppAuthTerm.authNext,
                   onTap: !(isFullFillPhoneNumber == true &&
                           isFullFillOTP == true)

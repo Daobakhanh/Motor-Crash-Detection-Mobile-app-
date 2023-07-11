@@ -37,7 +37,7 @@ class _NotificationItemState extends State<NotificationItem> {
             height: 80,
             padding: const EdgeInsets.symmetric(horizontal: 15),
             // margin: const EdgeInsets.symmetric(vertical: 10),
-            color: isRead ? AppColor.light : AppColor.lightGray1,
+            color: isRead ? AppColors.light : AppColors.lightGray1,
             width: screenWidth,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,7 +96,7 @@ class _NotificationItemState extends State<NotificationItem> {
                         height: 10,
                         width: 10,
                         decoration: const BoxDecoration(
-                          color: AppColor.activeStateBlue,
+                          color: AppColors.activeStateBlue,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -106,7 +106,7 @@ class _NotificationItemState extends State<NotificationItem> {
           const Divider(
             height: 1.5,
             thickness: 1.5,
-            color: AppColor.lightGray2,
+            color: AppColors.lightGray2,
           )
         ],
       ),

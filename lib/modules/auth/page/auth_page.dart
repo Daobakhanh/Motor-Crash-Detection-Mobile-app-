@@ -64,7 +64,7 @@ class _AuthPageState extends State<AuthPage> {
               padding: const EdgeInsets.only(top: 20, bottom: 5),
               child: LongStadiumButton(
                 width: widthScreen - 40,
-                color: AppColor.pinkAccent,
+                color: AppColors.pinkAccent,
                 nameOfButton: AppAuthTerm.authSignIn,
                 onTap: () async {
                   // Navigator.push(

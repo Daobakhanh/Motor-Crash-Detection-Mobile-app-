@@ -163,12 +163,12 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
                 },
                 child: isDone
                     ? const CupertinoActivityIndicator(
-                        color: AppColor.light,
+                        color: AppColors.light,
                       )
                     : Text(
                         'Done',
                         style: AppTextStyle.body17.copyWith(
-                          color: AppColor.activeStateBlue,
+                          color: AppColors.activeStateBlue,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -362,7 +362,7 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
                 const SizedBox10H(),
                 const Divider(
                   thickness: 2,
-                  color: AppColor.lightGray1,
+                  color: AppColors.lightGray1,
                   height: 5,
                 ),
 

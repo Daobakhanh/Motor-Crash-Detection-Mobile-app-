@@ -46,12 +46,13 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
             // backgroundColor: AppColor.greyBold,
             tabBar: CupertinoTabBar(
               currentIndex: 1,
-              activeColor: AppColor.pinkAccent,
-              inactiveColor:
-                  themeData == Brightness.dark ? AppColor.grey : AppColor.dark,
+              activeColor: AppColors.pinkAccent,
+              inactiveColor: themeData == Brightness.dark
+                  ? AppColors.grey
+                  : AppColors.dark,
               backgroundColor: themeData == Brightness.dark
-                  ? AppColor.dark
-                  : AppColor.lightGray1,
+                  ? AppColors.dark
+                  : AppColors.lightGray1,
               items: [
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.person),

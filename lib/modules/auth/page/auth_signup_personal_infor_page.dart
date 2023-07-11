@@ -269,8 +269,9 @@ class _SignupFillPersonalInforPageState
                 //Submit button
                 LongStadiumButton(
                   width: widthScreen - 40,
-                  color:
-                      isFullFillInfor() ? AppColor.pinkAccent : AppColor.light,
+                  color: isFullFillInfor()
+                      ? AppColors.pinkAccent
+                      : AppColors.light,
                   nameOfButton: AppAuthTerm.authSubmit,
                   onTap: !(isFullFillInfor())
                       ? () {}

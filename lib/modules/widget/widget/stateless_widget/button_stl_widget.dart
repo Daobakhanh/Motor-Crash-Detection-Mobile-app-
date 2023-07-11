@@ -26,14 +26,14 @@ class LongStadiumButton extends StatelessWidget {
         onPressed: onTap!,
         style: ElevatedButton.styleFrom(
           shape: const StadiumBorder(),
-          backgroundColor: color ?? AppColor.light,
+          backgroundColor: color ?? AppColors.light,
           fixedSize: Size(width ?? 350, 44),
         ),
         child: Text(
           nameOfButton!,
           style: AppTextStyle.body15.copyWith(
             fontWeight: FontWeight.bold,
-            color: color == AppColor.light || color == null
+            color: color == AppColors.light || color == null
                 ? AppTextColor.dark
                 : AppTextColor.light,
           ),
@@ -58,11 +58,11 @@ class LongStadiumButtonIndicator extends StatelessWidget {
           onPressed: () {},
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
-            backgroundColor: color ?? AppColor.light,
+            backgroundColor: color ?? AppColors.light,
             fixedSize: const Size(350, 44),
           ),
           child: const CupertinoActivityIndicator(
-            color: AppColor.light,
+            color: AppColors.light,
           )),
     );
   }

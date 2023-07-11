@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 import '../../../lib.dart';
 
-class PersonalLinkToDevice extends StatefulWidget {
-  const PersonalLinkToDevice({super.key, this.isDoneCallback});
+class VehicleSetRootGYPage extends StatefulWidget {
+  const VehicleSetRootGYPage({super.key, this.isDoneCallback});
   final Function? isDoneCallback;
 
   @override
-  State<PersonalLinkToDevice> createState() => _PersonalLinkToDeviceState();
+  State<VehicleSetRootGYPage> createState() => _VehicleSetRootGYPageState();
 }
 
-class _PersonalLinkToDeviceState extends State<PersonalLinkToDevice> {
+class _VehicleSetRootGYPageState extends State<VehicleSetRootGYPage> {
   bool isDone = false;
 
   late TextEditingController _controllerTextDeviceId;
@@ -47,7 +47,7 @@ class _PersonalLinkToDeviceState extends State<PersonalLinkToDevice> {
                 child: Divider(
                   height: 2,
                 )),
-            title: const Text(AppTerm.personalLinkToDevice),
+            title: const Text(AppTerm.setRootGYPageTitle),
             centerTitle: true,
             leading: InkWell(
               onTap: () {
@@ -101,7 +101,7 @@ class _PersonalLinkToDeviceState extends State<PersonalLinkToDevice> {
                     margin: const EdgeInsets.only(top: 30),
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      AppTerm.personalLinkToDeviceGuide,
+                      AppTerm.setRootGYPageTitle,
                       style: AppTextStyle.body17
                           .copyWith(fontWeight: FontWeight.bold),
                     ),

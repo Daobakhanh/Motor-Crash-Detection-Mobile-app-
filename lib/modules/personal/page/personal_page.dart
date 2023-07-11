@@ -127,7 +127,7 @@ class _PersonalPageState extends State<PersonalPage> {
           ),
         );
       },
-      color: AppColor.grey,
+      color: AppColors.grey,
       // child: const Text(
       //   AppTerm.edit,
       //   style: TextStyle(color: AppColor.dark),

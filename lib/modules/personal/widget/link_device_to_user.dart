@@ -56,7 +56,7 @@ class _LinkDeviceToUserWidgetState extends State<LinkDeviceToUserWidget> {
         ),
         const SizedBox10H(),
         const Divider(
-          color: AppColor.lightGray2,
+          color: AppColors.lightGray2,
           thickness: 1.5,
           height: 1.5,
         ),

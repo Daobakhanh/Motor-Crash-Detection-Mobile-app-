@@ -194,7 +194,7 @@ class _SigninPageState extends State<SigninPage> {
                                 AppFillTextTerm.send,
                                 textAlign: TextAlign.right,
                                 style: AppTextStyle.body15
-                                    .copyWith(color: AppColor.activeStateBlue),
+                                    .copyWith(color: AppColors.activeStateBlue),
                               ),
                             ),
                           ),
@@ -208,8 +208,8 @@ class _SigninPageState extends State<SigninPage> {
                           width: widthScreen - 40,
                           color: isFullFillPhoneNumber == true &&
                                   isFullFillOTP == true
-                              ? AppColor.pinkAccent
-                              : AppColor.light,
+                              ? AppColors.pinkAccent
+                              : AppColors.light,
                           nameOfButton: AppAuthTerm.authSignIn,
                           onTap: !(isFullFillPhoneNumber == true &&
                                   isFullFillOTP == true)
@@ -293,7 +293,7 @@ class _SigninPageState extends State<SigninPage> {
                                 },
                         )
                       : const LongStadiumButtonIndicator(
-                          color: AppColor.pinkAccent,
+                          color: AppColors.pinkAccent,
                         )
                 ],
               ),

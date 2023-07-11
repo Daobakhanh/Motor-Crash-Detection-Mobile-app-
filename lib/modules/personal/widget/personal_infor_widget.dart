@@ -28,13 +28,13 @@ class _ItemPersonalInforWidgetState extends State<ItemPersonalInforWidget> {
           children: [
             Icon(
               widget.icon,
-              color: AppColor.grey,
+              color: AppColors.grey,
             ),
             const SizedBox10W(),
             Text(
               '${widget.title}:  ',
               style: const TextStyle(
-                  color: AppColor.grey, fontStyle: FontStyle.italic),
+                  color: AppColors.grey, fontStyle: FontStyle.italic),
             ),
             Text(
               widget.content,
@@ -97,13 +97,13 @@ class _ItemPersonalInforDescriptionWidgetState
           children: [
             Icon(
               widget.icon,
-              color: AppColor.grey,
+              color: AppColors.grey,
             ),
             const SizedBox10W(),
             Text(
               '${widget.title}:  ',
               style: const TextStyle(
-                  color: AppColor.grey, fontStyle: FontStyle.italic),
+                  color: AppColors.grey, fontStyle: FontStyle.italic),
             ),
             SizedBox(
               width: 220,

@@ -47,7 +47,7 @@ class _NotificationStreamPageState extends State<NotificationStreamPage> {
                       ? const Row(
                           children: [
                             CupertinoActivityIndicator(
-                              color: AppColor.light,
+                              color: AppColors.light,
                             ),
                             SizedBox15W()
                           ],
