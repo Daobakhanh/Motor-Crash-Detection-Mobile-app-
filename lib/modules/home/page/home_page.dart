@@ -30,8 +30,6 @@ class _HomePageState extends State<HomePage> {
   bool isLoadingOfWarning = false;
 
   final _homeBloc = HomeBloc();
-  NotificationBlocStream get _notificationBlocStream =>
-      BlocProvider.of<NotificationBlocStream>(context)!;
 
   @override
   void initState() {
@@ -73,120 +71,52 @@ class _HomePageState extends State<HomePage> {
               isOnAntiThief = device.config?.antiTheft! ?? false;
               final statusDevice = device.status ?? 0;
 
-              DebugPrint.dataLog(
-                  currentFile: 'home_page',
-                  title: 'toggleAntiThiefState',
-                  data: isOnAntiThief);
-
               return Stack(
                 children: [
-                  GoogleMap(
-                    // polylines: {},
-                    markers: Set<Marker>.of(_marker.values),
-                    initialCameraPosition: _cameraPosition,
-                    mapType: MapType.normal,
-                    onMapCreated: ((GoogleMapController controller) {
-                      _controller.complete(controller);
-                    }),
-                  ),
-
+                  _googleMap(),
                   statusDevice != 0
                       ?
                       //Get current location widget
-                      Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            // color: AppColor.activeStateBlue,
-                            margin: const EdgeInsets.only(bottom: 25),
-                            height: 100,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 4,
-                                backgroundColor: AppColor.grey.withOpacity(0.5),
-                                shape: const CircleBorder(),
-                              ),
-                              child: isLoadingOfWarning
-                                  ? const CupertinoActivityIndicator(
-                                      color: AppColor.light,
-                                    )
-                                  : const Icon(
-                                      Icons.warning_sharp,
-                                      size: 60,
-                                      color: AppColor.activeStateYellow,
-                                    ),
-                              onPressed: () async {
-                                setState(
-                                  () {
-                                    isWarning = !isWarning;
-                                    isLoadingOfWarning = true;
-                                  },
-                                );
-                                await showConfirmSafeDialog(context);
+                      WarningWidget(
+                          isLoadingOfWarning: isLoadingOfWarning,
+                          onPressed: () async {
+                            setState(
+                              () {
+                                isWarning = !isWarning;
+                                isLoadingOfWarning = true;
                               },
-                            ),
-                          ),
+                            );
+                            await showConfirmSafeDialog(context);
+                          },
                         )
-                      : Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            // color: AppColor.activeStateBlue,
-                            margin: const EdgeInsets.only(bottom: 25),
-                            height: 100,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 4,
-                                backgroundColor:
-                                    AppColor.lightBlue.withOpacity(0.5),
-                                shape: const CircleBorder(),
-                              ),
-                              child: const Icon(
-                                Icons.location_searching,
-                                size: 60,
-                                color: AppColor.dark,
-                              ),
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    isWarning = !isWarning;
-                                  },
-                                );
-                                _homeBloc.add(
-                                  HomeBlocEvent(
-                                      stateToggleAntiThief: isOnAntiThief,
-                                      homeBlocEvent:
-                                          HomeBlocEventEnum.getCurrentLocation),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-
+                      : GetLocationWidget(onPressed: () {
+                          setState(() {
+                            isWarning = !isWarning;
+                          });
+                          _homeBloc.add(HomeBlocEvent(
+                              stateToggleAntiThief: isOnAntiThief,
+                              homeBlocEvent:
+                                  HomeBlocEventEnum.getCurrentLocation));
+                        }),
                   //toggle antithief widget
+                  const Positioned(
+                      right: 15,
+                      top: 20,
+                      child: ConnectionBatteryStatusWidget(
+                        batteryLevel: '20',
+                        isConnected: true,
+                      )),
                   Positioned(
                     left: 15,
                     bottom: 40,
-                    child: SizedBox(
-                      height: 70,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 4,
-                          backgroundColor: isOnAntiThief
-                              ? AppColor.safety
-                              : AppColor.grey.withOpacity(0.5),
-                          shape: const CircleBorder(),
-                        ),
-                        child: Icon(
-                          isOnAntiThief == true ? Icons.lock : Icons.lock_open,
-                          size: 40,
-                          color: AppColor.dark,
-                        ),
-                        onPressed: () async {
-                          await toggleAntiThief(!isOnAntiThief);
-                          setState(() {
-                            isOnAntiThief = !isOnAntiThief;
-                          });
-                        },
-                      ),
+                    child: ToggleAntiThiefWidget(
+                      isOnAntiThief: isOnAntiThief,
+                      onPressed: () async {
+                        await toggleAntiThief(!isOnAntiThief);
+                        setState(() {
+                          isOnAntiThief = !isOnAntiThief;
+                        });
+                      },
                     ),
                   )
                 ],
@@ -206,6 +136,18 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
+    );
+  }
+
+  Widget _googleMap() {
+    return GoogleMap(
+      // polylines: {},
+      markers: Set<Marker>.of(_marker.values),
+      initialCameraPosition: _cameraPosition,
+      mapType: MapType.normal,
+      onMapCreated: ((GoogleMapController controller) {
+        _controller.complete(controller);
+      }),
     );
   }
 

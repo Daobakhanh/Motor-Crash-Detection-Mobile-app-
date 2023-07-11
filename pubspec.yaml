@@ -44,7 +44,7 @@ dependencies:
   firebase_core: ^2.4.0
   firebase_auth: ^4.2.1
   phone_number: ^1.0.0
-  json_annotation: ^4.7.0
+  json_annotation: ^4.8.1
   firebase_messaging: ^14.6.1
   flutter_bloc: ^8.1.1
   bloc: ^8.1.0
