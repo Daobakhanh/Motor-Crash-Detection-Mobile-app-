@@ -23,6 +23,8 @@ DeviceModel _$DeviceModelFromJson(Map<String, dynamic> json) => DeviceModel(
           ? null
           : ConfigModel.fromJson(json['config'] as Map<String, dynamic>),
       deviceName: json['name'] as String?,
+      battery: (json['battery'] as num?)?.toDouble(),
+      isConnected: json['isConnected'] as bool?,
     );
 
 Map<String, dynamic> _$DeviceModelToJson(DeviceModel instance) =>
@@ -34,5 +36,7 @@ Map<String, dynamic> _$DeviceModelToJson(DeviceModel instance) =>
       'userId': instance.userId,
       'vehicle': instance.vehicle,
       'status': instance.status,
+      'battery': instance.battery,
+      'isConnected': instance.isConnected,
       'name': instance.deviceName,
     };

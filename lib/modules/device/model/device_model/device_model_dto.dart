@@ -4,7 +4,7 @@ import '../config_device_feature_model/config_model_dto.dart';
 import '../create_at_model/create_at_model_dto.dart';
 import '../location_model/location_model_dto.dart';
 import '../vehicle_model/vehicle_model_dto.dart';
-part 'device_model.g.dart';
+part 'device_model_dto.g.dart';
 
 @JsonSerializable()
 class DeviceModel {
@@ -15,6 +15,8 @@ class DeviceModel {
   final String? userId;
   final VehicleDataModel? vehicle;
   final int? status;
+  final double? battery;
+  final bool? isConnected;
 
   @JsonKey(name: 'name')
   final String? deviceName;
@@ -28,6 +30,8 @@ class DeviceModel {
     this.status,
     this.config,
     this.deviceName,
+    this.battery,
+    this.isConnected,
   });
 
   factory DeviceModel.fromJson(Map<String, dynamic> json) =>

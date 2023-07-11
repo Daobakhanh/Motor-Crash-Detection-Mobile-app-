@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'create_at_model.g.dart';
+part 'create_at_model_dto.g.dart';
 
 @JsonSerializable()
 class CreateAtModel {

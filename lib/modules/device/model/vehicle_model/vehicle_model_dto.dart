@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'vehicle_model.g.dart';
+part 'vehicle_model_dto.g.dart';
 
 @JsonSerializable()
 class VehicleDataModel {
