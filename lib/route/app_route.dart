@@ -13,8 +13,8 @@ class AppRoute {
   static const String personal = '/personal';
   static const String personalUpdateInfor = '/personal-update-information';
   static const String personalLinkToDevice = '/personal-link-to-device';
-
   static const String personalDrawer = '/personal-drawer';
+  static const String setRootGy = '/set-root-gy';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -60,6 +60,10 @@ class AppRoute {
       case personalLinkToDevice:
         return MaterialPageRoute(
           builder: (_) => const PersonalLinkToDevice(),
+        );
+      case setRootGy:
+        return MaterialPageRoute(
+          builder: (_) => const VehicleSetRootGYPage(),
         );
       default:
         return MaterialPageRoute(

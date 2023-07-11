@@ -11,6 +11,7 @@ class AppTerm {
   static const personal = "Personal";
   static const appLogState = "AppLogState";
   static const personalLinkToDevice = 'Link to Device';
+  static const setRootGYPageTitle = 'Set root GY';
   static const personalLinkToDeviceGuide =
       'Enter "Device Id" and "Verification Code" to link:';
 }
