@@ -103,6 +103,18 @@ flutter:
         - asset: assets/fonts/Silkscreen/Silkscreen-Bold.ttf
         - asset: assets/fonts/Silkscreen/Silkscreen-Regular.ttf
           weight: 800
+    - family: FontNotoSans
+      fonts:
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Black.otf
+          style: normal
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Bold.otf
+          weight: 600
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Light.otf
+          weight: 700
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Medium.otf
+          weight: 700
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Regular.otf
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Thin.otf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
