@@ -14,18 +14,38 @@ class NotificationItem extends StatefulWidget {
 }
 
 class _NotificationItemState extends State<NotificationItem> {
+  final AppThemeBloc _appStateStreamControllerBloc = AppThemeBloc();
+  final AppAuthStateBloc _appAuthStateStreamControllerBloc = AppAuthStateBloc();
+  late final String title;
+  late final bool isRead;
+  late final String content;
+  late final int notiType;
+
+  late final String time;
+  @override
+  void dispose() {
+    super.dispose();
+    _appStateStreamControllerBloc.dispose();
+    _appAuthStateStreamControllerBloc.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    title = widget.notificationModel.title ?? 'iSafe';
+    isRead = widget.notificationModel.isRead ?? true;
+    content = widget.notificationModel.content ?? 'iSafe notification';
+    notiType = widget.notificationModel.type ?? 0;
+
+    time = DateTimeFormat.dateTimeFormatDDMMYYFromTimestamp(
+        timestamp: widget.notificationModel.createdAt!.seconds ?? 0);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final title = widget.notificationModel.title ?? 'iSafe';
-    final isRead = widget.notificationModel.isRead ?? true;
-    final content = widget.notificationModel.content ?? 'iSafe notification';
-    // final time = widget.notificationModel.createdAt!.seconds ?? 0;
-    final notiType = widget.notificationModel.type ?? 0;
-
-    final time = DateTimeFormat.dateTimeFormatDDMMYYFromTimestamp(
-        timestamp: widget.notificationModel.createdAt!.seconds ?? 0);
-
     final size = MediaQuery.of(context).size;
+
     final screenWidth = size.width;
     return InkWell(
       onTap: () {
@@ -34,10 +54,9 @@ class _NotificationItemState extends State<NotificationItem> {
       child: Column(
         children: [
           Container(
-            height: 80,
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            // height: 80,
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             // margin: const EdgeInsets.symmetric(vertical: 10),
-            color: isRead ? AppColors.light : AppColors.lightGray1,
             width: screenWidth,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,54 +64,87 @@ class _NotificationItemState extends State<NotificationItem> {
               children: [
                 // ignore: sized_box_for_whitespace
                 Container(
-                  height: 50,
-                  width: 50,
-                  // color: AppColor.activeStateBlue,
-                  child: getIconImageNoti(notificationType: notiType),
+                  height: 40,
+                  width: 40,
+                  decoration: const BoxDecoration(
+                    // color: AppColors.lightGray400,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Image.asset(
+                    getIconImageNoti(notificationType: notiType),
+                    color: isRead
+                        ? (AppColors.greyBold)
+                        : ((notiType == 1 || notiType == 2)
+                            ? AppColors.alertRed
+                            : null),
+                  ),
                 ),
                 const SizedBox15W(),
-                SizedBox(
-                  width: screenWidth - 30 - 10 - 50 - 15,
+                Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          text: '$title  ',
-                          style: AppTextStyle.body15.copyWith(
-                              fontWeight:
-                                  isRead ? FontWeight.normal : FontWeight.bold,
-                              color: AppTextColor.dark),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: time,
-                              // style: TextStyle(fontStyle: FontStyle.italic),
+                      // RichText(
+                      //   text: TextSpan(
+                      //     text: '$title        ',
+                      //     style: AppTextStyle.body15
+                      //         .copyWith(fontWeight: FontWeight.bold),
+                      //     children: <TextSpan>[
+                      //       TextSpan(
+                      //         text: time,
+                      //         // style: TextStyle(fontStyle: FontStyle.italic),
+                      //         style: AppTextStyle.body15.copyWith(
+                      //           // fontStyle: FontStyle.italic,
+                      //           fontSize: 14,
+                      //           fontWeight: FontWeight.w700,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(title,
                               style: AppTextStyle.body15.copyWith(
-                                fontStyle: FontStyle.italic,
-                                color: AppTextColor.grey,
-                                fontWeight: isRead
-                                    ? FontWeight.normal
-                                    : FontWeight.bold,
+                                fontWeight:
+                                    isRead ? FontWeight.w300 : FontWeight.w700,
+                              )),
+                          Row(
+                            children: [
+                              Text(
+                                time,
+                                style: AppTextStyle.body15.copyWith(
+                                  // fontStyle: FontStyle.italic,
+                                  fontSize: 14,
+                                  fontWeight: isRead
+                                      ? FontWeight.w300
+                                      : FontWeight.w700,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          )
+                        ],
                       ),
-                      // const SizedBox10H(),
+                      const SizedBoxWithH(8),
                       Text(
                         content,
                         style: TextStyle(
                           fontWeight:
-                              isRead ? FontWeight.normal : FontWeight.bold,
+                              isRead ? FontWeight.w300 : FontWeight.normal,
                         ),
                       ),
                     ],
                   ),
                 ),
                 isRead
-                    ? const SizedBox10W()
+                    ? const Padding(
+                        padding: EdgeInsets.only(left: 13),
+                        child: SizedBox10W(),
+                      )
                     : Container(
+                        margin: const EdgeInsets.only(left: 13),
                         height: 10,
                         width: 10,
                         decoration: const BoxDecoration(
@@ -104,29 +156,46 @@ class _NotificationItemState extends State<NotificationItem> {
             ),
           ),
           const Divider(
-            height: 1.5,
-            thickness: 1.5,
-            color: AppColors.lightGray2,
+            height: 0.5,
+            thickness: 0.7,
+            // color: AppColors.lightGray50,
           )
         ],
       ),
     );
   }
 
-  Widget getIconImageNoti({required int notificationType}) {
+  String getIconImageNoti({required int notificationType}) {
     switch (notificationType) {
       case 1:
-        return Image.asset('assets/images/fall_motorbike.png');
+        return 'assets/images/fall_motorbike_2.png';
       case 2:
-        return Image.asset('assets/images/accident_motorbike_2.png');
+        return 'assets/images/accident_motorbike_5.png';
       case 3:
-        return Image.asset('assets/images/thief_motorbike_1.png');
+        return 'assets/images/thief_motorbike_1.png';
       case 4:
-        return Image.asset('assets/images/thief_motorbike_1.png');
+        return 'assets/images/thief_motorbike_1.png';
       case 5:
-        return Image.asset('assets/images/sos.png');
+        return 'assets/images/sos.png';
       default:
-        return Image.asset('assets/images/sos.png');
+        return 'assets/images/sos.png';
     }
   }
+
+  // String checkNotiTitleCase({required String notiTypeTitle}) {
+  //   switch (notiTypeTitle) {
+  //     case "Stopped warning":
+  //       return 'assets/images/fall_motorbike_2.png';
+  //     case "Warning":
+  //       return 'assets/images/accident_motorbike_5.png';
+  //     case "":
+  //       return 'assets/images/thief_motorbike_1.png';
+  //     case "":
+  //       return 'assets/images/thief_motorbike_1.png';
+  //     case "":
+  //       return 'assets/images/sos.png';
+  //     default:
+  //       return 'assets/images/sos.png';
+  //   }
+  // }
 }

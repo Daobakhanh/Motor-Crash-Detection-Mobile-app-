@@ -94,17 +94,17 @@ class _HomePageState extends State<HomePage> {
                             isWarning = !isWarning;
                           });
                           _homeBloc.add(HomeBlocEvent(
-                              stateToggleAntiThief: isOnAntiThief,
-                              homeBlocEvent:
-                                  HomeBlocEventEnum.getCurrentLocation));
+                            stateToggleAntiThief: isOnAntiThief,
+                            homeBlocEvent: HomeBlocEventEnum.getCurrentLocation,
+                          ));
                         }),
                   //toggle antithief widget
-                  const Positioned(
+                  Positioned(
                       right: 15,
-                      top: 20,
+                      top: 15,
                       child: ConnectionBatteryStatusWidget(
-                        batteryLevel: '20',
-                        isConnected: true,
+                        batteryLevel: device.battery ?? 0,
+                        isConnected: device.isConnected ?? true,
                       )),
                   Positioned(
                     left: 15,
@@ -167,14 +167,6 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Confirm off warning'),
-          // content: SingleChildScrollView(
-          //   child: ListBody(
-          //     children: const <Widget>[
-          //       Text('Thank you'),
-          //       // Text('Would you like to approve of this message?'),
-          //     ],
-          //   ),
-          // ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -202,7 +194,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> initSocket() async {
+  void initSocket() async {
     try {
       // socket = io.Socket(io: );
       // socket = io.Socket()

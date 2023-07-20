@@ -38,7 +38,6 @@ class _MyAppState extends State<MyApp> {
     return BlocProvider(
       bloc: _appStateStreamControllerBloc,
       child: StreamBuilder<AppThemeStateEnum>(
-          // initialData: AppThemeStateEnum.light,
           stream: _appStateStreamControllerBloc.stream,
           builder: ((context, snapshot) {
             return MaterialApp(
@@ -54,7 +53,7 @@ class _MyAppState extends State<MyApp> {
                 brightness: snapshot.data == AppThemeStateEnum.light
                     ? Brightness.light
                     : Brightness.dark,
-                fontFamily: AppFont.avenir,
+                fontFamily: AppFont.fontNotoSans,
                 useMaterial3: true,
                 appBarTheme: AppBarTheme(
                   titleTextStyle: AppTextStyle.body20.copyWith(

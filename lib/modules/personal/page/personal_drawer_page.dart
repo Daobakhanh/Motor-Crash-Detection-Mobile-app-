@@ -39,12 +39,14 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
             //Dark mode feature
             Row(
               children: [
-                const SizedBoxW(7),
-                Icon(
-                  isDarkMode == true ? Icons.dark_mode : Icons.sunny,
-                  color: isDarkMode == true
-                      ? AppColor.activeStateGrey
-                      : AppColor.activeStateYellow,
+                Padding(
+                  padding: const EdgeInsets.only(left: 12, right: 2),
+                  child: Icon(
+                    isDarkMode == true ? Icons.dark_mode : Icons.sunny,
+                    color: isDarkMode == true
+                        ? AppColors.activeStateGrey
+                        : AppColors.activeStateYellow,
+                  ),
                 ),
                 Switch(
                   value: isDarkMode,
@@ -93,7 +95,14 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const PersonalLinkToDevice(),
+                      builder: (context) => PersonalLinkToDevice(
+                        isDoneCallback: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const PersonalPage()),
+                              (Route<dynamic> route) => false);
+                        },
+                      ),
                     ));
               },
               label: const Text(

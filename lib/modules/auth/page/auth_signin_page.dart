@@ -205,7 +205,7 @@ class _SigninPageState extends State<SigninPage> {
                   const SizedBox50H(),
                   !isSignInPress
                       ? LongStadiumButton(
-                          width: widthScreen - 40,
+                          // width: widthScreen - 40,
                           color: isFullFillPhoneNumber == true &&
                                   isFullFillOTP == true
                               ? AppColors.pinkAccent
@@ -305,7 +305,6 @@ class _SigninPageState extends State<SigninPage> {
   }
 
   Future<void> verifyPhoneNumberFirebase() async {
-    // ignore: avoid_print
     _auth.verifyPhoneNumber(
       phoneNumber: '+84${phoneNumber.substring(1)}',
       verificationCompleted: (PhoneAuthCredential credential) {},
@@ -330,10 +329,6 @@ class _SigninPageState extends State<SigninPage> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     String accessToken;
     accessToken = await auth.currentUser!.getIdToken();
-    print("accessToken: $accessToken");
     return accessToken;
-
-    //need to extend exp time
-    // getAccessTokenFromLocalStorage()
   }
 }

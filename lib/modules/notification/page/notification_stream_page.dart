@@ -15,7 +15,15 @@ class _NotificationStreamPageState extends State<NotificationStreamPage> {
 
   NotificationBlocStream get _notificationBlocStream =>
       BlocProvider.of<NotificationBlocStream>(context)!;
+  final AppThemeBloc _appStateStreamControllerBloc = AppThemeBloc();
   bool isLoadingSeeAll = false;
+  @override
+  void dispose() {
+    super.dispose();
+    _notificationBlocStream.dispose();
+    _appStateStreamControllerBloc.dispose();
+  }
+
   @override
   void initState() {
     super.initState();

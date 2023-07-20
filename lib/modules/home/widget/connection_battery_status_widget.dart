@@ -5,7 +5,7 @@ class ConnectionBatteryStatusWidget extends StatelessWidget {
   const ConnectionBatteryStatusWidget(
       {super.key, required this.isConnected, required this.batteryLevel});
   final bool isConnected;
-  final String batteryLevel;
+  final double batteryLevel;
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -26,6 +26,13 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _notficationBlocStreamController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context).brightness;
     return BlocProvider(

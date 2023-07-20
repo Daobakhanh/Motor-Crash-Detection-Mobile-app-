@@ -26,7 +26,7 @@ class DeviceRepo {
     } catch (e) {
       // rethrow;
     }
-    // return null;
+    return null;
   }
 
   static Future<VehicleDataModel?> getVehicle() async {
