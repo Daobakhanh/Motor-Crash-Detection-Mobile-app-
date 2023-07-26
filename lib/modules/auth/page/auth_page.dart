@@ -46,7 +46,7 @@ class _AuthPageState extends State<AuthPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 AppTerm.appNameFull,
-                style: AppTextStyle.h2.copyWith(fontSize: 40),
+                style: AppTextStyle.h2.copyWith(fontSize: 36),
               ),
             ),
             Padding(
