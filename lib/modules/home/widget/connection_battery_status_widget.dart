@@ -3,8 +3,13 @@ import 'package:motorbike_crash_theft_detection_system/lib.dart';
 
 class ConnectionBatteryStatusWidget extends StatelessWidget {
   const ConnectionBatteryStatusWidget(
-      {super.key, required this.isConnected, required this.batteryLevel});
+      {super.key,
+      required this.isConnected,
+      required this.batteryLevel,
+      required this.isCharging});
   final bool isConnected;
+  final bool isCharging;
+
   final double batteryLevel;
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,8 @@ class ConnectionBatteryStatusWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Connection status: $isConnected"),
+          Text("Charging connection status: $isCharging"),
+          Text("Device connection status: $isConnected"),
           Text("Pin: $batteryLevel%"),
         ],
       ),
