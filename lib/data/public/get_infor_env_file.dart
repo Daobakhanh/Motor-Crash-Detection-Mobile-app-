@@ -5,10 +5,6 @@ import '../../lib.dart';
 Future<String?> getApiUrl() async {
   await dotenv.load(fileName: ".env");
   String? apiUrl = dotenv.env['API'];
-  DebugPrint.dataLog(
-      currentFile: 'get_infor_env',
-      title: 'ApiUrl from env file',
-      data: apiUrl);
   return apiUrl;
 }
 

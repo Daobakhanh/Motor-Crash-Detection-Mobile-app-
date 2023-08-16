@@ -16,13 +16,16 @@ class AppNavigationConfig extends StatefulWidget {
 class _AppNavigationConfigState extends State<AppNavigationConfig> {
   late final NotificationBlocStream _notficationBlocStreamController;
 
-  // NotificationBlocStream get _notificationBlocStream =>
-  //     BlocProvider.of<NotificationBlocStream>(context)!;
-
   @override
   void initState() {
     super.initState();
     _notficationBlocStreamController = NotificationBlocStream();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _notficationBlocStreamController.dispose();
   }
 
   @override
@@ -46,12 +49,18 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
             // backgroundColor: AppColor.greyBold,
             tabBar: CupertinoTabBar(
               currentIndex: 1,
-              activeColor: AppColor.pinkAccent,
-              inactiveColor:
-                  themeData == Brightness.dark ? AppColor.grey : AppColor.dark,
+              onTap: (value) async {
+                if (value == 2) {
+                  await _notficationBlocStreamController.getAllNotification();
+                }
+              },
+              activeColor: AppColors.pinkAccent,
+              inactiveColor: themeData == Brightness.dark
+                  ? AppColors.grey
+                  : AppColors.dark,
               backgroundColor: themeData == Brightness.dark
-                  ? AppColor.dark
-                  : AppColor.lightGray1,
+                  ? AppColors.dark
+                  : AppColors.lightGray1,
               items: [
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.person),
@@ -88,11 +97,6 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
 
                 case 1:
                   return CupertinoTabView(
-                    // onGenerateRoute: ,
-                    // routes: {
-                    //   '/postDetail': (context) => const PostDetailPage(),
-                    // },
-
                     builder: (context) {
                       return const CupertinoPageScaffold(
                         child: HomePage(),

@@ -12,7 +12,7 @@ iSafe : the application displays a warning when detecting a traffic accident, th
 <img width="1000" alt="image" src="https://user-images.githubusercontent.com/64141607/215969873-59874314-044c-44f0-9b92-3ed48285fa14.png">
 
 The first version of project (v1.0) is ...
-[Check Video Demo]()
+[Check Video Demo](https://youtu.be/CsQSd-wd0rk)
 
 ## II. Showcase
 

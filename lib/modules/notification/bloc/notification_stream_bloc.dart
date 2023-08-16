@@ -4,9 +4,7 @@ import '../../../lib.dart';
 
 class NotificationBlocStream implements BlocBase {
   @override
-  void dispose() {
-    // TODO: implement dispose
-  }
+  void dispose() {}
 
   NotificationBlocStream() {
     getAllNotification();
@@ -55,7 +53,7 @@ class NotificationBlocStream implements BlocBase {
     }
   }
 
-  Future<void> readAllNotifications(List<String> listNotiId) async {
+  Future<bool> readAllNotifications(List<String> listNotiId) async {
     try {
       final notificationsRes = await NotificationRepo.readAllNotifications(
         listNotiId: listNotiId,
@@ -66,7 +64,9 @@ class NotificationBlocStream implements BlocBase {
           title: 'event readAllNoti successful',
           data: null,
         );
+        return true;
       }
+      return false;
     } catch (e) {
       // notificationStreamController.add(NotificationBlocStreamState(error: e));
       DebugPrint.dataLog(
@@ -74,6 +74,7 @@ class NotificationBlocStream implements BlocBase {
         title: 'event readAllNoti false',
         data: e,
       );
+      return false;
     }
   }
 }

@@ -38,20 +38,33 @@ class _MyAppState extends State<MyApp> {
     return BlocProvider(
       bloc: _appStateStreamControllerBloc,
       child: StreamBuilder<AppThemeStateEnum>(
-          // initialData: AppThemeStateEnum.light,
           stream: _appStateStreamControllerBloc.stream,
           builder: ((context, snapshot) {
             return MaterialApp(
               onGenerateRoute: AppRoute.generateRoute,
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
+                // scaffoldBackgroundColor: AppColors.grey3,
+                pageTransitionsTheme: const PageTransitionsTheme(builders: {
+                  TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+                  TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+                }),
+                colorSchemeSeed: const Color(0xff727688),
                 brightness: snapshot.data == AppThemeStateEnum.light
                     ? Brightness.light
                     : Brightness.dark,
-                fontFamily: AppFont.avenir,
-                primarySwatch: Colors.pink,
-                appBarTheme: const AppBarTheme(
-                  color: AppColor.greyBold,
+                fontFamily: AppFont.fontNotoSans,
+                useMaterial3: true,
+                appBarTheme: AppBarTheme(
+                  titleTextStyle: AppTextStyle.body20.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: snapshot.data == AppThemeStateEnum.dark
+                        ? AppTextColor.light
+                        : AppTextColor.dark,
+                  ),
+                  // color: snapshot.data == AppThemeStateEnum.dark
+                  //     ? AppColor.greyBold
+                  //     : AppColor.grey,
                   centerTitle: true,
                 ),
               ),

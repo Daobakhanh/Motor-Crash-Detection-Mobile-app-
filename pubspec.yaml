@@ -43,17 +43,18 @@ dependencies:
   google_maps_flutter: ^2.2.2
   firebase_core: ^2.4.0
   firebase_auth: ^4.2.1
-  phone_number: ^1.0.0
-  json_annotation: ^4.7.0
   firebase_messaging: ^14.6.1
+  phone_number: ^1.0.0
+  json_annotation: ^4.8.1
   flutter_bloc: ^8.1.1
   bloc: ^8.1.0
   flutter_dotenv: ^5.0.2
-  dio: ^4.0.6
+  dio: ^5.0.0
   flutter_launcher_icons: ^0.11.0
   flutter_local_notifications: ^13.0.0
   timezone: ^0.9.1
   intl: ^0.18.0
+  pretty_dio_logger: ^1.3.1
   rxdart: ^0.27.7
 
 dev_dependencies:
@@ -102,6 +103,18 @@ flutter:
         - asset: assets/fonts/Silkscreen/Silkscreen-Bold.ttf
         - asset: assets/fonts/Silkscreen/Silkscreen-Regular.ttf
           weight: 800
+    - family: FontNotoSans
+      fonts:
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Black.otf
+          style: normal
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Bold.otf
+          weight: 600
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Light.otf
+          weight: 700
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Medium.otf
+          weight: 700
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Regular.otf
+        - asset: assets/fonts/noto-sans-jp/NotoSansJP-Thin.otf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

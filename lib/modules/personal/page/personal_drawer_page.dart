@@ -39,12 +39,14 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
             //Dark mode feature
             Row(
               children: [
-                const SizedBoxW(7),
-                Icon(
-                  isDarkMode == true ? Icons.dark_mode : Icons.sunny,
-                  color: isDarkMode == true
-                      ? AppColor.activeStateGrey
-                      : AppColor.activeStateYellow,
+                Padding(
+                  padding: const EdgeInsets.only(left: 12, right: 2),
+                  child: Icon(
+                    isDarkMode == true ? Icons.dark_mode : Icons.sunny,
+                    color: isDarkMode == true
+                        ? AppColors.activeStateGrey
+                        : AppColors.activeStateYellow,
+                  ),
                 ),
                 Switch(
                   value: isDarkMode,
@@ -67,7 +69,9 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               icon: const Icon(
                 Icons.settings,
               ),
-              onPressed: () {},
+              onPressed: () {
+                showFeatureComingSoonDialog(context);
+              },
               label: const Text(
                 'Setting',
               ),
@@ -78,7 +82,9 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               icon: const Icon(
                 Icons.help_center,
               ),
-              onPressed: () {},
+              onPressed: () {
+                showFeatureComingSoonDialog(context);
+              },
               label: const Text(
                 'Help',
               ),
@@ -93,7 +99,14 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const PersonalLinkToDevice(),
+                      builder: (context) => PersonalLinkToDevice(
+                        isDoneCallback: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const PersonalPage()),
+                              (Route<dynamic> route) => false);
+                        },
+                      ),
                     ));
               },
               label: const Text(
@@ -106,7 +119,9 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               icon: const Icon(
                 Icons.store,
               ),
-              onPressed: () {},
+              onPressed: () {
+                showFeatureComingSoonDialog(context);
+              },
               label: const Text(
                 'Store',
               ),
@@ -115,9 +130,9 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
             //Logout feature
             TextButton.icon(
               onPressed: () {
-                _appAuthStateBloc.logout();
+                // _appAuthStateBloc.logout();
                 // ignore: use_build_context_synchronously
-                logOutShowMyDialog(context);
+                bugDialog(context);
               },
               icon: const Icon(
                 Icons.logout,

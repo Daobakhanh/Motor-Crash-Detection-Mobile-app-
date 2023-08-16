@@ -47,243 +47,256 @@ class _SigninPageState extends State<SigninPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(AppAuthTerm.authSignIn),
-        ),
-        body: BlocProvider(
-          bloc: appAuthStateBloc,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              // mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 30, bottom: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppAuthTerm.welcomeBack,
-                        style: AppTextStyle.largeTitle,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        AppAuthTerm.signinToYourAccount,
-                        style: AppTextStyle.body17,
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  child: SizedBox(
-                    child: TextField(
-                      keyboardType: TextInputType.phone,
-                      maxLines: 1,
-                      maxLength: 10,
-                      autofocus: false,
-                      controller: _controllerTextPhoneNumber,
-                      onChanged: (String contentValue) {
-                        phoneNumber = contentValue;
-                        if (contentValue.isNotEmpty) {
-                          setState(
-                            () {
-                              isPhoneValid = isValidPhoneNumber(contentValue);
-                            },
-                          );
-                        }
-                        // debugPrint(phoneNumber);
-                        if (contentValue.length == 10) {
-                          setState(
-                            () {
-                              isFullFillPhoneNumber = true;
-                            },
-                          );
-                        } else {
-                          setState(
-                            () {
-                              isFullFillPhoneNumber = false;
-                            },
-                          );
-                        }
-                      },
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: AppFillTextTerm.yourPhoneNumber,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            _controllerTextPhoneNumber.clear();
-                            isPhoneValid = true;
-                          },
-                          icon: const Icon(Icons.clear),
+    double widthScreen = MediaQuery.of(context).size.width;
+    return SafeArea(
+      top: false,
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: const PreferredSize(
+              preferredSize: Size.zero,
+              child: Divider(
+                height: 2,
+              ),
+            ),
+            title: const Text(AppAuthTerm.authSignIn),
+          ),
+          body: BlocProvider(
+            bloc: appAuthStateBloc,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 30, bottom: 30),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppAuthTerm.welcomeBack,
+                          style: AppTextStyle.largeTitle,
                         ),
-                      ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          AppAuthTerm.signinToYourAccount,
+                          style: AppTextStyle.body17,
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                isPhoneValid
-                    ? const SizedBox0H()
-                    : const Text(
-                        AppFillTextTerm.invalidPhoneNumber,
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 13,
-                            fontStyle: FontStyle.italic),
-                      ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 10, top: 10),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
                     child: SizedBox(
                       child: TextField(
-                        // maxLines: (address / 38 ).roundToDouble() + 1,
                         keyboardType: TextInputType.phone,
                         maxLines: 1,
-                        maxLength: 6,
+                        maxLength: 10,
                         autofocus: false,
-                        controller: _controllerTextOTP,
+                        controller: _controllerTextPhoneNumber,
                         onChanged: (String contentValue) {
-                          smsOtpCode = contentValue;
-                          // debugPrint(smsOtpCode);
-                          if (contentValue.length == 6) {
+                          phoneNumber = contentValue;
+                          if (contentValue.isNotEmpty) {
                             setState(
                               () {
-                                isFullFillOTP = true;
+                                isPhoneValid = isValidPhoneNumber(contentValue);
+                              },
+                            );
+                          }
+                          // debugPrint(phoneNumber);
+                          if (contentValue.length == 10) {
+                            setState(
+                              () {
+                                isFullFillPhoneNumber = true;
                               },
                             );
                           } else {
                             setState(
                               () {
-                                isFullFillOTP = false;
+                                isFullFillPhoneNumber = false;
                               },
                             );
                           }
                         },
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
-                          labelText: AppFillTextTerm.otpCode,
-                          suffixIcon: TextButton(
-                            onPressed: () async {
-                              try {
-                                await verifyPhoneNumberFirebase();
-                              } catch (e) {
-                                // ignore: avoid_print
-                                DebugPrint.dataLog(
-                                  data: e,
-                                  title: 'Error get OTP',
-                                  currentFile: 'auth_signup_page',
-                                );
-                              }
+                          labelText: AppFillTextTerm.yourPhoneNumber,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              _controllerTextPhoneNumber.clear();
+                              isPhoneValid = true;
                             },
-                            child: Text(
-                              AppFillTextTerm.send,
-                              textAlign: TextAlign.right,
-                              style: AppTextStyle.body15
-                                  .copyWith(color: AppColor.activeStateBlue),
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  isPhoneValid
+                      ? const SizedBox0H()
+                      : const Text(
+                          AppFillTextTerm.invalidPhoneNumber,
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 13,
+                              fontStyle: FontStyle.italic),
+                        ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 10, top: 10),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: SizedBox(
+                        child: TextField(
+                          // maxLines: (address / 38 ).roundToDouble() + 1,
+                          keyboardType: TextInputType.phone,
+                          maxLines: 1,
+                          maxLength: 6,
+                          autofocus: false,
+                          controller: _controllerTextOTP,
+                          onChanged: (String contentValue) {
+                            smsOtpCode = contentValue;
+                            // debugPrint(smsOtpCode);
+                            if (contentValue.length == 6) {
+                              setState(
+                                () {
+                                  isFullFillOTP = true;
+                                },
+                              );
+                            } else {
+                              setState(
+                                () {
+                                  isFullFillOTP = false;
+                                },
+                              );
+                            }
+                          },
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: AppFillTextTerm.otpCode,
+                            suffixIcon: TextButton(
+                              onPressed: () async {
+                                try {
+                                  await verifyPhoneNumberFirebase();
+                                } catch (e) {
+                                  // ignore: avoid_print
+                                  DebugPrint.dataLog(
+                                    data: e,
+                                    title: 'Error get OTP',
+                                    currentFile: 'auth_signup_page',
+                                  );
+                                }
+                              },
+                              child: Text(
+                                AppFillTextTerm.send,
+                                textAlign: TextAlign.right,
+                                style: AppTextStyle.body15
+                                    .copyWith(color: AppColors.activeStateBlue),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox50H(),
-                !isSignInPress
-                    ? LongStadiumButton(
-                        color: isFullFillPhoneNumber == true &&
-                                isFullFillOTP == true
-                            ? AppColor.pinkAccent
-                            : AppColor.light,
-                        nameOfButton: AppAuthTerm.authSignIn,
-                        onTap: !(isFullFillPhoneNumber == true &&
-                                isFullFillOTP == true)
-                            ? () {}
-                            : () async {
-                                FocusScope.of(context)
-                                    .requestFocus(FocusNode());
-                                // _controllerTextOTP.clear();
-                                String fbAccessToken = '';
-                                bool isSignInSuccessfull = false;
+                  const SizedBox50H(),
+                  !isSignInPress
+                      ? LongStadiumButton(
+                          // width: widthScreen - 40,
+                          color: isFullFillPhoneNumber == true &&
+                                  isFullFillOTP == true
+                              ? AppColors.pinkAccent
+                              : AppColors.light,
+                          nameOfButton: AppAuthTerm.authSignIn,
+                          onTap: !(isFullFillPhoneNumber == true &&
+                                  isFullFillOTP == true)
+                              ? () {}
+                              : () async {
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  // _controllerTextOTP.clear();
+                                  String fbAccessToken = '';
+                                  bool isSignInSuccessfull = false;
 
-                                try {
-                                  await signInWithCredential();
-                                  fbAccessToken =
-                                      await getFbAccessTokenFromFirebase() ??
-                                          '';
-                                  await setFbUserAccessTokenToLocalStorage(
-                                      accessToken: fbAccessToken);
-                                  isSignInSuccessfull = await AuthBloc.signIn();
+                                  try {
+                                    await signInWithCredential();
+                                    fbAccessToken =
+                                        await getFbAccessTokenFromFirebase() ??
+                                            '';
+                                    await setFbUserAccessTokenToLocalStorage(
+                                        accessToken: fbAccessToken);
+                                    isSignInSuccessfull =
+                                        await AuthBloc.signIn();
 
-                                  // //TODO: delete one code line below if test OK
-                                  // isSignInSuccessfull = true;
-                                } catch (e) {
-                                  DebugPrint.authenLog(
-                                    message: AppStateEnum.fail.toString(),
-                                    currentFile: 'Auth_signin_page',
-                                    title:
-                                        'Auth signin page: error when call Signin Repo ',
-                                  );
-                                  // rethrow;
-                                }
-                                if (isSignInSuccessfull) {
-                                  // ignore: avoid_print
-                                  setState(() {
-                                    isSignInPress = true;
-                                  });
-
-                                  Future.delayed(
-                                    const Duration(seconds: 2),
-                                    () async {
-                                      isSignInPress = false;
-                                      await appAuthStateBloc.changeAppAuthState(
-                                          isUserTokenExpired: false);
-                                      // Navigator.of(context).pushNamed(
-                                      //     AppRoute.appNavigatorConfig);
-                                      // ignore: use_build_context_synchronously
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MyApp()),
-                                      );
-                                    },
-                                  );
-                                  DebugPrint.dataLog(
-                                      currentFile: 'auth_signin_page',
+                                    // //TODO: delete one code line below if test OK
+                                    // isSignInSuccessfull = true;
+                                  } catch (e) {
+                                    DebugPrint.authenLog(
+                                      message: AppStateEnum.fail.toString(),
+                                      currentFile: 'Auth_signin_page',
                                       title:
-                                          'Auth signin page: Fb accessToken ',
-                                      data: fbAccessToken);
+                                          'Auth signin page: error when call Signin Repo ',
+                                    );
+                                    // rethrow;
+                                  }
+                                  if (isSignInSuccessfull) {
+                                    // ignore: avoid_print
+                                    setState(() {
+                                      isSignInPress = true;
+                                    });
 
-                                  //FIXME: Change to real feature
-                                  // ignore: use_build_context_synchronously
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => const AppNavigationConfig(),
-                                  //   ),
-                                  // );
-                                  // ignore: use_build_context_synchronously
+                                    Future.delayed(
+                                      const Duration(seconds: 2),
+                                      () async {
+                                        isSignInPress = false;
+                                        await appAuthStateBloc
+                                            .changeAppAuthState(
+                                                isUserTokenExpired: false);
+                                        // Navigator.of(context).pushNamed(
+                                        //     AppRoute.appNavigatorConfig);
+                                        // ignore: use_build_context_synchronously
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const MyApp()),
+                                        );
+                                      },
+                                    );
+                                    DebugPrint.dataLog(
+                                        currentFile: 'auth_signin_page',
+                                        title:
+                                            'Auth signin page: Fb accessToken ',
+                                        data: fbAccessToken);
 
-                                  // await appAuthStateBloc.changeAppAuthState(
-                                  //     isUserTokenExpired: false);
-                                  // // ignore: use_build_context_synchronously
-                                  // Navigator.of(context)
-                                  //     .pushNamed(AppRoute.appNavigatorConfig);
-                                } else {
-                                  //TODO: Show alert signin fail
-                                }
-                              },
-                      )
-                    : const LongStadiumButtonIndicator(
-                        color: AppColor.pinkAccent,
-                      )
-              ],
+                                    //FIXME: Change to real feature
+                                    // ignore: use_build_context_synchronously
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => const AppNavigationConfig(),
+                                    //   ),
+                                    // );
+                                    // ignore: use_build_context_synchronously
+
+                                    // await appAuthStateBloc.changeAppAuthState(
+                                    //     isUserTokenExpired: false);
+                                    // // ignore: use_build_context_synchronously
+                                    // Navigator.of(context)
+                                    //     .pushNamed(AppRoute.appNavigatorConfig);
+                                  } else {
+                                    //TODO: Show alert signin fail
+                                  }
+                                },
+                        )
+                      : const LongStadiumButtonIndicator(
+                          color: AppColors.pinkAccent,
+                        )
+                ],
+              ),
             ),
           ),
         ),
@@ -292,7 +305,6 @@ class _SigninPageState extends State<SigninPage> {
   }
 
   Future<void> verifyPhoneNumberFirebase() async {
-    // ignore: avoid_print
     _auth.verifyPhoneNumber(
       phoneNumber: '+84${phoneNumber.substring(1)}',
       verificationCompleted: (PhoneAuthCredential credential) {},
@@ -318,8 +330,5 @@ class _SigninPageState extends State<SigninPage> {
     String accessToken;
     accessToken = await auth.currentUser!.getIdToken();
     return accessToken;
-
-    //need to extend exp time
-    // getAccessTokenFromLocalStorage()
   }
 }

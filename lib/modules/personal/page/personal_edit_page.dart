@@ -123,394 +123,403 @@ class _PersonalEditInforPageState extends State<PersonalEditInforPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(AppTerm.edit),
-          centerTitle: true,
-          leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(
-              Icons.arrow_back,
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                _handleUpdatePersonalProfile();
-                FocusManager.instance.primaryFocus?.unfocus();
-                setState(() {
-                  isDone = !isDone;
-                });
-                Future.delayed(const Duration(seconds: 1), () async {
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => const PersonalPage()),
-                      (Route<dynamic> route) => false);
-                });
+    return SafeArea(
+      top: false,
+      // bottom: false,
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: const PreferredSize(
+                preferredSize: Size.zero,
+                child: Divider(
+                  height: 2,
+                )),
+            title: const Text(AppTerm.edit),
+            centerTitle: true,
+            leading: InkWell(
+              onTap: () {
+                Navigator.pop(context);
               },
-              child: isDone
-                  ? const CupertinoActivityIndicator(
-                      color: AppColor.light,
-                    )
-                  : Text(
-                      'Done',
-                      style: AppTextStyle.body17.copyWith(
-                        color: AppColor.activeStateBlue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+              child: const Icon(
+                Icons.arrow_back,
+              ),
             ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //Infor: vehicle
-              Container(
-                margin: const EdgeInsets.only(top: 30),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  AppTerm.vehicle,
-                  style:
-                      AppTextStyle.body17.copyWith(fontWeight: FontWeight.bold),
-                ),
-              ),
-              const SizedBox10H(),
-
-              //vehicle brand editting
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      maxLines: 1,
-                      autofocus: false,
-                      controller: _controllerTextVehicleBrand,
-                      onChanged: (String contentValue) {
-                        vehicleBrand = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: VehicleInforTerm.brand,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            _controllerTextVehicleBrand.clear();
-                            setState(() {
-                              maxLine = 1;
-                            });
-                          },
-                          icon: const Icon(Icons.clear),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  _handleUpdatePersonalProfile();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  setState(() {
+                    isDone = !isDone;
+                  });
+                  Future.delayed(const Duration(seconds: 1), () async {
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const PersonalPage()),
+                        (Route<dynamic> route) => false);
+                  });
+                },
+                child: isDone
+                    ? const CupertinoActivityIndicator(
+                        color: AppColors.light,
+                      )
+                    : Text(
+                        'Done',
+                        style: AppTextStyle.body17.copyWith(
+                          color: AppColors.activeStateBlue,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  ),
-                ),
               ),
-
-              //vehicle model editting
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      maxLines: 1,
-                      autofocus: false,
-                      controller: _controllerTextVehicleModel,
-                      onChanged: (String contentValue) {
-                        vehicleModel = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: VehicleInforTerm.model,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            _controllerTextVehicleModel.clear();
-                            setState(() {
-                              maxLine = 1;
-                            });
-                          },
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              //vehicle color editing
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      autofocus: false,
-                      controller: _controllerTextVehicleColor,
-                      onChanged: (String contentValue) {
-                        vehicleColor = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: VehicleInforTerm.color,
-                        suffixIcon: IconButton(
-                          onPressed: _controllerTextVehicleColor.clear,
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              //vehicle number plates editing
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      autofocus: false,
-                      controller: _controllerTextVehicleNumberPlate,
-                      onChanged: (String contentValue) {
-                        vehicleNumberPlate = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: VehicleInforTerm.numberPlates,
-                        suffixIcon: IconButton(
-                          onPressed: _controllerTextVehicleNumberPlate.clear,
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              //vehicle description editing
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      maxLines: maxLine,
-                      autofocus: false,
-                      controller: _controllerTextVehicleDescription,
-                      onChanged: (String contentValue) {
-                        // fisrtName = contentValue;
-                        // debugPrint(fisrtName);
-                      },
-                      decoration: InputDecoration(
-                        labelText: VehicleInforTerm.description,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            _controllerTextVehicleDescription.clear();
-                            setState(() {
-                              maxLine = 1;
-                            });
-                          },
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              //sos phone number
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      // maxLines: (address / 38 ).roundToDouble() + 1,
-                      maxLength: 12,
-                      keyboardType: TextInputType.phone,
-                      maxLines: 1,
-                      autofocus: false,
-                      controller: _controllerTextVehicleSOSNumber,
-                      onChanged: (String contentValue) {
-                        vehicleSOSNumber = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: PersonalInforTerm.sosNumber,
-                        suffixIcon: IconButton(
-                          onPressed: _controllerTextVehicleSOSNumber.clear,
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox10H(),
-              const Divider(
-                thickness: 2,
-                color: AppColor.lightGray1,
-                height: 5,
-              ),
-
-              //Infor: Owner
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  AppTerm.owner,
-                  style:
-                      AppTextStyle.body17.copyWith(fontWeight: FontWeight.bold),
-                ),
-              ),
-
-              //owner name
-              Container(
-                margin: const EdgeInsets.only(top: 20, bottom: 10),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      // maxLines: (address / 38 ).roundToDouble() + 1,
-                      maxLines: 1,
-                      autofocus: false,
-                      controller: _controllerTextOwnerName,
-                      onChanged: (String contentValue) {
-                        ownerName = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: PersonalInforTerm.name,
-                        suffixIcon: IconButton(
-                          onPressed: _controllerTextOwnerName.clear,
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              //owner Dob
-              Container(
-                margin: const EdgeInsets.only(top: 20, bottom: 10),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      // maxLines: (address / 38 ).roundToDouble() + 1,
-                      keyboardType: TextInputType.datetime,
-                      maxLines: 1,
-                      autofocus: false,
-                      controller: _controllerTextOwnerDoB,
-                      onChanged: (String contentValue) {
-                        ownerDoB = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: PersonalInforTerm.dob,
-                        suffixIcon: IconButton(
-                          onPressed: _controllerTextOwnerDoB.clear,
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              //owner address
-              Container(
-                margin: const EdgeInsets.only(top: 20, bottom: 10),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      // maxLines: (address / 38 ).roundToDouble() + 1,
-                      maxLines: 1,
-                      autofocus: false,
-                      controller: _controllerTextOwnerAddress,
-                      onChanged: (String contentValue) {
-                        ownerAddress = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: PersonalInforTerm.addr,
-                        suffixIcon: IconButton(
-                          onPressed: _controllerTextOwnerAddress.clear,
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              //owner phone number
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      // maxLines: (address / 38 ).roundToDouble() + 1,
-                      maxLength: 12,
-                      keyboardType: TextInputType.phone,
-                      maxLines: 1,
-                      autofocus: false,
-                      controller: _controllerTextOwnerPhoneNumber,
-                      onChanged: (String contentValue) {
-                        ownerPhoneNumber = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: PersonalInforTerm.phoneNumber,
-                        suffixIcon: IconButton(
-                          onPressed: _controllerTextOwnerPhoneNumber.clear,
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              //owner citizen ID
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 10),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      // maxLines: (address / 38 ).roundToDouble() + 1,
-                      maxLength: 12,
-                      keyboardType: TextInputType.phone,
-                      maxLines: 1,
-                      autofocus: false,
-                      controller: _controllerTextOwnerCitizenID,
-                      onChanged: (String contentValue) {
-                        ownerCitizenID = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: PersonalInforTerm.citizenId,
-                        suffixIcon: IconButton(
-                          onPressed: _controllerTextOwnerCitizenID.clear,
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox50H()
             ],
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //Infor: vehicle
+                Container(
+                  margin: const EdgeInsets.only(top: 30),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    AppTerm.vehicle,
+                    style: AppTextStyle.body17
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox10H(),
+
+                //vehicle brand editting
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SizedBox(
+                      child: TextField(
+                        maxLines: 1,
+                        autofocus: false,
+                        controller: _controllerTextVehicleBrand,
+                        onChanged: (String contentValue) {
+                          vehicleBrand = contentValue;
+                        },
+                        decoration: InputDecoration(
+                          labelText: VehicleInforTerm.brand,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              _controllerTextVehicleBrand.clear();
+                              setState(() {
+                                maxLine = 1;
+                              });
+                            },
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                //vehicle model editting
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SizedBox(
+                      child: TextField(
+                        maxLines: 1,
+                        autofocus: false,
+                        controller: _controllerTextVehicleModel,
+                        onChanged: (String contentValue) {
+                          vehicleModel = contentValue;
+                        },
+                        decoration: InputDecoration(
+                          labelText: VehicleInforTerm.model,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              _controllerTextVehicleModel.clear();
+                              setState(() {
+                                maxLine = 1;
+                              });
+                            },
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                //vehicle color editing
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SizedBox(
+                      child: TextField(
+                        autofocus: false,
+                        controller: _controllerTextVehicleColor,
+                        onChanged: (String contentValue) {
+                          vehicleColor = contentValue;
+                        },
+                        decoration: InputDecoration(
+                          labelText: VehicleInforTerm.color,
+                          suffixIcon: IconButton(
+                            onPressed: _controllerTextVehicleColor.clear,
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                //vehicle number plates editing
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SizedBox(
+                      child: TextField(
+                        autofocus: false,
+                        controller: _controllerTextVehicleNumberPlate,
+                        onChanged: (String contentValue) {
+                          vehicleNumberPlate = contentValue;
+                        },
+                        decoration: InputDecoration(
+                          labelText: VehicleInforTerm.numberPlates,
+                          suffixIcon: IconButton(
+                            onPressed: _controllerTextVehicleNumberPlate.clear,
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                //vehicle description editing
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SizedBox(
+                      child: TextField(
+                        maxLines: maxLine,
+                        autofocus: false,
+                        controller: _controllerTextVehicleDescription,
+                        onChanged: (String contentValue) {
+                          // fisrtName = contentValue;
+                          // debugPrint(fisrtName);
+                        },
+                        decoration: InputDecoration(
+                          labelText: VehicleInforTerm.description,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              _controllerTextVehicleDescription.clear();
+                              setState(() {
+                                maxLine = 1;
+                              });
+                            },
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                //sos phone number
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    child: SizedBox(
+                      child: TextField(
+                        // maxLines: (address / 38 ).roundToDouble() + 1,
+                        maxLength: 12,
+                        keyboardType: TextInputType.phone,
+                        maxLines: 1,
+                        autofocus: false,
+                        controller: _controllerTextVehicleSOSNumber,
+                        onChanged: (String contentValue) {
+                          vehicleSOSNumber = contentValue;
+                        },
+                        decoration: InputDecoration(
+                          labelText: PersonalInforTerm.sosNumber,
+                          suffixIcon: IconButton(
+                            onPressed: _controllerTextVehicleSOSNumber.clear,
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox10H(),
+                const Divider(
+                  thickness: 2,
+                  color: AppColors.lightGray1,
+                  height: 5,
+                ),
+
+                //Infor: Owner
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    AppTerm.owner,
+                    style: AppTextStyle.body17
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
+
+                //owner name
+                Container(
+                  margin: const EdgeInsets.only(top: 20, bottom: 10),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    child: SizedBox(
+                      child: TextField(
+                        // maxLines: (address / 38 ).roundToDouble() + 1,
+                        maxLines: 1,
+                        autofocus: false,
+                        controller: _controllerTextOwnerName,
+                        onChanged: (String contentValue) {
+                          ownerName = contentValue;
+                        },
+                        decoration: InputDecoration(
+                          labelText: PersonalInforTerm.name,
+                          suffixIcon: IconButton(
+                            onPressed: _controllerTextOwnerName.clear,
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                //owner Dob
+                Container(
+                  margin: const EdgeInsets.only(top: 20, bottom: 10),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    child: SizedBox(
+                      child: TextField(
+                        // maxLines: (address / 38 ).roundToDouble() + 1,
+                        keyboardType: TextInputType.datetime,
+                        maxLines: 1,
+                        autofocus: false,
+                        controller: _controllerTextOwnerDoB,
+                        onChanged: (String contentValue) {
+                          ownerDoB = contentValue;
+                        },
+                        decoration: InputDecoration(
+                          labelText: PersonalInforTerm.dob,
+                          suffixIcon: IconButton(
+                            onPressed: _controllerTextOwnerDoB.clear,
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                //owner address
+                Container(
+                  margin: const EdgeInsets.only(top: 20, bottom: 10),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    child: SizedBox(
+                      child: TextField(
+                        // maxLines: (address / 38 ).roundToDouble() + 1,
+                        maxLines: 1,
+                        autofocus: false,
+                        controller: _controllerTextOwnerAddress,
+                        onChanged: (String contentValue) {
+                          ownerAddress = contentValue;
+                        },
+                        decoration: InputDecoration(
+                          labelText: PersonalInforTerm.addr,
+                          suffixIcon: IconButton(
+                            onPressed: _controllerTextOwnerAddress.clear,
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                //owner phone number
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    child: SizedBox(
+                      child: TextField(
+                        // maxLines: (address / 38 ).roundToDouble() + 1,
+                        maxLength: 12,
+                        keyboardType: TextInputType.phone,
+                        maxLines: 1,
+                        autofocus: false,
+                        controller: _controllerTextOwnerPhoneNumber,
+                        onChanged: (String contentValue) {
+                          ownerPhoneNumber = contentValue;
+                        },
+                        decoration: InputDecoration(
+                          labelText: PersonalInforTerm.phoneNumber,
+                          suffixIcon: IconButton(
+                            onPressed: _controllerTextOwnerPhoneNumber.clear,
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                //owner citizen ID
+                Container(
+                  margin: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    child: SizedBox(
+                      child: TextField(
+                        // maxLines: (address / 38 ).roundToDouble() + 1,
+                        maxLength: 12,
+                        keyboardType: TextInputType.phone,
+                        maxLines: 1,
+                        autofocus: false,
+                        controller: _controllerTextOwnerCitizenID,
+                        onChanged: (String contentValue) {
+                          ownerCitizenID = contentValue;
+                        },
+                        decoration: InputDecoration(
+                          labelText: PersonalInforTerm.citizenId,
+                          suffixIcon: IconButton(
+                            onPressed: _controllerTextOwnerCitizenID.clear,
+                            icon: const Icon(Icons.clear),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox50H()
+              ],
+            ),
           ),
         ),
       ),

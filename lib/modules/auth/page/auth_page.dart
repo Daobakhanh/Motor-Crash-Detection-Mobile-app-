@@ -16,6 +16,7 @@ class _AuthPageState extends State<AuthPage> {
       BlocProvider.of<AppAuthStateBloc>(context);
   @override
   Widget build(BuildContext context) {
+    double widthScreen = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -42,14 +43,14 @@ class _AuthPageState extends State<AuthPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 AppTerm.appNameFull,
-                style: AppTextStyle.h2.copyWith(fontSize: 40),
+                style: AppTextStyle.h2.copyWith(fontSize: 36),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Text(
                 AppTerm.appDescription,
                 style:
@@ -62,7 +63,8 @@ class _AuthPageState extends State<AuthPage> {
               margin: const EdgeInsets.only(bottom: 5),
               padding: const EdgeInsets.only(top: 20, bottom: 5),
               child: LongStadiumButton(
-                color: AppColor.pinkAccent,
+                width: widthScreen - 40,
+                color: AppColors.pinkAccent,
                 nameOfButton: AppAuthTerm.authSignIn,
                 onTap: () async {
                   // Navigator.push(
@@ -78,6 +80,7 @@ class _AuthPageState extends State<AuthPage> {
 
             //SIGNIN Button
             LongStadiumButton(
+              width: widthScreen - 40,
               nameOfButton: AppAuthTerm.authSignUp,
               onTap: () async {
                 // ignore: avoid_print

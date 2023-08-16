@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../create_at_model/create_at_model_dto.dart';
-part 'location_model.g.dart';
+part 'location_model_dto.g.dart';
 
 @JsonSerializable()
 class LocationModel {

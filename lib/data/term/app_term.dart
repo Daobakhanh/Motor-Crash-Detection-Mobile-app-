@@ -1,8 +1,8 @@
 class AppTerm {
-  static const appNameFull = "Motorbike Crash Detection";
+  static const appNameFull = "Motorbike Crash and Theft Detection";
   static const appName = 'iSafe';
   static const appDescription =
-      'Motorcycle accident detection system, motorcycle dump warning, intelligent anti-theft';
+      'The system is capable of detecting and warning motorbike accidents, motorbike theft: quickly, timely and accurately.';
   static const featureComingSoon = "Feature Coming Soon";
   static const changeImage = "Change motorbike Image";
   static const edit = "Edit information";
@@ -11,6 +11,7 @@ class AppTerm {
   static const personal = "Personal";
   static const appLogState = "AppLogState";
   static const personalLinkToDevice = 'Link to Device';
+  static const setRootGYPageTitle = 'Set root GY';
   static const personalLinkToDeviceGuide =
       'Enter "Device Id" and "Verification Code" to link:';
 }

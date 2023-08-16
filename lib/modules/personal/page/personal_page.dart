@@ -13,7 +13,7 @@ class PersonalPage extends StatefulWidget {
 class _PersonalPageState extends State<PersonalPage> {
   final String imageUrl = 'assets/images/motorbike.jpeg';
   final _personalInforBloc = PersonalInforBloc();
-
+  final deviceMock = DeviceModel();
   @override
   void initState() {
     super.initState();
@@ -29,8 +29,14 @@ class _PersonalPageState extends State<PersonalPage> {
     final size = MediaQuery.of(context).size;
     final widthScreen = size.width;
     return SafeArea(
+      top: false,
       child: Scaffold(
         appBar: AppBar(
+          bottom: const PreferredSize(
+              preferredSize: Size.zero,
+              child: Divider(
+                height: 2,
+              )),
           title: const Text(AppPageName.personal),
         ),
         endDrawer: const PersonalDrawerPage(),
@@ -54,9 +60,10 @@ class _PersonalPageState extends State<PersonalPage> {
                     ),
                   );
                 },
-                child: Stack(
-                  children: [
-                    ListView(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
                       children: [
                         const SizedBox15H(),
                         deviceInfor != null
@@ -65,25 +72,26 @@ class _PersonalPageState extends State<PersonalPage> {
                                     personalInfor: personalInfor,
                                     vehicleInfor: vehicleInfor,
                                   )
-                                : _needToUpdateVehicleInfor()
-                            : _linkDeviceToUserBtn(),
+                                : const NeedToUpdateVehicleInfor()
+                            : const LinkDeviceToUserWidget(),
 
                         //Vehicle Owner
                         const SizedBox20H(),
                         PersonalInforWidget(personalInfor: personalInfor),
-                        const SizedBox50H()
+                        const SizedBox50H(),
+                        _editProfileButton(
+                          widthScreen,
+                          deviceInfor,
+                          personalInfor,
+                          vehicleInfor,
+                        ),
+                        const SizedBox20H(),
                       ],
                     ),
-
-                    //Edit infor buttom
-                    _editProfileButton(
-                      widthScreen,
-                      deviceInfor,
-                      personalInfor,
-                      vehicleInfor,
-                    )
-                  ],
+                  ),
                 ),
+
+                //Edit infor buttom
               );
             }
             if (personalInforError != null) {
@@ -102,106 +110,28 @@ class _PersonalPageState extends State<PersonalPage> {
     );
   }
 
-  final deviceMock = DeviceModel();
-
-  Widget _linkDeviceToUserBtn() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(top: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Text(
-            AppTerm.vehicle,
-            style: AppTextStyle.body17.copyWith(fontWeight: FontWeight.bold),
-          ),
-        ),
-        const SizedBox10H(),
-        Container(
-          padding: const EdgeInsets.only(left: 20),
-          child: const Text(
-            'Don\'t have device infor, Please add device',
-            style: TextStyle(fontStyle: FontStyle.italic),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 10),
-          padding: const EdgeInsets.only(left: 20),
-          child: ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const PersonalLinkToDevice(),
-                  ));
-            },
-            icon: const Icon(Icons.link),
-            label: const Text('Add vehicle here'),
-          ),
-        ),
-        const SizedBox10H(),
-        const Divider(
-          color: AppColor.lightGray2,
-          thickness: 1.5,
-          height: 1.5,
-        ),
-      ],
-    );
-  }
-
-  Widget _needToUpdateVehicleInfor() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(top: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Text(
-            AppTerm.vehicle,
-            style: AppTextStyle.body17.copyWith(fontWeight: FontWeight.bold),
-          ),
-        ),
-        const SizedBox10H(),
-        Container(
-          padding: const EdgeInsets.only(left: 20),
-          child: const Text(
-            'Added device, please update your vehicle information',
-            maxLines: 2,
-            style: TextStyle(fontStyle: FontStyle.italic),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _editProfileButton(double widthScreen, DeviceModel? deviceInfor,
       UserModel personalInfor, VehicleDataModel? vehicleInfor) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: SizedBox(
-        width: widthScreen - 30,
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PersonalEditInforPage(
-                  deviceId: deviceInfor?.id ?? '0',
-                  personalInfor: personalInfor,
-                  vehicleInfor: vehicleInfor,
-                ),
-              ),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColor.lightGray1,
+    return LongStadiumButton(
+      width: widthScreen,
+      nameOfButton: AppTerm.edit,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PersonalEditInforPage(
+              deviceId: deviceInfor?.id ?? '0',
+              personalInfor: personalInfor,
+              vehicleInfor: vehicleInfor,
+            ),
           ),
-          child: const Text(
-            AppTerm.edit,
-            style: TextStyle(color: AppColor.dark),
-          ),
-        ),
-      ),
+        );
+      },
+      color: AppColors.grey,
+      // child: const Text(
+      //   AppTerm.edit,
+      //   style: TextStyle(color: AppColor.dark),
+      // ),
     );
   }
 }

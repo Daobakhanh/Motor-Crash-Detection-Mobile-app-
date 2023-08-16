@@ -40,11 +40,11 @@ class _MotorbikeImageDetailState extends State<MotorbikeImageDetail> {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.lightGray1,
+                      backgroundColor: AppColors.lightGray1,
                     ),
                     child: const Text(
                       AppTerm.changeImage,
-                      style: TextStyle(color: AppColor.dark),
+                      style: TextStyle(color: AppColors.dark),
                     ),
                   ),
                 ),
@@ -56,7 +56,7 @@ class _MotorbikeImageDetailState extends State<MotorbikeImageDetail> {
               child: GestureDetector(
                 child: const Icon(
                   Icons.cancel,
-                  color: AppColor.grey,
+                  color: AppColors.grey,
                   size: 35,
                 ),
                 onTap: () {

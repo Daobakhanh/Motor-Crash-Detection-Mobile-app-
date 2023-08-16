@@ -2,9 +2,7 @@ import '../../../lib.dart';
 
 class AuthBloc implements BlocBase {
   @override
-  void dispose() {
-    // TODO: implement dispose
-  }
+  void dispose() {}
 
   static Future<bool> signIn() async {
     String fcmToken = await getFcmTokenFromLocalStorage() ?? '';

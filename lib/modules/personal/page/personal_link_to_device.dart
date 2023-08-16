@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../lib.dart';
 
 class PersonalLinkToDevice extends StatefulWidget {
-  const PersonalLinkToDevice({super.key});
+  const PersonalLinkToDevice({super.key, this.isDoneCallback});
+  final Function? isDoneCallback;
 
   @override
   State<PersonalLinkToDevice> createState() => _PersonalLinkToDeviceState();
@@ -35,122 +36,135 @@ class _PersonalLinkToDeviceState extends State<PersonalLinkToDevice> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppTerm.personalLinkToDevice),
-        centerTitle: true,
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: const Icon(
-            Icons.arrow_back,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              // _handleUpdatePersonalProfile();
-              await _handleLinkDeviceToUser();
-
-              FocusManager.instance.primaryFocus?.unfocus();
-              setState(() {
-                isDone = !isDone;
-              });
-              Future.delayed(const Duration(seconds: 1), () async {
-                // ignore: use_build_context_synchronously
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (context) => const PersonalPage()),
-                    (Route<dynamic> route) => false);
-              });
-            },
-            child: isDone
-                ? const CupertinoActivityIndicator(
-                    color: AppColor.light,
-                  )
-                : Text(
-                    'Done',
-                    style: AppTextStyle.body17.copyWith(
-                      color: AppColor.activeStateBlue,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-          ),
-        ],
-      ),
-      body: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 30),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  AppTerm.personalLinkToDeviceGuide,
-                  style:
-                      AppTextStyle.body17.copyWith(fontWeight: FontWeight.bold),
-                ),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: SafeArea(
+        top: false,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: const PreferredSize(
+                preferredSize: Size.zero,
+                child: Divider(
+                  height: 2,
+                )),
+            title: const Text(AppTerm.personalLinkToDevice),
+            centerTitle: true,
+            leading: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(
+                Icons.arrow_back,
               ),
-              const SizedBox10H(),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  // _handleUpdatePersonalProfile();
+                  await _handleLinkDeviceToUser();
 
-              //device Id
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      maxLength: 17,
-                      maxLines: 1,
-                      autofocus: false,
-                      controller: _controllerTextDeviceId,
-                      onChanged: (String contentValue) {
-                        deviceId = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: LinkUserToDevice.deviceId,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            _controllerTextDeviceId.clear();
-                          },
-                          icon: const Icon(Icons.clear),
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  setState(() {
+                    isDone = !isDone;
+                  });
+                  Future.delayed(const Duration(seconds: 1), () async {
+                    // ignore: use_build_context_synchronously
+                    // Navigator.of(context).pushAndRemoveUntil(
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const PersonalPage()),
+                    //     (Route<dynamic> route) => false);
+                    // Navigator.pop(context);
+                    widget.isDoneCallback!.call();
+                  });
+                },
+                child: isDone
+                    ? const CupertinoActivityIndicator(
+                        color: AppColors.grey,
+                      )
+                    : Text(
+                        'Done',
+                        style: AppTextStyle.body17.copyWith(
+                          color: AppColors.activeStateBlue,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
-
-              //verificationCode
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SizedBox(
-                    child: TextField(
-                      maxLines: 1,
-                      autofocus: false,
-                      controller: _controllerTextVerificationCode,
-                      onChanged: (String contentValue) {
-                        verificationCode = contentValue;
-                      },
-                      decoration: InputDecoration(
-                        labelText: LinkUserToDevice.verificationCode,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            _controllerTextVerificationCode.clear();
-                          },
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
               ),
             ],
+          ),
+          body: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      AppTerm.personalLinkToDeviceGuide,
+                      style: AppTextStyle.body17
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox10H(),
+
+                  //device Id
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: SizedBox(
+                        child: TextField(
+                          maxLength: 17,
+                          maxLines: 1,
+                          autofocus: false,
+                          controller: _controllerTextDeviceId,
+                          onChanged: (String contentValue) {
+                            deviceId = contentValue;
+                          },
+                          decoration: InputDecoration(
+                            labelText: LinkUserToDevice.deviceId,
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                _controllerTextDeviceId.clear();
+                              },
+                              icon: const Icon(Icons.clear),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  //verificationCode
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: SizedBox(
+                        child: TextField(
+                          maxLines: 1,
+                          autofocus: false,
+                          controller: _controllerTextVerificationCode,
+                          onChanged: (String contentValue) {
+                            verificationCode = contentValue;
+                          },
+                          decoration: InputDecoration(
+                            labelText: LinkUserToDevice.verificationCode,
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                _controllerTextVerificationCode.clear();
+                              },
+                              icon: const Icon(Icons.clear),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

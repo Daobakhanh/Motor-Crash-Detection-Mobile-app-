@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late io.Socket socket;
   late Map<MarkerId, Marker> _marker;
+  final NotificationBlocStream _notificationStream = NotificationBlocStream();
 
   // ignore: prefer_final_fields
   CameraPosition _cameraPosition =
@@ -24,7 +25,180 @@ class _HomePageState extends State<HomePage> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  Future<void> initSocket() async {
+  late bool isOnAntiThief;
+
+  late bool isWarning;
+  bool isLoadingOfWarning = false;
+
+  final _homeBloc = HomeBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    isOnAntiThief = true;
+    isWarning = true;
+    _marker = <MarkerId, Marker>{};
+    _marker.clear();
+    initSocket();
+    _homeBloc.add(
+      HomeBlocEvent(
+        homeBlocEvent: HomeBlocEventEnum.getDeviceInfor,
+        stateToggleAntiThief: isOnAntiThief,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      top: false,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          bottom: const PreferredSize(
+              preferredSize: Size.zero,
+              child: Divider(
+                height: 2,
+              )),
+          title: const Text(AppPageName.homepage),
+        ),
+        body: BlocBuilder<HomeBloc, HomeBlocState>(
+          bloc: _homeBloc,
+          builder: (context, state) {
+            final homeError = state.error;
+            final device = state.device;
+            if (device != null) {
+              //remote false if check nullable, mock test
+              isOnAntiThief = device.config?.antiTheft! ?? false;
+              final statusDevice = device.status ?? 0;
+
+              return Stack(
+                children: [
+                  _googleMap(),
+                  statusDevice != 0
+                      ?
+                      //Get current location widget
+                      WarningWidget(
+                          isLoadingOfWarning: isLoadingOfWarning,
+                          onPressed: () async {
+                            setState(
+                              () {
+                                isWarning = !isWarning;
+                                isLoadingOfWarning = true;
+                              },
+                            );
+                            await showConfirmSafeDialog(context);
+                          },
+                        )
+                      : GetLocationWidget(onPressed: () {
+                          setState(() {
+                            isWarning = !isWarning;
+                          });
+                          _homeBloc.add(HomeBlocEvent(
+                            stateToggleAntiThief: isOnAntiThief,
+                            homeBlocEvent: HomeBlocEventEnum.getCurrentLocation,
+                          ));
+                        }),
+                  //toggle antithief widget
+                  Positioned(
+                      right: 15,
+                      top: 15,
+                      child: ConnectionBatteryStatusWidget(
+                        batteryLevel: device.battery ?? 0,
+                        isConnected: device.isConnected ?? true,
+                        isCharging: device.isCharging ?? true,
+                      )),
+                  Positioned(
+                    left: 15,
+                    bottom: 40,
+                    child: ToggleAntiThiefWidget(
+                      isOnAntiThief: isOnAntiThief,
+                      onPressed: () async {
+                        if (statusDevice == 0) {
+                          await toggleAntiThief(!isOnAntiThief);
+                          setState(() {
+                            isOnAntiThief = !isOnAntiThief;
+                          });
+                        }
+                      },
+                    ),
+                  )
+                ],
+              );
+            }
+            if (homeError != null) {
+              return Center(
+                child: Text(
+                  homeError.toString(),
+                ),
+              );
+            }
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: const LinkDeviceToUserWidget(isUseInHomePage: true),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _googleMap() {
+    return GoogleMap(
+      // polylines: {},
+      markers: Set<Marker>.of(_marker.values),
+      initialCameraPosition: _cameraPosition,
+      mapType: MapType.normal,
+      onMapCreated: ((GoogleMapController controller) {
+        _controller.complete(controller);
+      }),
+    );
+  }
+
+  Future<void> toggleAntiThief(bool antiThiefState) async {
+    _homeBloc.add(
+      HomeBlocEvent(
+        homeBlocEvent: HomeBlocEventEnum.toggleAntiThief,
+        stateToggleAntiThief: antiThiefState,
+      ),
+    );
+  }
+
+  Future<void> showConfirmSafeDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm off warning'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _homeBloc.add(
+                  HomeBlocEvent(
+                      homeBlocEvent: HomeBlocEventEnum.offWarning,
+                      stateToggleAntiThief: isOnAntiThief),
+                );
+                Future.delayed(const Duration(seconds: 1), () {
+                  setState(() {
+                    isLoadingOfWarning = false;
+                  });
+                  Navigator.pop(context, 'OK');
+                });
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void initSocket() async {
     try {
       // socket = io.Socket(io: );
       // socket = io.Socket()
@@ -32,7 +206,8 @@ class _HomePageState extends State<HomePage> {
               .getBackendUserAccesskenFromLocalStorage() ??
           AccessToken.accessToken;
       final String socketUrl = await getSocketUrl() ?? '';
-      debugPrint('///////////////');
+      debugPrint(
+          '///////////////////////////////////////////////////////////////////////////');
       debugPrint(socketUrl);
       socket = io.io(
         socketUrl,
@@ -50,7 +225,8 @@ class _HomePageState extends State<HomePage> {
       socket.on(
         AppSocketTerm.socketEvent,
         (data) async {
-          var latLng = data;
+          await _notificationStream.getAllNotification();
+          var latLng = data["locations"][0];
 
           DebugPrint.dataLog(
               currentFile: 'homepage',
@@ -63,11 +239,11 @@ class _HomePageState extends State<HomePage> {
                 target: LatLng(
                   latLng[AppSocketTerm.lat] == 0 ||
                           latLng[AppSocketTerm.lat] == null
-                      ? 21.006560
+                      ? 21.004334
                       : latLng[AppSocketTerm.lat],
                   latLng[AppSocketTerm.long] == 0 ||
                           latLng[AppSocketTerm.long] == null
-                      ? 105.848429
+                      ? 105.842526
                       : latLng[AppSocketTerm.long],
                 ),
                 zoom: 19,
@@ -111,251 +287,5 @@ class _HomePageState extends State<HomePage> {
           currentFile: 'home_page', title: 'Init socket IO Fail', data: e);
       // rethrow;
     }
-  }
-
-  late bool isOnAntiThief;
-
-  late bool isWarning;
-  bool isLoadingOfWarning = false;
-
-  final _homeBloc = HomeBloc();
-  NotificationBlocStream get _notificationBlocStream =>
-      BlocProvider.of<NotificationBlocStream>(context)!;
-
-  @override
-  void initState() {
-    super.initState();
-    isOnAntiThief = true;
-    isWarning = true;
-    _marker = <MarkerId, Marker>{};
-    _marker.clear();
-    initSocket();
-    _homeBloc.add(
-      HomeBlocEvent(
-        homeBlocEvent: HomeBlocEventEnum.getDeviceInfor,
-        stateToggleAntiThief: isOnAntiThief,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(AppPageName.homepage),
-      ),
-      body: BlocBuilder<HomeBloc, HomeBlocState>(
-        bloc: _homeBloc,
-        builder: (context, state) {
-          final homeError = state.error;
-          final device = state.device;
-          if (device != null) {
-            //remote false if check nullable, mock test
-            isOnAntiThief = device.config?.antiTheft! ?? false;
-            final statusDevice = device.status ?? 0;
-
-            DebugPrint.dataLog(
-                currentFile: 'home_page',
-                title: 'toggleAntiThiefState',
-                data: isOnAntiThief);
-
-            return Stack(
-              children: [
-                GoogleMap(
-                  // polylines: {},
-                  markers: Set<Marker>.of(_marker.values),
-                  initialCameraPosition: _cameraPosition,
-                  mapType: MapType.normal,
-                  onMapCreated: ((GoogleMapController controller) {
-                    _controller.complete(controller);
-                  }),
-                ),
-
-                statusDevice != 0
-                    ?
-                    //Get current location widget
-                    Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          // color: AppColor.activeStateBlue,
-                          margin: const EdgeInsets.only(bottom: 25),
-                          height: 100,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              elevation: 4,
-                              backgroundColor: AppColor.grey.withOpacity(0.5),
-                              shape: const CircleBorder(),
-                            ),
-                            // child: Column(
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                            //   children: [
-                            //     Text(
-                            //       'SAFE',
-                            //       style: AppTextStyle.body17.copyWith(
-                            //         color: AppTextColor.dark,
-                            //         fontWeight: FontWeight.bold,
-                            //       ),
-                            //     ),
-                            //     Text(
-                            //       'Confirm',
-                            //       style: AppTextStyle.body17.copyWith(
-                            //         color: AppTextColor.dark,
-                            //         fontWeight: FontWeight.bold,
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            child: isLoadingOfWarning
-                                ? const CupertinoActivityIndicator(
-                                    color: AppColor.light,
-                                  )
-                                : const Icon(
-                                    Icons.warning_sharp,
-                                    size: 60,
-                                    color: AppColor.activeStateYellow,
-                                  ),
-                            onPressed: () async {
-                              setState(
-                                () {
-                                  isWarning = !isWarning;
-                                  isLoadingOfWarning = true;
-                                },
-                              );
-                              await showConfirmSafeDialog(context);
-                            },
-                          ),
-                        ),
-                      )
-                    : Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          // color: AppColor.activeStateBlue,
-                          margin: const EdgeInsets.only(bottom: 25),
-                          height: 100,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              elevation: 4,
-                              backgroundColor:
-                                  AppColor.lightBlue.withOpacity(0.5),
-                              shape: const CircleBorder(),
-                            ),
-                            child: const Icon(
-                              Icons.location_searching,
-                              size: 60,
-                              color: AppColor.dark,
-                            ),
-                            onPressed: () {
-                              setState(
-                                () {
-                                  isWarning = !isWarning;
-                                },
-                              );
-                              _homeBloc.add(
-                                HomeBlocEvent(
-                                    stateToggleAntiThief: isOnAntiThief,
-                                    homeBlocEvent:
-                                        HomeBlocEventEnum.getCurrentLocation),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-
-                //toggle antithief widget
-                Positioned(
-                  left: 15,
-                  bottom: 40,
-                  child: SizedBox(
-                    height: 70,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 4,
-                        backgroundColor: isOnAntiThief
-                            ? AppColor.safety
-                            : AppColor.grey.withOpacity(0.5),
-                        shape: const CircleBorder(),
-                      ),
-                      child: Icon(
-                        isOnAntiThief == true ? Icons.lock : Icons.lock_open,
-                        size: 40,
-                        color: AppColor.dark,
-                      ),
-                      onPressed: () async {
-                        await toggleAntiThief(!isOnAntiThief);
-                        setState(() {
-                          isOnAntiThief = !isOnAntiThief;
-                        });
-                      },
-                    ),
-                  ),
-                )
-              ],
-            );
-          }
-          if (homeError != null) {
-            return Center(
-              child: Text(
-                homeError.toString(),
-              ),
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
-    );
-  }
-
-  Future<void> toggleAntiThief(bool antiThiefState) async {
-    _homeBloc.add(
-      HomeBlocEvent(
-        homeBlocEvent: HomeBlocEventEnum.toggleAntiThief,
-        stateToggleAntiThief: antiThiefState,
-      ),
-    );
-  }
-
-  Future<void> showConfirmSafeDialog(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm off warning'),
-          // content: SingleChildScrollView(
-          //   child: ListBody(
-          //     children: const <Widget>[
-          //       Text('Thank you'),
-          //       // Text('Would you like to approve of this message?'),
-          //     ],
-          //   ),
-          // ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                _homeBloc.add(
-                  HomeBlocEvent(
-                      homeBlocEvent: HomeBlocEventEnum.offWarning,
-                      stateToggleAntiThief: isOnAntiThief),
-                );
-                Future.delayed(const Duration(seconds: 1), () {
-                  setState(() {
-                    isLoadingOfWarning = false;
-                  });
-                  Navigator.pop(context, 'OK');
-                });
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
   }
 }
