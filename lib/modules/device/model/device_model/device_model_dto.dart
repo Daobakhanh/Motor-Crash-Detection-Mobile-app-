@@ -2,7 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../config_device_feature_model/config_model_dto.dart';
 import '../create_at_model/create_at_model_dto.dart';
-import '../location_model/location_model_dto.dart';
 import '../vehicle_model/vehicle_model_dto.dart';
 part 'device_model_dto.g.dart';
 

@@ -16,9 +16,6 @@ class AppNavigationConfig extends StatefulWidget {
 class _AppNavigationConfigState extends State<AppNavigationConfig> {
   late final NotificationBlocStream _notficationBlocStreamController;
 
-  // NotificationBlocStream get _notificationBlocStream =>
-  //     BlocProvider.of<NotificationBlocStream>(context)!;
-
   @override
   void initState() {
     super.initState();
@@ -27,7 +24,6 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _notficationBlocStreamController.dispose();
   }
@@ -53,6 +49,11 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
             // backgroundColor: AppColor.greyBold,
             tabBar: CupertinoTabBar(
               currentIndex: 1,
+              onTap: (value) async {
+                if (value == 2) {
+                  await _notficationBlocStreamController.getAllNotification();
+                }
+              },
               activeColor: AppColors.pinkAccent,
               inactiveColor: themeData == Brightness.dark
                   ? AppColors.grey
@@ -96,11 +97,6 @@ class _AppNavigationConfigState extends State<AppNavigationConfig> {
 
                 case 1:
                   return CupertinoTabView(
-                    // onGenerateRoute: ,
-                    // routes: {
-                    //   '/postDetail': (context) => const PostDetailPage(),
-                    // },
-
                     builder: (context) {
                       return const CupertinoPageScaffold(
                         child: HomePage(),

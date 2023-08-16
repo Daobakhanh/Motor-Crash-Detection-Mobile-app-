@@ -69,7 +69,9 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               icon: const Icon(
                 Icons.settings,
               ),
-              onPressed: () {},
+              onPressed: () {
+                showFeatureComingSoonDialog(context);
+              },
               label: const Text(
                 'Setting',
               ),
@@ -80,7 +82,9 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               icon: const Icon(
                 Icons.help_center,
               ),
-              onPressed: () {},
+              onPressed: () {
+                showFeatureComingSoonDialog(context);
+              },
               label: const Text(
                 'Help',
               ),
@@ -115,7 +119,9 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
               icon: const Icon(
                 Icons.store,
               ),
-              onPressed: () {},
+              onPressed: () {
+                showFeatureComingSoonDialog(context);
+              },
               label: const Text(
                 'Store',
               ),
@@ -124,9 +130,9 @@ class _PersonalDrawerPageState extends State<PersonalDrawerPage> {
             //Logout feature
             TextButton.icon(
               onPressed: () {
-                _appAuthStateBloc.logout();
+                // _appAuthStateBloc.logout();
                 // ignore: use_build_context_synchronously
-                logOutShowMyDialog(context);
+                bugDialog(context);
               },
               icon: const Icon(
                 Icons.logout,

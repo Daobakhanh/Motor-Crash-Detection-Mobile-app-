@@ -17,19 +17,12 @@ class HomeRepo {
         },
         endUrl: ApiConstants.requestDevice(deviceId: deviceId),
       );
-
-      if (res.statusCode == 200) {
-        DebugPrint.callApiLog(
-          currentFile: "home_repo",
-          message: 'toggleAntiThief successfull',
-        );
-
-        final resDevice = DeviceModel.fromJson(res.data['data']);
-
-        return resDevice;
-      } else {
-        return null;
-      }
+      DebugPrint.callApiLog(
+        currentFile: "home_repo",
+        message: 'toggleAntiThief successfull',
+      );
+      final resDevice = DeviceModel.fromJson(res.data['data']);
+      return resDevice;
     } catch (e) {
       // ignore: avoid_print
       DebugPrint.dataLog(
@@ -59,18 +52,14 @@ class HomeRepo {
         endUrl: ApiConstants.requestDevice(deviceId: deviceId),
       );
 
-      if (res.statusCode == 200) {
-        DebugPrint.callApiLog(
-          currentFile: "home_repo",
-          message: 'getCurrentLocation successfull',
-        );
+      DebugPrint.callApiLog(
+        currentFile: "home_repo",
+        message: 'getCurrentLocation successfull',
+      );
 
-        final resDevice = DeviceModel.fromJson(res.data['data']);
+      final resDevice = DeviceModel.fromJson(res.data['data']);
 
-        return resDevice;
-      } else {
-        return null;
-      }
+      return resDevice;
     } catch (e) {
       // ignore: avoid_print
       DebugPrint.dataLog(
@@ -99,18 +88,14 @@ class HomeRepo {
         endUrl: ApiConstants.requestDevice(deviceId: deviceId),
       );
 
-      if (res.statusCode == 200) {
-        DebugPrint.callApiLog(
-          currentFile: "home_repo",
-          message: 'offWarning successfull',
-        );
+      DebugPrint.callApiLog(
+        currentFile: "home_repo",
+        message: 'offWarning successfull',
+      );
 
-        final resDevice = DeviceModel.fromJson(res.data['data']);
+      final resDevice = DeviceModel.fromJson(res.data['data']);
 
-        return resDevice;
-      } else {
-        return null;
-      }
+      return resDevice;
     } catch (e) {
       // ignore: avoid_print
       DebugPrint.dataLog(

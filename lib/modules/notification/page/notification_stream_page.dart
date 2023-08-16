@@ -36,7 +36,9 @@ class _NotificationStreamPageState extends State<NotificationStreamPage> {
     return StreamBuilder<NotificationBlocStreamState>(
       stream: _notificationBlocStream.notiStream,
       builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data!.notifications != null) {
+        if (snapshot.hasData &&
+            snapshot.data!.notifications != null &&
+            snapshot.data!.notifications!.isNotEmpty) {
           final listNotiId = snapshot.data!.listNotiId;
           final notifications = snapshot.data!.notifications;
           return SafeArea(
@@ -121,10 +123,14 @@ class _NotificationStreamPageState extends State<NotificationStreamPage> {
   }
 
   Future<void> readAllNoti(List<String> listNotiId) async {
-    _notificationBlocStream.readAllNotifications(listNotiId);
+    final result =
+        await _notificationBlocStream.readAllNotifications(listNotiId);
+    if (result) {
+      await getAllNoti();
+    }
   }
 
   Future<void> getAllNoti() async {
-    _notificationBlocStream.getAllNotification();
+    await _notificationBlocStream.getAllNotification();
   }
 }

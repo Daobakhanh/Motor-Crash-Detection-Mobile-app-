@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late io.Socket socket;
   late Map<MarkerId, Marker> _marker;
+  final NotificationBlocStream _notificationStream = NotificationBlocStream();
 
   // ignore: prefer_final_fields
   CameraPosition _cameraPosition =
@@ -105,6 +106,7 @@ class _HomePageState extends State<HomePage> {
                       child: ConnectionBatteryStatusWidget(
                         batteryLevel: device.battery ?? 0,
                         isConnected: device.isConnected ?? true,
+                        isCharging: device.isCharging ?? true,
                       )),
                   Positioned(
                     left: 15,
@@ -112,10 +114,12 @@ class _HomePageState extends State<HomePage> {
                     child: ToggleAntiThiefWidget(
                       isOnAntiThief: isOnAntiThief,
                       onPressed: () async {
-                        await toggleAntiThief(!isOnAntiThief);
-                        setState(() {
-                          isOnAntiThief = !isOnAntiThief;
-                        });
+                        if (statusDevice == 0) {
+                          await toggleAntiThief(!isOnAntiThief);
+                          setState(() {
+                            isOnAntiThief = !isOnAntiThief;
+                          });
+                        }
                       },
                     ),
                   )
@@ -221,7 +225,8 @@ class _HomePageState extends State<HomePage> {
       socket.on(
         AppSocketTerm.socketEvent,
         (data) async {
-          var latLng = data;
+          await _notificationStream.getAllNotification();
+          var latLng = data["locations"][0];
 
           DebugPrint.dataLog(
               currentFile: 'homepage',
@@ -234,11 +239,11 @@ class _HomePageState extends State<HomePage> {
                 target: LatLng(
                   latLng[AppSocketTerm.lat] == 0 ||
                           latLng[AppSocketTerm.lat] == null
-                      ? 21.006560
+                      ? 21.004334
                       : latLng[AppSocketTerm.lat],
                   latLng[AppSocketTerm.long] == 0 ||
                           latLng[AppSocketTerm.long] == null
-                      ? 105.848429
+                      ? 105.842526
                       : latLng[AppSocketTerm.long],
                 ),
                 zoom: 19,

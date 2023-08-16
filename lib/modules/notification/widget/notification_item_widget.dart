@@ -31,7 +31,6 @@ class _NotificationItemState extends State<NotificationItem> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     title = widget.notificationModel.title ?? 'iSafe';
     isRead = widget.notificationModel.isRead ?? true;
@@ -70,14 +69,7 @@ class _NotificationItemState extends State<NotificationItem> {
                     // color: AppColors.lightGray400,
                     shape: BoxShape.circle,
                   ),
-                  child: Image.asset(
-                    getIconImageNoti(notificationType: notiType),
-                    color: isRead
-                        ? (AppColors.greyBold)
-                        : ((notiType == 1 || notiType == 2)
-                            ? AppColors.alertRed
-                            : null),
-                  ),
+                  child: getIconImageNoti(notificationType: notiType),
                 ),
                 const SizedBox15W(),
                 Expanded(
@@ -85,24 +77,6 @@ class _NotificationItemState extends State<NotificationItem> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // RichText(
-                      //   text: TextSpan(
-                      //     text: '$title        ',
-                      //     style: AppTextStyle.body15
-                      //         .copyWith(fontWeight: FontWeight.bold),
-                      //     children: <TextSpan>[
-                      //       TextSpan(
-                      //         text: time,
-                      //         // style: TextStyle(fontStyle: FontStyle.italic),
-                      //         style: AppTextStyle.body15.copyWith(
-                      //           // fontStyle: FontStyle.italic,
-                      //           fontSize: 14,
-                      //           fontWeight: FontWeight.w700,
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -165,37 +139,55 @@ class _NotificationItemState extends State<NotificationItem> {
     );
   }
 
-  String getIconImageNoti({required int notificationType}) {
+  Widget getIconImageNoti({required int notificationType}) {
     switch (notificationType) {
-      case 1:
-        return 'assets/images/fall_motorbike_2.png';
+      // case 1:
+      //   return 'assets/images/fall_motorbike_2.png';
       case 2:
-        return 'assets/images/accident_motorbike_5.png';
+        return _iconNotiWidgetWithImage(
+            'assets/images/accident_motorbike_5.png');
       case 3:
-        return 'assets/images/thief_motorbike_1.png';
+        return _iconNotiWidgetWithImage('assets/images/thief_motorbike_1.png');
       case 4:
-        return 'assets/images/thief_motorbike_1.png';
+        return _iconNotiWidgetWithImage('assets/images/thief_motorbike_1.png');
       case 5:
-        return 'assets/images/sos.png';
+        return _iconNotiWidgetWithIcon(Icons.sos);
+      case 6:
+        return _iconNotiWidgetWithIcon(Icons.lock_outline);
+      case 7:
+        return _iconNotiWidgetWithIcon(Icons.lock_open);
+      case 9:
+        return _iconNotiWidgetWithIcon(Icons.battery_1_bar);
+      case 10:
+        return _iconNotiWidgetWithIcon(Icons.cloud_off);
       default:
-        return 'assets/images/sos.png';
+        return _iconNotiWidgetWithIcon(Icons.motorcycle);
     }
   }
 
-  // String checkNotiTitleCase({required String notiTypeTitle}) {
-  //   switch (notiTypeTitle) {
-  //     case "Stopped warning":
-  //       return 'assets/images/fall_motorbike_2.png';
-  //     case "Warning":
-  //       return 'assets/images/accident_motorbike_5.png';
-  //     case "":
-  //       return 'assets/images/thief_motorbike_1.png';
-  //     case "":
-  //       return 'assets/images/thief_motorbike_1.png';
-  //     case "":
-  //       return 'assets/images/sos.png';
-  //     default:
-  //       return 'assets/images/sos.png';
-  //   }
-  // }
+  Widget _iconNotiWidgetWithImage(String url) {
+    return Image.asset(
+      url,
+      color: isRead
+          ? (AppColors.greyBold)
+          : ((notiType == 1 || notiType == 2) ? AppColors.alertRed : null),
+    );
+  }
+
+  Widget _iconNotiWidgetWithIcon(IconData icon) {
+    Color checkColorIcon() {
+      if (isRead) {
+        return AppColors.greyBold;
+      } else {
+        if (notiType == 5) return AppColors.alertRed;
+        if (notiType == 6) return AppColors.alertGreen;
+        return AppColors.dark;
+      }
+    }
+
+    return Icon(
+      icon,
+      color: checkColorIcon(),
+    );
+  }
 }
